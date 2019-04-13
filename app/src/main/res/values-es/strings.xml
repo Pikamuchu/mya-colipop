@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">ColiPop</string>
+	<string name="start">INICIO!</string>
+	<string name="play">JUGAR!</string>
+	<string name="retry">REINTENTAR!</string>
+	<string name="restart">VUELTA!</string>
+	<string name="helpText">Ayuda a Colita a explotar burbujas y conseguir dulces!</string>
+	<string name="winText">Has ganado!</string>
+	<string name="loseText">Lo sentimos, has perdido.</string>
+	<string name="gameOverText">FIN DEL JUEGO</string>
+	<string name="timer">0:00</string>
+	<string name="help_explodeEmptyBubbles">Toca las burbujas vacías para que exploten!</string>
+	<string name="help_moveAnyBubble">Puedes mover las burbujas a derecha e izquierda!</string>
+	<string name="help.matchFilledBubbles">Junta las burbujas con objetos del mismo tipo!</string>
+	<string name="colita_talking_hello">Hola! Soy Colita!</string>
+	<string name="colita_talking_levelUp">SUBE NIVEL!</string>
+	<string-array name="colita_talking_happy">
+		<item>Qué bien!</item>
+		<item>Eso estuvo genial!</item>
+		<item>Tú eres muy bueno!</item>
+	</string-array>
+	<string-array name="colita_talking_unhappy">
+		<item>EGGS! No me gusta el pescado!</item>
+		<item>No me gusta que me tiren del pelo!</item>
+		<item>WTF!</item>
+	</string-array>
+	<string-array name="colita_talking_levelup">
+        <item>Estás a mitad de camino para subir de nivel</item>
+        <item>Estás casi subiendo de nivel!</item>
+        <item>Genial! La subida de nivel ya esta aquí!</item>
+    </string-array>	
+	<string-array name="colita_talking_normal">
+		<item>¿Sabías que soy amiga de los gatos?</item>
+		<item>Por cierto, tengo las almohadillas negras</item>
+		<item>Realmente tengo lengua de chicle de fresa</item>
+		<item>Me gusta dormir con los humanos</item>
+		<item>Quiero más azúcar!!!</item>
+		<item>¿Me llevarás al parque?</item>
+		<item>Adoro ir de tiendas</item>
+		<item>Poppy era mi novio, no funcionó...</item>
+		<item>Soy una perrita vegana</item>
+		<item>El agua está mojada, no me gusta la ducha</item>
+		<item>Mis humanos son pobres, viven de alquiler</item>
+		<item>Me gusta correr por la hierba del parque</item>
+		<item>En realidad Pistacho es una incógnita</item>
+		<item>Me gusta hacer la excavadora</item>
+		<item>Mido 21,5 metros de altura a la cruz</item>
+		<item>Soy tierna y dulce como flor de invernadero</item>
+		<item>Tengo dos agujeros en la trufa</item>
+		<item>¿Sabes contar? Pues no cuentes conmigo...</item>
+		<item>Bien pelado y limpio da para una cena</item>
+	</string-array>
+</resources>

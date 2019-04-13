@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ColiPop</string>
+	<string name="start">START!</string>
+	<string name="play">PLAY!</string>
+	<string name="retry">RETRY</string>
+	<string name="restart">RETURN</string>
+	<string name="helpText">Help Colita to explode bubbles and get candies!!</string>
+	<string name="winText">You win!!</string>
+	<string name="loseText">Sorry, you lose.</string>
+	<string name="gameOverText">GAME OVER</string>
+	<string name="timer">0:00</string>
+	<string name="help_explodeEmptyBubbles">Touch empty bubbles to explode them!!</string>
+	<string name="help_moveAnyBubble">You can move any bubble to the right or left!!</string>
+	<string name="help.matchFilledBubbles">Match filled bubbles to pop them away!!</string>
+	<string name="colita_talking_hello">Hello!! I\'m Colita!!</string>
+	<string name="colita_talking_levelUp">LEVEL UP!!</string>
+	<string-array name="colita_talking_happy">
+        <item>Nice One!!</item>
+        <item>That was great!!</item>
+        <item>Your are good with this!!</item>
+    </string-array>
+    <string-array name="colita_talking_unhappy">
+        <item>EKKS! I do not like fish!</item>
+        <item>I do not like me pull the hair!</item>
+        <item>WTF!!</item>
+    </string-array>
+	<string-array name="colita_talking_levelup">
+        <item>You are half way to level up!</item>
+        <item>You are almost leveling up!</item>
+        <item>Great! Level up is comming now!</item>
+    </string-array>	
+    <string-array name="colita_talking_normal">
+        <item>Do you know that I\'m cat friendly?</item>
+        <item>By the way, I have black pads</item>
+        <item>Certainly I have strawberry bubblegum tongue</item>
+        <item>I like to sleep with humans</item>
+		<item>I want more sugar!</item>
+		<item>Will you take me to the park?</item>
+		<item>I love shopping</item>
+		<item>Poppy was my boyfriend, it did not work ...</item>
+		<item>I am a vegan dog</item>
+		<item>Water is wet, I do not like the shower</item>
+		<item>My humans are poor, they live in rented</item>
+		<item>I like to run through the grass of the park</item>
+		<item>Pistacho is really a mystery</item>
+    </string-array>	
+</resources>
+
+
