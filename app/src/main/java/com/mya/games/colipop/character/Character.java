@@ -1,14 +1,14 @@
-package com.mya.games.colipop.personaje;
+package com.mya.games.colipop.character;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
 
 import com.mya.games.colipop.ColiPopResources;
-import com.mya.games.colipop.tablero.ObjetoResources;
+import com.mya.games.colipop.board.ThingResources;
 
 import java.util.Random;
 
-public abstract class Personaje {
+public abstract class Character {
 
     public static final int POSICION_LEFT = 0;
     public static final int POSICION_RIGHT = 1;
@@ -23,9 +23,9 @@ public abstract class Personaje {
     static final int DEFAULT_POSICION_RIGHT_OFFSET_X = 625;
     static final int DEFAULT_POSICION_RIGHT_OFFSET_Y = 60;
     protected static Random random = new Random();
-    // Posicion del personaje
+    // Posicion del character
     protected int posicion = 0;
-    // Offsets del personaje
+    // Offsets del character
     protected int offsetX = 0;
     protected int offsetY = 0;
     protected int meterOffsetX = 0;
@@ -34,17 +34,17 @@ public abstract class Personaje {
     protected int dialogoOffsetY = 0;
     protected int levelOffsetX = 0;
     protected int levelOffsetY = 0;
-    // Indice animacion
+    // Indice animation
     protected int animationIndex = 0;
     // Indice Happy Meter;
     protected int meterIndex = 0;
     protected int currentLevel = 0;
     protected boolean showLevelUpText = false;
     protected int levelUpTextIndex = 0;
-    // Propiedades personajes
+    // Propiedades characters
     protected boolean gameover = false;
-    protected boolean ganador = false;
-    protected int mainObjetoType;
+    protected boolean winner = false;
+    protected int mainThingType;
     protected int status = 0;
     protected String talkingText = "";
     protected String[] normalTalkingText;
@@ -54,7 +54,7 @@ public abstract class Personaje {
     // Resources
     Resources resources = null;
 
-    public Personaje(Resources resources, int posicion) {
+    public Character(Resources resources, int posicion) {
         this.resources = resources;
         this.posicion = posicion;
     }
@@ -67,20 +67,20 @@ public abstract class Personaje {
         this.gameover = gameover;
     }
 
-    public int getMainObjetoType() {
-        return mainObjetoType;
+    public int getMainThingType() {
+        return mainThingType;
     }
 
-    public void setMainObjetoType(int mainObjetoType) {
-        this.mainObjetoType = mainObjetoType;
+    public void setMainThingType(int mainThingType) {
+        this.mainThingType = mainThingType;
     }
 
-    public boolean isGanador() {
-        return ganador;
+    public boolean isWinner() {
+        return winner;
     }
 
-    public void setGanador(boolean ganador) {
-        this.ganador = ganador;
+    public void setWinner(boolean winner) {
+        this.winner = winner;
     }
 
     public int getPosicion() {
@@ -188,14 +188,14 @@ public abstract class Personaje {
     }
 
     /**
-     * Calcula offsets en funcion de la posicion del personaje y los tamaos indicados
+     * Calculate offsets en funcion de la posicion del character y los tamaos indicados
      *
      * @param surfaceWidth
      * @param surfaceHeight
      */
-    protected void calculaPositionOffsets(int surfaceWidth, int surfaceHeight) {
+    protected void calculatePositionOffsets(int surfaceWidth, int surfaceHeight) {
 
-        // Calculamos el refactor indexes
+        // Calculatemos el refactor indexes
         float refactorIndexWidth = surfaceWidth;
         refactorIndexWidth /= DEFAULT_SURFACE_WIDTH;
         // Prevencin de cosas raras
@@ -278,33 +278,33 @@ public abstract class Personaje {
     }
 
     /**
-     * @param objetoType
+     * @param thingType
      */
-    public void updateMeter(int objetoType, int numObjetos) {
+    public void updateMeter(int thingType, int numThings) {
         int index = 0;
         int baseIndex = 1;
-        if (numObjetos >= 3) {
-            baseIndex = numObjetos - 2;
+        if (numThings >= 3) {
+            baseIndex = numThings - 2;
         }
         int levelIndex = baseIndex + (3 - currentLevel);
         if (levelIndex < 1) {
             levelIndex = 1;
         }
-        if (objetoType == ObjetoResources.PIRULETA_OBJECT_TYPE) {
+        if (thingType == ThingResources.PIRULETA_OBJECT_TYPE) {
             index = levelIndex;
-        } else if (objetoType == ObjetoResources.CARAMELO_OBJECT_TYPE) {
+        } else if (thingType == ThingResources.CARAMELO_OBJECT_TYPE) {
             index = levelIndex;
-        } else if (objetoType == ObjetoResources.PEINE_OBJECT_TYPE) {
+        } else if (thingType == ThingResources.PEINE_OBJECT_TYPE) {
             index = -baseIndex;
-        } else if (objetoType == ObjetoResources.RASPA_OBJECT_TYPE) {
+        } else if (thingType == ThingResources.RASPA_OBJECT_TYPE) {
             index = -baseIndex;
         }
-        // Actualizamos contador global
+        // Updatemos contador global
         this.meterIndex += index;
         if (this.meterIndex < 0) {
             this.meterIndex = 0;
         }
-        // Personaje talking
+        // Character talking
         if (index > 0) {
             // Nice object
             int meterIndex = this.meterIndex;
@@ -319,9 +319,9 @@ public abstract class Personaje {
             }
         } else {
             // Ugly object
-            if (objetoType == ObjetoResources.RASPA_OBJECT_TYPE) {
+            if (thingType == ThingResources.RASPA_OBJECT_TYPE) {
                 doUnhappyTalking(1);
-            } else if (objetoType == ObjetoResources.PEINE_OBJECT_TYPE) {
+            } else if (thingType == ThingResources.PEINE_OBJECT_TYPE) {
                 doUnhappyTalking(2);
             }
         }
@@ -335,15 +335,15 @@ public abstract class Personaje {
             currentLevel += 1;
             meterIndex = 0;
             showLevelUpText = true;
-            // Cambiamos el fondo del tablero
+            // Cambiamos el fondo del board
             ColiPopResources.changeLevelBackground(resources, currentLevel);
         }
-        // Updateamos estado del meter
+        // Updateamos status del meter
         updateMeterStatus(meterIndex * 9);
 
     }
 
-    public abstract void initPersonaje();
+    public abstract void initCharacter();
 
     /**
      * @param surfaceWidth
@@ -354,7 +354,7 @@ public abstract class Personaje {
     /**
      * @param canvas
      */
-    public abstract void doPersonajeAnimation(Canvas canvas);
+    public abstract void doCharacterAnimation(Canvas canvas);
 
 
     /**

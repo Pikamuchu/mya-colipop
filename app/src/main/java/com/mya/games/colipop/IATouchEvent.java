@@ -1,10 +1,5 @@
 package com.mya.games.colipop;
 
-/**
- * Classe auxiliar para devolver un movimiento de la IA
- *
- * @author amarinji
- */
 public class IATouchEvent {
 
     public int action = 0;

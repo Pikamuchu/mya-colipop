@@ -1,4 +1,4 @@
-package com.mya.games.colipop.tablero;
+package com.mya.games.colipop.board;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,12 +9,12 @@ import com.mya.games.colipop.ResourceUtils;
 
 public class EfectoResources {
 
-    // Burbuja baseline size
+    // Bubble baseline size
     public static int DEFAULT_EFECTO_WIDTH = 32;
     public static int DEFAULT_EFECTO_HEIGHT = 32;
     public static int DEFAULT_EFECTO_PIXEL_MOVE = 0;
 
-    // Burbuja size
+    // Bubble size
     public static int EFECTO_WIDTH = DEFAULT_EFECTO_WIDTH;
     public static int EFECTO_HEIGHT = DEFAULT_EFECTO_HEIGHT;
     public static int EFECTO_PIXEL_MOVE = DEFAULT_EFECTO_PIXEL_MOVE;
@@ -53,12 +53,12 @@ public class EfectoResources {
                 BitmapFactory.decodeResource(resources, R.drawable.efecto_player_touch_burbuja_04, options)
         };
         /* Save memory
-        Bitmap efecto_cpu_touch_burbuja = BitmapFactory.decodeResource(resources, R.drawable.efecto_cpu_touch_burbuja);
+        Bitmap efecto_cpu_touch_bubble = BitmapFactory.decodeResource(resources, R.drawable.efecto_cpu_touch_bubble);
     	EFECTO_CPU_TOUCH_GRAPHICS_BITMAP = new Bitmap[] {
-    			efecto_cpu_touch_burbuja,
-    			efecto_cpu_touch_burbuja,
-    			efecto_cpu_touch_burbuja,
-    			efecto_cpu_touch_burbuja
+    			efecto_cpu_touch_bubble,
+    			efecto_cpu_touch_bubble,
+    			efecto_cpu_touch_bubble,
+    			efecto_cpu_touch_bubble
         };
         */
 
@@ -168,19 +168,13 @@ public class EfectoResources {
 
     public static void destroy() {
         ResourceUtils.recicleBitmaps(EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP);
-        //EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP=null;
     	/* Save memory
         ResourceUtils.recicleBitmaps(EFECTO_CPU_TOUCH_GRAPHICS_BITMAP);
-        //EFECTO_CPU_TOUCH_GRAPHICS_BITMAP=null;
         */
         ResourceUtils.recicleBitmaps(EFECTO_BLOQUEO_GRAPHICS_BITMAP);
-        //EFECTO_BLOQUEO_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP);
-        //EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP);
-        //EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP);
-        //EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP=null;
     }
 
 }

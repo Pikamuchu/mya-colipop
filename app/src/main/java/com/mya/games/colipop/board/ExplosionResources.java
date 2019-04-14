@@ -1,4 +1,4 @@
-package com.mya.games.colipop.tablero;
+package com.mya.games.colipop.board;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

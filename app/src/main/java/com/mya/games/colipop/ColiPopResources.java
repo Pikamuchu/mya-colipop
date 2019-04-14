@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class ColiPopResources {
-
     public static final String TAG = "ColiPop";
 
     public static int DEFAULT_SURFACE_WIDTH = 800;
@@ -18,7 +17,7 @@ public class ColiPopResources {
 
     // Fondos de pantalla de juego
     public static Bitmap backgroundImage;
-    public static Bitmap tableroImage;
+    public static Bitmap boardImage;
 
     // Fondos de titulos
     public static Bitmap titleBG;
@@ -29,7 +28,6 @@ public class ColiPopResources {
     public static Paint paintText = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     public static void initializeGraphics(Resources resources) {
-
         // Fondo en baja calidad
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPurgeable = true;
@@ -39,17 +37,15 @@ public class ColiPopResources {
         titleBG = BitmapFactory.decodeResource(resources, R.drawable.title_background, options);
         //titleBG2 = BitmapFactory.decodeResource(resources, R.drawable.intermediate_background, options);
 
-        // Fondos de tableros de juego
+        // Fondos de boards de juego
         backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01, options);
 
-        // Tablero es muy baja calidad
+        // Board es muy baja calidad
         options.inPreferredConfig = Bitmap.Config.ARGB_4444;
-        tableroImage = BitmapFactory.decodeResource(resources, R.drawable.tablero, options);
-
+        boardImage = BitmapFactory.decodeResource(resources, R.drawable.tablero, options);
     }
 
     public static void resizeGraphics(int width, int height) {
-
         SURFACE_WIDTH = width;
         SURFACE_HEIGHT = height;
 
@@ -63,8 +59,8 @@ public class ColiPopResources {
         if (backgroundImage != null) {
             backgroundImage = Bitmap.createScaledBitmap(backgroundImage, width, height, true);
         }
-        if (tableroImage != null) {
-            tableroImage = Bitmap.createScaledBitmap(tableroImage, width, height, true);
+        if (boardImage != null) {
+            boardImage = Bitmap.createScaledBitmap(boardImage, width, height, true);
         }
 
         float refactorIndex = width;
@@ -81,14 +77,12 @@ public class ColiPopResources {
         // Formato Talking Text
         paintText.setTextSize(24 * refactorIndex);
         paintText.setColor(Color.BLACK);
-
     }
 
     public static void changeLevelBackground(Resources resources, int level) {
-
         Bitmap imageToRecicle = backgroundImage;
 
-        // Fondos de tableros de juego
+        // Fondos de boards de juego
         level = (level + 1) % 10;
         if (level == 1) {
             backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01);
@@ -114,7 +108,6 @@ public class ColiPopResources {
         backgroundImage = Bitmap.createScaledBitmap(backgroundImage, SURFACE_WIDTH, SURFACE_HEIGHT, true);
 
         imageToRecicle.recycle();
-
     }
 
     public static void destroy() {
@@ -130,14 +123,13 @@ public class ColiPopResources {
             backgroundImage.recycle();
             //backgroundImage=null;
         }
-        if (tableroImage != null) {
-            tableroImage.recycle();
-            //tableroImage=null;
+        if (boardImage != null) {
+            boardImage.recycle();
+            //boardImage=null;
         }
         if (backgroundImage != null) {
             backgroundImage.recycle();
             //backgroundImage=null;
         }
     }
-
 }

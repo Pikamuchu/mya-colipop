@@ -1,7 +1,6 @@
-package com.mya.games.colipop.tablero;
+package com.mya.games.colipop.board;
 
-public class Burbuja {
-
+public class Bubble {
     public int animationIndex = 0;
     public int graphicIndex = 0;
     public int drawY = 0;
@@ -9,5 +8,4 @@ public class Burbuja {
     public int status = 0;
     public int union = 0;
     public int move = 0;
-
 }

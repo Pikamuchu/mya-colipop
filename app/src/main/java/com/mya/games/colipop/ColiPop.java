@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ColiPop extends Activity implements View.OnClickListener {
-
     /**
      * A handle to the thread that's actually running the animation.
      */
@@ -74,71 +73,35 @@ public class ColiPop extends Activity implements View.OnClickListener {
         if (this.coliPopThread.getGameState() == ColiPopThread.STATE_START) {
             this.button.setText(R.string.play);
             this.textView.setVisibility(View.VISIBLE);
-
             this.textView.setText(R.string.helpText);
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY);
 
-        }
         // we have entered game play, now we about to start running
-        else if (this.coliPopThread.getGameState() == ColiPopThread.STATE_PLAY) {
+        } else if (this.coliPopThread.getGameState() == ColiPopThread.STATE_PLAY) {
             this.button.setVisibility(View.INVISIBLE);
             this.textView.setVisibility(View.INVISIBLE);
             this.timerView.setVisibility(View.VISIBLE);
             this.coliPopThread.setGameState(ColiPopThread.STATE_RUNNING);
 
-        }
         // this is a retry button
-        else if (this.buttonRetry.equals(v)) {
-
-            this.textView.setText(R.string.helpText);
-
-            this.button.setText("PLAY!");
+        } else if (this.buttonRetry.equals(v)) {
             this.buttonRetry.setVisibility(View.INVISIBLE);
-            // buttonRestart.setVisibility(View.INVISIBLE);
-
-            this.textView.setVisibility(View.VISIBLE);
             this.button.setText("PLAY!");
             this.button.setVisibility(View.VISIBLE);
-
+            this.textView.setText(R.string.helpText);
+            this.textView.setVisibility(View.VISIBLE);
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY);
 
         } else {
             Log.d("COLIPOP VIEW", "unknown click " + v.getId());
-
-            Log.d("COLIPOP VIEW", "state is  " + this.coliPopThread.state);
-
         }
     }
-
-    /**
-     * Standard override to get key-press events.
-     @Override public boolean onKeyDown(int keyCode, KeyEvent msg) {
-     if (keyCode == KeyEvent.KEYCODE_BACK) {
-     return super.onKeyDown(keyCode, msg);
-     } else {
-     return this.coliPopThread.doKeyDown(keyCode, msg);
-     }
-     }
-     */
-
-    /**
-     * Standard override for key-up.
-
-     @Override public boolean onKeyUp(int keyCode, KeyEvent msg) {
-     if (keyCode == KeyEvent.KEYCODE_BACK) {
-     return super.onKeyUp(keyCode, msg);
-     } else {
-     return this.coliPopThread.doKeyUp(keyCode, msg);
-     }
-     }
-     */
 
     /**
      * Standard override Touch event
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         int action = event.getAction();
 
         int x = (int) event.getX();
@@ -155,22 +118,14 @@ public class ColiPop extends Activity implements View.OnClickListener {
         }
 
         return false;
-
     }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (coliPopView != null) {
             coliPopView.destroy();
-            //coliPopView=null;
         }
-        //coliPopThread=null;
-        //button=null;
-        //buttonRetry=null;
-        //textView=null;
-        //timerView=null;
         System.gc();
     }
 
@@ -179,6 +134,5 @@ public class ColiPop extends Activity implements View.OnClickListener {
         super.onPause();
         System.gc();
     }
-
 
 }

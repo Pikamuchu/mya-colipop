@@ -144,32 +144,20 @@ public class ColiPopView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-
-    /**
-     * A reference to the button to start game over.
-     *
-     * @param _buttonRetry
-     */
     public void SetButtonView(Button buttonRetry) {
         this.buttonRetry = buttonRetry;
-        //  buttonRestart = buttonRestart;
     }
 
 
     //we reuse the help screen from the end game screen.
     public void SetTextView(TextView textView) {
         this.textView = textView;
-
     }
 
     public void destroy() {
         if (thread != null) {
             thread.destroy();
-            //thread=null;
         }
-        //timerView=null;
-        //buttonRetry=null;
-        //textView=null;
     }
 
 }

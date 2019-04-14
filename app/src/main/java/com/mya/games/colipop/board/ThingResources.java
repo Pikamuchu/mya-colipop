@@ -1,4 +1,4 @@
-package com.mya.games.colipop.tablero;
+package com.mya.games.colipop.board;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -7,46 +7,46 @@ import android.graphics.BitmapFactory;
 import com.mya.games.colipop.R;
 import com.mya.games.colipop.ResourceUtils;
 
-public class ObjetoResources {
+public class ThingResources {
 
-    // Objeto baseline size
-    public static int DEFAULT_OBJETO_WIDTH = 32;
-    public static int DEFAULT_OBJETO_HEIGHT = 32;
-    public static int DEFAULT_OBJETO_PIXEL_MOVE = 4;
-    public static int DEFAULT_OBJETO_GRANDE_WIDTH = 64;
-    public static int DEFAULT_OBJETO_GRANDE_HEIGHT = 64;
-    public static int DEFAULT_OBJETO_GRANDE_PIXEL_MOVE = 8;
+    // Thing baseline size
+    public static int DEFAULT_THING_WIDTH = 32;
+    public static int DEFAULT_THING_HEIGHT = 32;
+    public static int DEFAULT_THING_PIXEL_MOVE = 4;
+    public static int DEFAULT_THING_GRANDE_WIDTH = 64;
+    public static int DEFAULT_THING_GRANDE_HEIGHT = 64;
+    public static int DEFAULT_THING_GRANDE_PIXEL_MOVE = 8;
 
-    // Objeto size
-    public static int OBJETO_WIDTH = DEFAULT_OBJETO_WIDTH;
-    public static int OBJETO_HEIGHT = DEFAULT_OBJETO_HEIGHT;
-    public static int OBJETO_WIDTH_MEDIO = OBJETO_WIDTH / 2;
-    public static int OBJETO_HEIGHT_MEDIO = OBJETO_HEIGHT / 2;
-    public static int OBJETO_PIXEL_MOVE = DEFAULT_OBJETO_PIXEL_MOVE;
-    public static int OBJETO_GRANDE_WIDTH = DEFAULT_OBJETO_GRANDE_WIDTH;
-    public static int OBJETO_GRANDE_HEIGHT = DEFAULT_OBJETO_GRANDE_HEIGHT;
-    public static int OBJETO_GRANDE_PIXEL_MOVE = DEFAULT_OBJETO_GRANDE_PIXEL_MOVE;
+    // Thing size
+    public static int THING_WIDTH = DEFAULT_THING_WIDTH;
+    public static int THING_HEIGHT = DEFAULT_THING_HEIGHT;
+    public static int THING_WIDTH_MEDIO = THING_WIDTH / 2;
+    public static int THING_HEIGHT_MEDIO = THING_HEIGHT / 2;
+    public static int THING_PIXEL_MOVE = DEFAULT_THING_PIXEL_MOVE;
+    public static int THING_GRANDE_WIDTH = DEFAULT_THING_GRANDE_WIDTH;
+    public static int THING_GRANDE_HEIGHT = DEFAULT_THING_GRANDE_HEIGHT;
+    public static int THING_GRANDE_PIXEL_MOVE = DEFAULT_THING_GRANDE_PIXEL_MOVE;
 
-    // Estados de objeto
-    public static int OBJETO_ESTADO_BURBUJA = 0;
-    public static int OBJETO_ESTADO_EXPLOTADO = 1;
-    public static int OBJETO_ESTADO_MOVIDO = 2;
-    public static int OBJETO_ESTADO_ELIMINADO = 3;
-    public static int OBJETO_ESTADO_EFECTO_FIJO = 4;
+    // Statuss de thing
+    public static int THING_STATUS_BUBBLE = 0;
+    public static int THING_STATUS_EXPLODE = 1;
+    public static int THING_STATUS_MOVIDO = 2;
+    public static int THING_STATUS_REMOVED = 3;
+    public static int THING_STATUS_EFECTO_FIJO = 4;
 
-    public static int[] OBJETO_ANIMATION_SEQUENCE = new int[]{0};
+    public static int[] THING_ANIMATION_SEQUENCE = new int[]{0};
 
-    public static int[] OBJETO_GRANDE_ANIMATION_SEQUENCE = new int[]{0};
+    public static int[] THING_GRANDE_ANIMATION_SEQUENCE = new int[]{0};
 
-    public static int OBJETO_ELIMINADO_GRAPHICS_SIZE = 4;
-    public static int[] OBJETO_ELIMINADO_ANIMATION_SEQUENCE = new int[]{
+    public static int THING_REMOVED_GRAPHICS_SIZE = 4;
+    public static int[] THING_REMOVED_ANIMATION_SEQUENCE = new int[]{
             0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3,
             0, 0, 1, 1, 2, 2, 3, 3, 0, 0, 1, 1, 2, 2, 3, 3,
             0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3,
             0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
             2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3};
 
-    public static int OBJETO_GRAPHICS_SIZE = 1;
+    public static int THING_GRAPHICS_SIZE = 1;
 
     public static Bitmap[] CARAMELO_GRAPHICS_BITMAP;
     public static Bitmap[] CARAMELO_GRANDE_GRAPHICS_BITMAP;
@@ -71,7 +71,7 @@ public class ObjetoResources {
     public static void initializeGraphics(Resources resources) {
 
         // Si se anyaden mas bitmaps hay que subir esto
-        OBJETO_GRAPHICS_SIZE = 1;
+        THING_GRAPHICS_SIZE = 1;
 
         CARAMELO_GRAPHICS_BITMAP = new Bitmap[]{
                 BitmapFactory.decodeResource(resources, R.drawable.caramelo_01)
@@ -115,15 +115,15 @@ public class ObjetoResources {
         }
 
         // Cogemos el valor por debajo
-        int width = Float.valueOf(DEFAULT_OBJETO_WIDTH * refactorIndex).intValue();
-        int height = Float.valueOf(DEFAULT_OBJETO_HEIGHT * refactorIndex).intValue();
-        int pixel_move = Float.valueOf(DEFAULT_OBJETO_PIXEL_MOVE * refactorIndex).intValue();
+        int width = Float.valueOf(DEFAULT_THING_WIDTH * refactorIndex).intValue();
+        int height = Float.valueOf(DEFAULT_THING_HEIGHT * refactorIndex).intValue();
+        int pixel_move = Float.valueOf(DEFAULT_THING_PIXEL_MOVE * refactorIndex).intValue();
 
-        OBJETO_WIDTH = width;
-        OBJETO_HEIGHT = height;
-        OBJETO_WIDTH_MEDIO = width / 2;
-        OBJETO_HEIGHT_MEDIO = height / 2;
-        OBJETO_PIXEL_MOVE = pixel_move;
+        THING_WIDTH = width;
+        THING_HEIGHT = height;
+        THING_WIDTH_MEDIO = width / 2;
+        THING_HEIGHT_MEDIO = height / 2;
+        THING_PIXEL_MOVE = pixel_move;
 
         int i = 0;
         for (Bitmap bitmap : CARAMELO_GRAPHICS_BITMAP) {
@@ -158,13 +158,13 @@ public class ObjetoResources {
         }
 
         // Cogemos el valor por debajo
-        width = Float.valueOf(DEFAULT_OBJETO_GRANDE_WIDTH * refactorIndex).intValue();
-        height = Float.valueOf(DEFAULT_OBJETO_GRANDE_HEIGHT * refactorIndex).intValue();
-        pixel_move = Float.valueOf(DEFAULT_OBJETO_GRANDE_PIXEL_MOVE * refactorIndex).intValue();
+        width = Float.valueOf(DEFAULT_THING_GRANDE_WIDTH * refactorIndex).intValue();
+        height = Float.valueOf(DEFAULT_THING_GRANDE_HEIGHT * refactorIndex).intValue();
+        pixel_move = Float.valueOf(DEFAULT_THING_GRANDE_PIXEL_MOVE * refactorIndex).intValue();
 
-        OBJETO_GRANDE_WIDTH = width;
-        OBJETO_GRANDE_HEIGHT = height;
-        OBJETO_GRANDE_PIXEL_MOVE = pixel_move;
+        THING_GRANDE_WIDTH = width;
+        THING_GRANDE_HEIGHT = height;
+        THING_GRANDE_PIXEL_MOVE = pixel_move;
 
         i = 0;
         for (Bitmap bitmap : CARAMELO_GRANDE_GRAPHICS_BITMAP) {

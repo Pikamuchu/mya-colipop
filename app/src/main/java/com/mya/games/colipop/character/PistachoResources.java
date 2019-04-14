@@ -1,4 +1,4 @@
-package com.mya.games.colipop.personaje;
+package com.mya.games.colipop.character;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,9 +8,6 @@ import com.mya.games.colipop.R;
 import com.mya.games.colipop.ResourceUtils;
 
 public class PistachoResources {
-
-    //private static final String TAG = "PistachoResources";
-
     // Pistacho baseline sizes
     private static final int DEFAULT_SURFACE_WIDTH = 800;
     private static final int DEFAULT_WIDTH = 150;
@@ -24,7 +21,7 @@ public class PistachoResources {
 
     // Pistacho graphics
     public static Bitmap[] CARA_GRAPHICS_BITMAP;
-    // OJO! la logintud de esta array determina la longitud de todas las secuencias de animacion
+    // OJO! la logintud de esta array determina la longitud de todas las secuencias de animation
     public static int[] CARA_ANIMATION_SEQUENCE = new int[]{
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -60,13 +57,7 @@ public class PistachoResources {
             0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0
     };
 
-    /**
-     * Inicializa los graficos del Pistacho
-     *
-     * @param resources
-     */
     public static void initializeGraphics(Resources resources) {
-
         CARA_GRAPHICS_BITMAP = new Bitmap[]{
                 BitmapFactory.decodeResource(resources, R.drawable.pistacho_cara)
         };
@@ -85,17 +76,10 @@ public class PistachoResources {
 
     }
 
-    /**
-     * Reescala los graficos del Pistacho
-     *
-     * @param canvasWidth
-     * @param canvasHeight
-     */
     public static void resizeGraphics(int surfaceWidth, int surfaceHeight) {
-
         //Log.d(TAG, "Surface resize: width = " + surfaceWidth + ", height = " + surfaceHeight);
 
-        // Calculamos el refactor index ( siempre en funcion del width ?? )
+        // Calculatemos el refactor index ( siempre en funcion del width ?? )
         float refactorIndex = surfaceWidth;
         refactorIndex /= DEFAULT_SURFACE_WIDTH;
         // Prevencin de cosas raras
@@ -143,18 +127,12 @@ public class PistachoResources {
             }
             i++;
         }
-
     }
 
     public static void destroy() {
         ResourceUtils.recicleBitmaps(CARA_GRAPHICS_BITMAP);
-        //CARA_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(OJOS_GRAPHICS_BITMAP);
-        //OJOS_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(BOCA_GRAPHICS_BITMAP);
-        //BOCA_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(BIGOTES_GRAPHICS_BITMAP);
-        //BIGOTES_GRAPHICS_BITMAP=null;
     }
-
 }

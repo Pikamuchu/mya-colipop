@@ -1,6 +1,6 @@
-package com.mya.games.colipop.tablero;
+package com.mya.games.colipop.board;
 
-public class Objeto {
+public class Thing {
 
     public int animationIndex = 0;
     public int graphicIndex = 0;
@@ -10,6 +10,6 @@ public class Objeto {
     public int targetX = 0;
     public int type = 0;
     public int status = 0;
-    public Burbuja burbuja = null;
+    public Bubble bubble = null;
 
 }

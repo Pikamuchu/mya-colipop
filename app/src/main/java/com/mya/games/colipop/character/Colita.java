@@ -1,4 +1,4 @@
-package com.mya.games.colipop.personaje;
+package com.mya.games.colipop.character;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,12 +8,9 @@ import android.graphics.Matrix;
 import com.mya.games.colipop.ColiPopResources;
 import com.mya.games.colipop.R;
 
-public class Pistacho extends Personaje {
+public class Colita extends Character {
 
-    //private static final String TAG = "Pistacho";
-
-    public Pistacho(Resources resources, int posicion) {
-
+    public Colita(Resources resources, int posicion) {
         super(resources, posicion);
 
         ColitaResources.initializeGraphics(resources);
@@ -24,12 +21,12 @@ public class Pistacho extends Personaje {
         this.unhappyTalkingText = resources.getStringArray(R.array.colita_talking_unhappy);
         this.levelUpTalkingText = resources.getStringArray(R.array.colita_talking_levelup);
 
+        initCharacter();
     }
 
     @Override
-    public void initPersonaje() {
-
-        // Indice animacion
+    public void initCharacter() {
+        // Indice animation
         animationIndex = 0;
 
         // Indice Happy Meter;
@@ -38,26 +35,24 @@ public class Pistacho extends Personaje {
         showLevelUpText = false;
         levelUpTextIndex = 0;
 
-        // Propiedades personajes
+        // Propiedades characters
         gameover = false;
-        ganador = false;
+        winner = false;
         status = 0;
+
+        updateMeterStatus(0);
 
         this.talkingText = resources.getString(R.string.colita_talking_hello);
         this.status = STATUS_TALKING;
-
     }
 
     public void resizeGraphics(int surfaceWidth, int surfaceHeight) {
-
-        calculaPositionOffsets(surfaceWidth, surfaceHeight);
+        calculatePositionOffsets(surfaceWidth, surfaceHeight);
 
         ColitaResources.resizeGraphics(surfaceWidth, surfaceHeight);
-
     }
 
-    public void doPersonajeAnimation(Canvas canvas) {
-
+    public void doCharacterAnimation(Canvas canvas) {
         // cambiamos el indice de animacin
         this.animationIndex++;
         // Hacemos loop
@@ -71,21 +66,21 @@ public class Pistacho extends Personaje {
         int offsetX = this.offsetX;
         int offsetY = this.offsetY;
 
-        // Anima Cara
+        // Animate Cara
         int graphicIndex = ColitaResources.CARA_ANIMATION_SEQUENCE[animationIndex];
         if (graphicIndex >= ColitaResources.CARA_GRAPHICS_BITMAP.length) {
             graphicIndex = 0;
         }
         canvas.drawBitmap(ColitaResources.CARA_GRAPHICS_BITMAP[graphicIndex], offsetX, offsetY, null);
 
-        // Anima Ojos
+        // Animate Ojos
         graphicIndex = ColitaResources.OJOS_ANIMATION_SEQUENCE[animationIndex];
         if (graphicIndex >= ColitaResources.OJOS_GRAPHICS_BITMAP.length) {
             graphicIndex = 0;
         }
         canvas.drawBitmap(ColitaResources.OJOS_GRAPHICS_BITMAP[graphicIndex], offsetX, offsetY, null);
 
-        // Anima Boca
+        // Animate Boca
         int status = this.status;
         if (status == STATUS_NORMAL) {
             graphicIndex = ColitaResources.BOCA_NORMAL_ANIMATION_SEQUENCE[animationIndex];
@@ -113,7 +108,7 @@ public class Pistacho extends Personaje {
             canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX, offsetY, null);
         }
 
-        // Animacion texto
+        // Animation texto
         if (status == STATUS_TALKING) {
             graphicIndex = ColitaResources.DIALOGO_ANIMATION_SEQUENCE[animationIndex];
             if (graphicIndex >= ColitaResources.DIALOGO_CORTO_GRAPHICS_BITMAP.length) {
@@ -125,7 +120,7 @@ public class Pistacho extends Personaje {
             } else if (talkingText.length() < ColitaResources.TEXTO_MEDIO) {
                 canvas.drawBitmap(ColitaResources.DIALOGO_MEDIO_GRAPHICS_BITMAP[graphicIndex], 0, 0, null);
             } else if (talkingText.length() < ColitaResources.TEXTO_MEDIO2) {
-                canvas.drawBitmap(ColitaResources.DIALOGO_MEDIO_GRAPHICS_BITMAP[graphicIndex], 0, 0, null);
+                canvas.drawBitmap(ColitaResources.DIALOGO_MEDIO2_GRAPHICS_BITMAP[graphicIndex], 0, 0, null);
             } else {
                 canvas.drawBitmap(ColitaResources.DIALOGO_LARGO_GRAPHICS_BITMAP[graphicIndex], 0, 0, null);
             }
@@ -133,7 +128,7 @@ public class Pistacho extends Personaje {
             canvas.drawText(this.talkingText, this.dialogoOffsetX, this.dialogoOffsetY, ColiPopResources.paintText);
         }
 
-        // Anima Meter
+        // Animate Meter
         offsetY = this.meterOffsetY;
         offsetX = this.meterOffsetX;
 
@@ -148,7 +143,7 @@ public class Pistacho extends Personaje {
                 this.levelUpTextIndex = 0;
                 this.showLevelUpText = false;
             }
-            // Anima Texto Level up
+            // Animate Texto Level up
             graphicIndex = ColitaResources.LEVEL_UP_ANIMATION_SEQUENCE[this.levelUpTextIndex];
             if (graphicIndex >= ColitaResources.LEVEL_UP_GRAPHICS_BITMAP.length) {
                 graphicIndex = 0;
@@ -168,7 +163,6 @@ public class Pistacho extends Personaje {
         offsetX = this.levelOffsetX;
 
         canvas.drawText(" = " + (this.currentLevel + 1), offsetX, offsetY, ColiPopResources.paint);
-
     }
 
     public void updateMeterStatus(int index) {
@@ -181,7 +175,7 @@ public class Pistacho extends Personaje {
         } else {
             mtx.postRotate(180);
         }
-        // Calculando bitmap index
+        // Calculatendo bitmap index
         int bitmapIndex = 0;
         if (index < 90) {
             bitmapIndex = index;
@@ -209,14 +203,6 @@ public class Pistacho extends Personaje {
 
     @Override
     public void destroy() {
-        PistachoResources.destroy();
-        //resources=null;
-        //talkingText=null;
-        //normalTalkingText=null;
-        //happyTalkingText=null;
-        //unhappyTalkingText=null;
-        //levelUpTalkingText=null;
+        ColitaResources.destroy();
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.mya.games.colipop.personaje;
+package com.mya.games.colipop.character;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -8,9 +8,6 @@ import com.mya.games.colipop.R;
 import com.mya.games.colipop.ResourceUtils;
 
 public class ColitaResources {
-
-    //private static final String TAG = "ColitaResources";
-
     // Colita baseline sizes
     private static final int DEFAULT_SURFACE_WIDTH = 800;
     private static final int DEFAULT_SURFACE_HEIGHT = 480;
@@ -42,7 +39,7 @@ public class ColitaResources {
 
     // Colita graphics
     public static Bitmap[] CARA_GRAPHICS_BITMAP;
-    // OJO! la logintud de esta array determina la longitud de todas las secuencias de animacion
+    // OJO! la logintud de esta array determina la longitud de todas las secuencias de animation
     public static int[] CARA_ANIMATION_SEQUENCE = new int[]{
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -127,13 +124,7 @@ public class ColitaResources {
             0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1
     };
 
-    /**
-     * Inicializa los graficos de la Colita
-     *
-     * @param resources
-     */
     public static void initializeGraphics(Resources resources) {
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPurgeable = true;
 
@@ -220,20 +211,12 @@ public class ColitaResources {
                 BitmapFactory.decodeResource(resources, R.drawable.level_up_01, options),
                 BitmapFactory.decodeResource(resources, R.drawable.level_up_02, options)
         };
-
     }
 
-    /**
-     * Reescala los graficos de la Colita
-     *
-     * @param canvasWidth
-     * @param canvasHeight
-     */
     public static void resizeGraphics(int surfaceWidth, int surfaceHeight) {
-
         //Log.d(TAG, "Surface resize: width = " + surfaceWidth + ", height = " + surfaceHeight);
 
-        // Calculamos el refactor index ( siempre en funcion del width ?? )
+        // Calculatemos el refactor index ( siempre en funcion del width ?? )
         float refactorIndex = surfaceWidth;
         refactorIndex /= DEFAULT_SURFACE_WIDTH;
         // Prevencin de cosas raras
@@ -366,34 +349,20 @@ public class ColitaResources {
             }
             i++;
         }
-
     }
 
     public static void destroy() {
         ResourceUtils.recicleBitmaps(CARA_GRAPHICS_BITMAP);
-        //CARA_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(OJOS_GRAPHICS_BITMAP);
-        //OJOS_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(BOCA_GRAPHICS_BITMAP);
-        //BOCA_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(METER_FONDO_GRAPHICS_BITMAP);
-        //METER_FONDO_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(DIALOGO_CORTO_GRAPHICS_BITMAP);
-        //DIALOGO_CORTO_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(DIALOGO_MEDIO_GRAPHICS_BITMAP);
-        //DIALOGO_MEDIO_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(DIALOGO_MEDIO2_GRAPHICS_BITMAP);
-        //DIALOGO_MEDIO2_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(DIALOGO_LARGO_GRAPHICS_BITMAP);
-        //DIALOGO_LARGO_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(METER_FLECHA1_GRAPHICS_BITMAP);
-        //METER_FLECHA1_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(METER_FLECHA2_GRAPHICS_BITMAP);
-        //METER_FLECHA2_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(METER_FLECHA_GRAPHICS_BITMAP);
-        //METER_FLECHA_GRAPHICS_BITMAP=null;
         ResourceUtils.recicleBitmaps(LEVEL_UP_GRAPHICS_BITMAP);
-        //LEVEL_UP_GRAPHICS_BITMAP=null;
     }
-
 }

@@ -10,20 +10,18 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import com.mya.games.colipop.personaje.Colita;
-import com.mya.games.colipop.personaje.Personaje;
-import com.mya.games.colipop.tablero.BurbujaResources;
-import com.mya.games.colipop.tablero.Celda;
-import com.mya.games.colipop.tablero.EfectoResources;
-import com.mya.games.colipop.tablero.Tablero;
+import com.mya.games.colipop.character.Colita;
+import com.mya.games.colipop.character.Character;
+import com.mya.games.colipop.board.BubbleResources;
+import com.mya.games.colipop.board.Cell;
+import com.mya.games.colipop.board.EfectoResources;
+import com.mya.games.colipop.board.Board;
 
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ColiPopThread extends Thread {
-
-    //static final String TAG = "ColiPop";
 
     /**
      * State-tracking constants.
@@ -41,104 +39,109 @@ public class ColiPopThread extends Thread {
     public static final int PLAY_MODE_CPU_VERSUS = 1;
 
     /**
-     * Flag de control de inicializacin
-     **/
-    public boolean initialized = false;
-    // the timer display in seconds
-    public int timerCount;
-    // start, play, running, lose are the states we use
-    public int state;
-    public int previousState;
-    // Play Mode; 1 player, versus, etc
-    public int playMode;
-    /**
      * Queue for GameEvents
      */
-    protected ConcurrentLinkedQueue<GameEvent> eventQueue = new ConcurrentLinkedQueue<GameEvent>();
-    /**
-     * Context for processKey to maintain state across frames *
-     */
-    protected Object keyContext = null;
-    // string value for timer display
-    String timerValue = "0:00";
-    // Indica si la musica est on o off
-    boolean musicOn = false;
-    boolean soundOn = false;
+    private ConcurrentLinkedQueue<GameEvent> eventQueue = new ConcurrentLinkedQueue<GameEvent>();
 
-    long touchFireTime = 0;
+    /**
+     * Context for processKey to maintain gameState across frames *
+     */
+    private Object keyContext = null;
 
     /**
      * Message handler used by thread to interact with TextView
      */
-    Handler handler;
+    private Handler handler;
 
     /**
      * Handle to the surface manager object we interact with
      */
-    SurfaceHolder surfaceHolder;
+    private SurfaceHolder surfaceHolder;
 
     /**
      * Handle to the application context, used to e.g. fetch Drawables.
      */
-    Context context;
+    private Context context;
 
     /**
      * Indicate whether the surface has been created & is ready to draw
      */
-    boolean run = false;
+    private boolean run = false;
+
+    /**
+     * Application main objects
+     */
 
     // updates the screen clock. Also used for tempo timing.
     Timer timer = null;
 
     TimerTask timerTask = null;
 
-    // one second - used to update timer
-    int taskIntervalInMillis = 1000;
-
-    // Used Limit frame Rate
-    // 50 ms - 20 frames second
-    // 100 ms - 10 frames second
-    int frameIntervalInMillis = 33;
-
-    // Recursos
+    // Graphics resources
     Resources res;
 
-    // Jugadores
-    Personaje personaje1;
-    Personaje personaje2;
+    // Players
+    Character character1;
+    Character character2;
 
-    int numDialogoTutorial = 0;
+    // Board game
+    Board board;
 
-    // Tablero de juego
-    Tablero tablero;
-
-    // Flag de control de turno
-    boolean turnoCPU;
-
-    // Variable temporal para almacenar celda de ultimo touch MotionEvent Action Down
+    // Temp vars to store the last cell touch MotionEvents
     TouchGameEvent eventActionDown;
     TouchGameEvent eventActionMoveAnterior;
 
     /**
-     * This is the constructor
-     *
-     * @param surfaceHolder
-     * @param context
-     * @param handler
+     * Application control flags
+     */
+
+    private boolean initialized = false;
+    private int numDialogoTutorial = 0;
+
+    // the timer display in seconds
+    private int timerCount;
+
+    // start, play, running, lose are the states we use
+    private int gameState;
+    private int previousState;
+
+    // Play Mode; 1 player, versus, etc
+    private int playMode;
+
+    // string value for timer display
+    private String timerValue = "0:00";
+
+    // Indica si la musica est on o off
+    private boolean musicOn = false;
+    private boolean soundOn = false;
+
+    private long touchFireTime = 0;
+
+    // one second - used to update timer
+    private int taskIntervalInMillis = 1000;
+
+    // Used Limit frame Rate
+    // 50 ms - 20 frames second
+    // 100 ms - 10 frames second
+    private int frameIntervalInMillis = 33;
+
+    // Flag de control de turno
+    private boolean turnoCPU;
+
+    /**
+     * The constructor without parameters
      */
     public ColiPopThread() {
-
     }
 
     /**
      * This is the constructor
      *
-     * @param surfaceHolder
-     * @param context
-     * @param handler
+     * @param surfaceHolder The surface
+     * @param context The context
+     * @param handler The handler
      */
     public ColiPopThread(SurfaceHolder surfaceHolder, Context context, Handler handler) {
-
         this.surfaceHolder = surfaceHolder;
         this.handler = handler;
         this.context = context;
@@ -146,31 +149,29 @@ public class ColiPopThread extends Thread {
         Resources resources = context.getResources();
         this.res = resources;
 
-        // always set state to start, ensure we come in from front door if
+        // always set gameState to start, ensure we come in from front door if
         // app gets tucked into background
-        this.state = STATE_START;
+        this.gameState = STATE_START;
         this.playMode = PLAY_MODE_1PLAYER;
 
         ColiPopResources.initializeGraphics(resources);
 
-        this.personaje1 = new Colita(resources, Personaje.POSICION_LEFT);
-        //this.personaje2 = new Pistacho( resources, Personaje.POSICION_RIGHT );
+        this.character1 = new Colita(resources, Character.POSICION_LEFT);
+        //this.character2 = new Pistacho( resources, Character.POSICION_RIGHT );
 
-        this.tablero = new Tablero(resources, this.personaje1, this.personaje2);
+        this.board = new Board(resources, this.character1, this.character2);
 
         setInitialGameState();
 
         //Log.d(TAG, "ColipopThread initiated");
-
     }
 
     /**
-     * Copia el thread finalizado
+     * Creates a ColiPopThread clone
      *
-     * @param thread
+     * @param thread The thread
      */
     public static ColiPopThread newColiPopThread(ColiPopThread thread) {
-
         ColiPopThread newThread = new ColiPopThread();
 
         newThread.surfaceHolder = thread.surfaceHolder;
@@ -183,8 +184,8 @@ public class ColiPopThread extends Thread {
         newThread.keyContext = thread.keyContext;
         newThread.timerCount = thread.timerCount;
         newThread.timerValue = thread.timerValue;
-        newThread.state = thread.previousState;
-        newThread.previousState = thread.state;
+        newThread.gameState = thread.gameState;
+        newThread.previousState = thread.previousState;
         newThread.playMode = thread.playMode;
         newThread.musicOn = thread.musicOn;
         newThread.soundOn = thread.soundOn;
@@ -194,121 +195,96 @@ public class ColiPopThread extends Thread {
         newThread.timerTask = thread.timerTask;
         newThread.taskIntervalInMillis = thread.taskIntervalInMillis;
         newThread.frameIntervalInMillis = thread.frameIntervalInMillis;
-        newThread.tablero = thread.tablero;
-        newThread.personaje1 = thread.personaje1;
-        newThread.personaje2 = thread.personaje2;
+        newThread.board = thread.board;
+        newThread.character1 = thread.character1;
+        newThread.character2 = thread.character2;
         newThread.turnoCPU = thread.turnoCPU;
         newThread.eventActionDown = thread.eventActionDown;
         newThread.eventActionMoveAnterior = thread.eventActionMoveAnterior;
         newThread.numDialogoTutorial = thread.numDialogoTutorial;
 
         return newThread;
-
     }
 
-    void setInitialGameState() {
-
+    private void setInitialGameState() {
         this.timerCount = 0;
-
         this.timer = new Timer();
-
         this.turnoCPU = false;
-
-        // Flag de control de inicializacin
         this.initialized = true;
-
     }
 
-    void doDraw(Canvas canvas) {
-
+    private void doDraw(Canvas canvas) {
         //long drawInitTime = System.currentTimeMillis();
-        int state = this.state;
+
+        int state = this.gameState;
         if (state == STATE_RUNNING || state == STATE_GAME_END) {
-
             doUpdate();
-
             doDrawRunning(canvas);
 
         } else if (state == STATE_START) {
-
             doDrawReady(canvas);
 
         } else if (state == STATE_PLAY) {
-
             doDrawPlay(canvas);
 
         } else if (state == STATE_PAUSE) {
-
             // Do nothing
-
         }
-        // end state play block
 
         //long drawTime = System.currentTimeMillis() - drawInitTime;
         //Log.d(TAG, "Draw time is " + drawTime + " ms");
-
     }
 
-    void doUpdate() {
-
+    private void doUpdate() {
         //long initTime = System.currentTimeMillis();
 
-        // Process any input and apply it to the game state
+        // Process any input and apply it to the game gameState
         updateGameState();
 
         //Log.d(TAG, "    updateGameState is " + ( System.currentTimeMillis() - initTime ) + " ms");
 
-        // Create new Burbujas
-        doBurbujasCreation();
+        // Create new Bubbles
+        doBubblesCreation();
 
-        // Update Personaje talking
-        updatePersonajesTalking();
+        // Update Character talking
+        updateCharactersTalking();
 
         //long drawTime = System.currentTimeMillis() - initTime;
         //Log.d(TAG, "  Update time is " + drawTime + " ms");
-
     }
 
-    /**
-     *
-     */
-    void updatePersonajesTalking() {
-
+    private void updateCharactersTalking() {
         if (playMode == PLAY_MODE_1PLAYER) {
-
             // Tutorial
-            if (timerCount < 60 && personaje1.getStatus() != Personaje.STATUS_TALKING) {
+            if (timerCount < 60 && character1.getStatus() != Character.STATUS_TALKING) {
                 if (timerCount < 10) {
                     // Nothing
                 } else if (timerCount < 20 && numDialogoTutorial < 1) {
-                    personaje1.doTalking(R.string.help_explodeEmptyBubbles);
+                    character1.doTalking(R.string.help_explodeEmptyBubbles);
                     numDialogoTutorial++;
                 } else if (timerCount < 40 && numDialogoTutorial < 2) {
-                    personaje1.doTalking(R.string.help_moveAnyBubble);
+                    character1.doTalking(R.string.help_moveAnyBubble);
                     numDialogoTutorial++;
                 } else if (timerCount < 60 && numDialogoTutorial < 3) {
-                    personaje1.doTalking(R.string.help_matchFilledBubbles);
+                    character1.doTalking(R.string.help_matchFilledBubbles);
                     numDialogoTutorial++;
                 }
             } else {
-                if (timerCount % 30 == 0 && personaje1.getStatus() != Personaje.STATUS_TALKING) {
-                    personaje1.doNormalTalking();
+                if (timerCount % 30 == 0 && character1.getStatus() != Character.STATUS_TALKING) {
+                    character1.doNormalTalking();
                 }
             }
 
         } else if (playMode == PLAY_MODE_CPU_VERSUS) {
-
             // TODO
 
         } else {
             // Do nothing
         }
-
     }
 
-
     /**
-     * Draws current state of the game Canvas.
+     * Draws current gameState of the game Canvas.
      */
     void doDrawRunning(Canvas canvas) {
 
@@ -316,20 +292,20 @@ public class ColiPopThread extends Thread {
 
         canvas.drawBitmap(ColiPopResources.backgroundImage, 0, 0, null);
 
-        canvas.drawBitmap(ColiPopResources.tableroImage, 0, 0, null);
+        canvas.drawBitmap(ColiPopResources.boardImage, 0, 0, null);
 
-        tablero.doTableroAnimation(canvas);
+        board.doBoardAnimation(canvas);
 
 
         if (playMode == PLAY_MODE_1PLAYER) {
 
-            personaje1.doPersonajeAnimation(canvas);
+            character1.doCharacterAnimation(canvas);
 
         } else if (playMode == PLAY_MODE_CPU_VERSUS) {
 
-            personaje1.doPersonajeAnimation(canvas);
+            character1.doCharacterAnimation(canvas);
 
-            //personaje2.doPersonajeAnimation(canvas);
+            //character2.doCharacterAnimation(canvas);
 
         } else {
             // Do nothing
@@ -337,7 +313,7 @@ public class ColiPopThread extends Thread {
 
         if (turnoCPU) {
             //canvas.drawText("CPU Turn", 405, 30, new Paint());
-            IATouchEvent[] iaEvents = tablero.calculaNextMovement(personaje2);
+            IATouchEvent[] iaEvents = board.calculateNextMovement(character2);
             if (iaEvents != null && iaEvents.length == 2) {
                 eventQueue.add(new TouchGameEvent(TouchGameEvent.PLAYER_CPU, iaEvents[0].action, iaEvents[0].x, iaEvents[0].y));
                 eventQueue.add(new TouchGameEvent(TouchGameEvent.PLAYER_CPU, iaEvents[1].action, iaEvents[1].x, iaEvents[1].y));
@@ -406,7 +382,7 @@ public class ColiPopThread extends Thread {
             } finally {
                 // do this in a finally so that if an exception is thrown
                 // during the above, we don't leave the Surface in an
-                // inconsistent state
+                // inconsistent gameState
                 if (c != null) {
                     surfaceHolder.unlockCanvasAndPost(c);
                 }
@@ -420,7 +396,7 @@ public class ColiPopThread extends Thread {
 
     void initialize() {
 
-        if (state == STATE_RUNNING) {
+        if (gameState == STATE_RUNNING) {
 
             // kick off the timer task for counter update if not already
             // initialized
@@ -435,15 +411,15 @@ public class ColiPopThread extends Thread {
 
             }// end of TimerTask init block
 
-        } else if (state == STATE_PLAY && !initialized) {
+        } else if (gameState == STATE_PLAY && !initialized) {
 
             setInitialGameState();
 
-        } else if (state == STATE_GAME_END) {
+        } else if (gameState == STATE_GAME_END) {
 
             initialized = false;
 
-        } else if (state == STATE_PAUSE) {
+        } else if (gameState == STATE_PAUSE) {
 
             // Do nothing
 
@@ -451,10 +427,10 @@ public class ColiPopThread extends Thread {
     }
 
     /**
-     * This method handles updating the model of the game state. No
-     * rendering is done here only processing of inputs and update of state.
-     * This includes positons of all game objects (burbujas, player,
-     * explosions), their state (animation frame, hit), creation of new
+     * This method handles updating the model of the game gameState. No
+     * rendering is done here only processing of inputs and update of gameState.
+     * This includes positons of all game objects (bubbles, player,
+     * explosions), their gameState (animation frame, hit), creation of new
      * objects, etc.
      */
     protected void updateGameState() {
@@ -494,7 +470,7 @@ public class ColiPopThread extends Thread {
         }
 
         // Ignoramos los toques de pantalla de los jugadores si el juego ha terminado
-        if (state == STATE_GAME_END) {
+        if (gameState == STATE_GAME_END) {
             return;
         }
 
@@ -507,83 +483,78 @@ public class ColiPopThread extends Thread {
 
         } else if (event.motionEvent == MotionEvent.ACTION_MOVE) {
             //Log.d(TAG, "Motion Move en position: x=" + event.x + ", y=" +  event.y );
-            tablero.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE);
-            Celda celdaOrigen = tablero.getCeldaInCoordinates(eventActionMoveAnterior.x, eventActionMoveAnterior.y);
-            Celda celdaDestino = tablero.getCeldaInCoordinates(event.x, event.y);
-            updateTouchTablero(celdaOrigen, celdaDestino, tablero, event.player, true, false);
-            if (celdaOrigen == null || celdaDestino == null || celdaOrigen.posX != celdaDestino.posX || celdaOrigen.posY != celdaDestino.posY) {
+            board.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE);
+            Cell cellOrigin = board.getCellInCoordinates(eventActionMoveAnterior.x, eventActionMoveAnterior.y);
+            Cell cellDestiny = board.getCellInCoordinates(event.x, event.y);
+            updateTouchBoard(cellOrigin, cellDestiny, board, event.player, true, false);
+            if (cellOrigin == null || cellDestiny == null || cellOrigin.posX != cellDestiny.posX || cellOrigin.posY != cellDestiny.posY) {
                 eventActionMoveAnterior = event;
             }
 
         } else if (event.motionEvent == MotionEvent.ACTION_UP) {
             //Log.d(TAG, "Motion Up en position: x=" + event.x + ", y=" +  event.y );
-            Celda celdaOrigen = tablero.getCeldaInCoordinates(eventActionDown.x, eventActionDown.y);
-            Celda celdaDestino = tablero.getCeldaInCoordinates(event.x, event.y);
-            updateTouchTablero(celdaOrigen, celdaDestino, tablero, event.player, false, true);
-
+            Cell cellOrigin = board.getCellInCoordinates(eventActionDown.x, eventActionDown.y);
+            Cell cellDestiny = board.getCellInCoordinates(event.x, event.y);
+            updateTouchBoard(cellOrigin, cellDestiny, board, event.player, false, true);
         }
 
         //long updateTime = System.currentTimeMillis() - initTime;
         //Log.d(TAG, "UpdateTouch time is " + updateTime + " ms");
-
     }
 
-    /**
-     * @param event
-     */
-    private void updateTouchTablero(Celda celdaOrigen, Celda celdaDestino, Tablero tablero, int player, boolean ignoreElimina, boolean ignoreMueve) {
+    private void updateTouchBoard(Cell cellOrigin, Cell cellDestiny, Board board, int player, boolean ignoreRemove, boolean ignoreMove) {
 
-        if (celdaOrigen != null && celdaDestino != null) {
+        if (cellOrigin != null && cellDestiny != null) {
 
-            // Caso la burbuja esta en movimiento y ya no esta donde se ha producido el evento
-            if (celdaOrigen.burbuja == null) {
-                //Log.d(TAG, "Celda sin burbuja: Buscamos posible burbuja en Movimiento.");
-                boolean isOtraCelda = false;
-                // Miramos celda de arriba
-                Celda otraCelda = tablero.getCelda(celdaOrigen.posX, celdaOrigen.posY - 1);
-                if (otraCelda != null && otraCelda.burbuja != null && otraCelda.burbuja.move == BurbujaResources.BURBUJA_MOVE_UP) {
-                    //Log.d(TAG, "Celda con burbuja en movimiento encontrada arriba.");
-                    isOtraCelda = true;
-                    celdaOrigen = otraCelda;
-                    celdaDestino = tablero.getCelda(celdaDestino.posX, celdaDestino.posY - 1);
+            // Caso la bubble esta en movimiento y ya no esta donde se ha producido el evento
+            if (cellOrigin.bubble == null) {
+                //Log.d(TAG, "Cell sin bubble: Buscamos posible bubble en Movimiento.");
+                boolean isOtraCell = false;
+                // Miramos cell de arriba
+                Cell otraCell = board.getCell(cellOrigin.posX, cellOrigin.posY - 1);
+                if (otraCell != null && otraCell.bubble != null && otraCell.bubble.move == BubbleResources.BUBBLE_MOVE_UP) {
+                    //Log.d(TAG, "Cell con bubble en movimiento encontrada arriba.");
+                    isOtraCell = true;
+                    cellOrigin = otraCell;
+                    cellDestiny = board.getCell(cellDestiny.posX, cellDestiny.posY - 1);
                 }
-                // Miramos celda de la derecha
-                otraCelda = tablero.getCelda(celdaOrigen.posX + 1, celdaOrigen.posY);
-                if (!isOtraCelda && otraCelda != null && otraCelda.burbuja != null && otraCelda.burbuja.move == BurbujaResources.BURBUJA_MOVE_RIGHT) {
-                    //Log.d(TAG, "Celda con burbuja en movimiento encontrada a la derecha.");
-                    isOtraCelda = true;
-                    celdaOrigen = otraCelda;
-                    celdaDestino = tablero.getCelda(celdaDestino.posX + 1, celdaDestino.posY);
+                // Miramos cell de la derecha
+                otraCell = board.getCell(cellOrigin.posX + 1, cellOrigin.posY);
+                if (!isOtraCell && otraCell != null && otraCell.bubble != null && otraCell.bubble.move == BubbleResources.BUBBLE_MOVE_RIGHT) {
+                    //Log.d(TAG, "Cell con bubble en movimiento encontrada a la derecha.");
+                    isOtraCell = true;
+                    cellOrigin = otraCell;
+                    cellDestiny = board.getCell(cellDestiny.posX + 1, cellDestiny.posY);
                 }
-                // Miramos celda de la izquierda
-                otraCelda = tablero.getCelda(celdaOrigen.posX - 1, celdaOrigen.posY);
-                if (!isOtraCelda && otraCelda != null && otraCelda.burbuja != null && otraCelda.burbuja.move == BurbujaResources.BURBUJA_MOVE_LEFT) {
-                    //Log.d(TAG, "Celda con burbuja en movimiento encontrada a la izquierda.");
-                    isOtraCelda = true;
-                    celdaOrigen = otraCelda;
-                    celdaDestino = tablero.getCelda(celdaDestino.posX - 1, celdaDestino.posY);
+                // Miramos cell de la izquierda
+                otraCell = board.getCell(cellOrigin.posX - 1, cellOrigin.posY);
+                if (!isOtraCell && otraCell != null && otraCell.bubble != null && otraCell.bubble.move == BubbleResources.BUBBLE_MOVE_LEFT) {
+                    //Log.d(TAG, "Cell con bubble en movimiento encontrada a la izquierda.");
+                    isOtraCell = true;
+                    cellOrigin = otraCell;
+                    cellDestiny = board.getCell(cellDestiny.posX - 1, cellDestiny.posY);
                 }
-                if (!isOtraCelda || celdaOrigen == null || celdaDestino == null) {
+                if (!isOtraCell || cellOrigin == null || cellDestiny == null) {
                     //Log.d(TAG, "No se ha encontrado movimiento valido. No hacemos nada.");
                     return;
                 }
             }
 
-            // Caso eliminar burbuja
-            if (celdaOrigen.posX == celdaDestino.posX && celdaOrigen.posY == celdaDestino.posY) {
+            // Caso remover bubble
+            if (cellOrigin.posX == cellDestiny.posX && cellOrigin.posY == cellDestiny.posY) {
 
-                // Solo se pueden eliminar burbujas sin objetos
-                if (celdaDestino.objeto == null) {
+                // Solo se pueden remover bubbles sin things
+                if (cellDestiny.thing == null) {
 
-                    //Log.d(TAG, "Eliminando burbuja en Celda: posX=" + celdaDestino.posX + ", posY=" + celdaDestino.posY );
+                    //Log.d(TAG, "Removendo bubble en Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 
                     if (turnoCPU) {
-                        tablero.addEfectoBurbuja(celdaDestino.burbuja, EfectoResources.EFECTO_CPU_TOUCH_OBJECT_TYPE);
+                        board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_CPU_TOUCH_OBJECT_TYPE);
                     } else {
-                        tablero.addEfectoBurbuja(celdaDestino.burbuja, EfectoResources.EFECTO_PLAYER_TOUCH_OBJECT_TYPE);
+                        board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_PLAYER_TOUCH_OBJECT_TYPE);
                     }
 
-                    tablero.eliminaBurbuja(celdaDestino);
+                    board.removeBubble(cellDestiny);
 
                     if (playMode == PLAY_MODE_CPU_VERSUS) {
                         if (player == TouchGameEvent.PLAYER_CPU) {
@@ -595,61 +566,61 @@ public class ColiPopThread extends Thread {
 
                 } else {
 
-                    if (!ignoreElimina) {
-                        //Log.d(TAG, "No se puede eliminar burbuja en Celda: posX=" + celdaDestino.posX + ", posY=" + celdaDestino.posY );
+                    if (!ignoreRemove) {
+                        //Log.d(TAG, "No se puede remover bubble en Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 
-                        // Si la burbuja no se puede eliminar mostramos efecto bloqueo ( solo para jugadores )
+                        // Si la bubble no se puede remover mostramos efecto bloqueo ( solo para jugadores )
                         if (player != TouchGameEvent.PLAYER_CPU) {
-                            tablero.addEfectoBurbuja(celdaDestino.burbuja, EfectoResources.EFECTO_BLOQUEO_OBJECT_TYPE);
+                            board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_BLOQUEO_OBJECT_TYPE);
                         }
                     }
                 }
 
                 // TODO: Trigger explosion sound
 
-                // Caso movimiento de burbujas entre celdas
+                // Caso movimiento de bubbles between cells
             } else {
 
-                if (!ignoreMueve) {
+                if (!ignoreMove) {
 
-                    int deltaX = celdaOrigen.posX - celdaDestino.posX;
-                    int deltaY = celdaOrigen.posY - celdaDestino.posY;
+                    int deltaX = cellOrigin.posX - cellDestiny.posX;
+                    int deltaY = cellOrigin.posY - cellDestiny.posY;
 
-                    // Solo se permite movimientos de 1 celda como maximo
-                    int celda_i = celdaOrigen.posX;
-                    int celda_j = celdaOrigen.posY;
+                    // Solo se permite movimientos de 1 cell como maximo
+                    int cell_i = cellOrigin.posX;
+                    int cell_j = cellOrigin.posY;
                     if (deltaX > 0) {
-                        celda_i -= 1;
+                        cell_i -= 1;
                     }
                     if (deltaX < 0) {
-                        celda_i += 1;
+                        cell_i += 1;
                     }
-                    celdaDestino = tablero.getCelda(celda_i, celda_j);
+                    cellDestiny = board.getCell(cell_i, cell_j);
 
-                    // Control de celda valida
-                    if (celdaDestino == null || celdaDestino.objeto != null) {
-                        //Log.d(TAG, "Movimiento ignorado: celda destino nula o con burbuja");
-                        tablero.tocaBurbuja(celdaOrigen, deltaX, deltaY);
+                    // Control de cell valida
+                    if (cellDestiny == null || cellDestiny.thing != null) {
+                        //Log.d(TAG, "Movimiento ignorado: cell destiny nula o con bubble");
+                        board.touchBubble(cellOrigin, deltaX, deltaY);
 
                     } else {
 
-                        //Log.d(TAG, "Moviendo burbuja de Celda: posX=" + celdaOrigen.posX + ", posY=" + celdaOrigen.posY + " a Celda: posX=" + celdaDestino.posX + ", posY=" + celdaDestino.posY );
+                        //Log.d(TAG, "Moviendo bubble de Cell: posX=" + cellOrigin.posX + ", posY=" + cellOrigin.posY + " a Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 
                         if (turnoCPU) {
-                            if (celdaOrigen.posX < celdaDestino.posX) {
-                                tablero.addEfectoBurbuja(celdaOrigen.burbuja, EfectoResources.EFECTO_CPU_MOVE_RIGHT_OBJECT_TYPE);
+                            if (cellOrigin.posX < cellDestiny.posX) {
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_CPU_MOVE_RIGHT_OBJECT_TYPE);
                             } else {
-                                tablero.addEfectoBurbuja(celdaOrigen.burbuja, EfectoResources.EFECTO_CPU_MOVE_LEFT_OBJECT_TYPE);
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_CPU_MOVE_LEFT_OBJECT_TYPE);
                             }
                         } else {
-                            if (celdaOrigen.posX < celdaDestino.posX) {
-                                tablero.addEfectoBurbuja(celdaOrigen.burbuja, EfectoResources.EFECTO_PLAYER_MOVE_RIGHT_OBJECT_TYPE);
+                            if (cellOrigin.posX < cellDestiny.posX) {
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_PLAYER_MOVE_RIGHT_OBJECT_TYPE);
                             } else {
-                                tablero.addEfectoBurbuja(celdaOrigen.burbuja, EfectoResources.EFECTO_PLAYER_MOVE_LEFT_OBJECT_TYPE);
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_PLAYER_MOVE_LEFT_OBJECT_TYPE);
                             }
                         }
 
-                        tablero.mueveBurbujaEntreCeldas(celdaOrigen, celdaDestino);
+                        board.moveBubbleBetweenCells(cellOrigin, cellDestiny);
 
                         if (playMode == PLAY_MODE_CPU_VERSUS) {
                             if (player == TouchGameEvent.PLAYER_CPU) {
@@ -665,21 +636,21 @@ public class ColiPopThread extends Thread {
 
             }
 
-            // Caso movimiento de objeto entre burbujas
-		    /* comentado: de momento no movemos objetos entre burbujas, se mueve la burbuja entera
+            // Caso movimiento de thing between bubbles
+		    /* comentado: de momento no movemos things between bubbles, se move la bubble entera
 			} else {
 				
-		        // Si la celda inicial no tiene objeto ignoramos el movimiento
-		        if ( celdaOrigen.objeto == null ) {
-		        	Log.d(TAG, "Movimiento ignorado: celda origen sin objeto");
+		        // Si la cell inicial no tiene thing ignoramos el movimiento
+		        if ( cellOrigin.thing == null ) {
+		        	Log.d(TAG, "Movimiento ignorado: cell origin sin thing");
 		        	
-		        } else if ( celdaDestino.objeto != null ){
-		        	Log.d(TAG, "Movimiento ignorado: celda destino con objeto");
+		        } else if ( cellDestiny.thing != null ){
+		        	Log.d(TAG, "Movimiento ignorado: cell destiny con thing");
 		        	
 		        } else {
 		        	
-		        	int deltaX = celdaOrigen.posX - celdaDestino.posX; 
-		        	int deltaY = celdaOrigen.posY - celdaDestino.posY; 
+		        	int deltaX = cellOrigin.posX - cellDestiny.posX;
+		        	int deltaY = cellOrigin.posY - cellDestiny.posY;
 		        	if ( deltaX > 1 || deltaX < -1 || deltaY > 1 || deltaY < -1 ) {
 		        		Log.d(TAG, "Movimiento ignorado: fuera de rango");
 		        		
@@ -687,15 +658,15 @@ public class ColiPopThread extends Thread {
 		        		
 		        		// comentado
 		            	//if ( turnoCPU ) {
-		            	//	tablero.addEfectoFijoCelda(celdaDestino, Tablero.EFECTO_CPU_TOUCH_OBJECT_TYPE );
+		            	//	board.addEfectoFijoCell(cellDestiny, Board.EFECTO_CPU_TOUCH_OBJECT_TYPE );
 		            	//} else {
-		            	//	tablero.addEfectoFijoCelda(celdaDestino, Tablero.EFECTO_PLAYER_TOUCH_OBJECT_TYPE );
+		            	//	board.addEfectoFijoCell(cellDestiny, Board.EFECTO_PLAYER_TOUCH_OBJECT_TYPE );
 		            	//}
 		            	
 
-		            	Log.d(TAG, "Moviendo burbuja de Celda: posX=" + celdaOrigen.posX + ", posY=" + celdaOrigen.posY + " a Celda: posX=" + celdaDestino.posX + ", posY=" + celdaDestino.posY );
+		            	Log.d(TAG, "Moviendo bubble de Cell: posX=" + cellOrigin.posX + ", posY=" + cellOrigin.posY + " a Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 		            	
-		            	tablero.mueveObjetoEntreBurbujas(celdaOrigen, celdaDestino);
+		            	board.moveThingBetweenBubbles(cellOrigin, cellDestiny);
 
 		            	if ( playMode == PLAY_MODE_CPU_VERSUS ) {
 		            		if ( event.player == TouchGameEvent.PLAYER_CPU ) {
@@ -719,11 +690,11 @@ public class ColiPopThread extends Thread {
         }
     }
 
-    void doBurbujasCreation() {
+    void doBubblesCreation() {
 
-        // Log.d(TAG, "burbuja created");
+        // Log.d(TAG, "bubble created");
 
-        tablero.addInitialBurbuja();
+        board.addInitialBubble();
 
     }
 
@@ -747,24 +718,24 @@ public class ColiPopThread extends Thread {
 
 
     /**
-     * returns the current int value of game state as defined by state
+     * returns the current int value of game gameState as defined by gameState
      * tracking constants
      *
      * @return
      */
     public int getGameState() {
         synchronized (surfaceHolder) {
-            return state;
+            return gameState;
         }
     }
 
 
     /**
      * Sets the game mode. That is, whether we are running, paused, in the
-     * failure state, in the victory state, etc.
+     * failure gameState, in the victory gameState, etc.
      *
      * @param mode one of the STATE_* constants
-     * @see #setState(int, CharSequence)
+     * @see #setGameState(int, CharSequence)
      */
     public void setGameState(int mode) {
         synchronized (surfaceHolder) {
@@ -772,9 +743,8 @@ public class ColiPopThread extends Thread {
         }
     }
 
-
     /**
-     * Sets state based on input, optionally also passing in a text message.
+     * Sets gameState based on input, optionally also passing in a text message.
      *
      * @param state
      * @param message
@@ -782,113 +752,98 @@ public class ColiPopThread extends Thread {
     public void setGameState(int state, CharSequence message) {
 
         synchronized (surfaceHolder) {
-
-            // change state if needed
-            if (this.state != state) {
-                this.previousState = this.state;
-                this.state = state;
+            // change gameState if needed
+            if (this.gameState != state) {
+                this.previousState = this.gameState;
+                this.gameState = state;
             }
 
             if (state == STATE_PLAY) {
                 // Nothing to do ?
 
             } else if (state == STATE_RUNNING) {
-                // When we enter the running state we should clear any old
+                // When we enter the running gameState we should clear any old
                 // events in the queue
                 this.eventQueue.clear();
 
-                // And reset the key state so we don't think a button is pressed when it isn't
+                // And reset the key gameState so we don't think a button is pressed when it isn't
                 this.keyContext = null;
 
                 // Game Initialization
-                this.tablero.initTablero();
-                this.personaje1.initPersonaje();
-                //this.personaje2.initPersonaje();
-
+                this.board.initBoard();
+                this.character1.initCharacter();
+                //this.character2.initCharacter();
             }
-
         }
     }
 
     boolean isGameEnded() {
     	/*
-    	if ( tablero.isFinPartida(personaje1, personaje2) ) {
+    	if ( board.isFinPartida(character1, character2) ) {
     		return true;
     	} else {
     		return false;
     	}
     	*/
         return false;
-
     }
-
 
     /**
      * Add key press input to the GameEvent queue
      */
     public boolean doKeyDown(int keyCode, KeyEvent msg) {
         eventQueue.add(new KeyGameEvent(keyCode, false, msg));
-
         return true;
     }
-
 
     /**
      * Add key press input to the GameEvent queue
      */
     public boolean doKeyUp(int keyCode, KeyEvent msg) {
         eventQueue.add(new KeyGameEvent(keyCode, true, msg));
-
         return true;
     }
-
 
     /**
      * Add Touch event to the GameEvent queue
      */
     public boolean doTouchMotion(int motionEvent, int x, int y) {
         eventQueue.add(new TouchGameEvent(motionEvent, x, y));
-
         return true;
     }
-
 
     /* Callback invoked when the surface dimensions change. */
     public void setSurfaceSize(int width, int height) {
         // synchronized to make sure these all change atomically
         synchronized (surfaceHolder) {
-
             //Log.i(TAG, "setting surface: width=" + width + ", height=" + height);
 
             // Reescalado de fondos
             ColiPopResources.resizeGraphics(width, height);
 
-            // En principio solo hay una instacia de tablero
-            Tablero.resizeTablero(width, height);
+            // En principio solo hay una instacia de board
+            Board.resizeBoard(width, height);
 
-            // Reescalado de personajes
-            personaje1.resizeGraphics(width, height);
+            // Reescalado de characters
+            character1.resizeGraphics(width, height);
             /* save memory
-            personaje2.resizeGraphics(width, height);
+            character2.resizeGraphics(width, height);
             */
-
         }
     }
-
 
     /**
      * Pauses the physics update & animation.
      */
     public void pause() {
         synchronized (surfaceHolder) {
-            if (state == STATE_RUNNING)
+            if (gameState == STATE_RUNNING)
                 setGameState(STATE_PAUSE);
             if (timerTask != null) {
                 timerTask.cancel();
             }
         }
     }
-
 
     /**
      * Does the work of updating timer
@@ -914,43 +869,40 @@ public class ColiPopThread extends Thread {
         Bundle b = new Bundle();
         b.putString("text", timerValue);
 
-
         // Condicion de fin de juego
-        if (tablero.isTableroLlenoObjetos()) {
+        if (board.isBoardFullThings()) {
 
-            // Enviamos mensaje de juego acabado y ganador
+            // Enviamos mensaje de juego acabado y winner
             b.putString("STATE_GAME_END", "" + STATE_GAME_END);
             b.putString("GAME_OVER", "" + true);
 
             timerTask = null;
 
-            state = STATE_GAME_END;
+            gameState = STATE_GAME_END;
 
 /*
-		// Caso 2 players. Hay algun ganador. Condicion de fin de juego
+		// Caso 2 players. Hay algun winner. Condicion de fin de juego
 		} else if ( isGameEnded() ) {
         	
-        	// Enviamos mensaje de juego acabado y ganador
+        	// Enviamos mensaje de juego acabado y winner
             b.putString("STATE_GAME_END", "" + STATE_GAME_END);
-            if ( personaje1.isGanador() ) {
+            if ( character1.isWinner() ) {
             	b.putString("PLAYER_WIN", "" + true);
             }
-            if ( personaje2.isGanador() ) {
+            if ( character2.isWinner() ) {
             	b.putString("CPU_WIN", "" + true);
             }               
              
             timerTask = null;
 
-            state = STATE_GAME_END;
+            gameState = STATE_GAME_END;
 */
         } else {
-
             timerTask = new TimerTask() {
                 public void run() {
                     doTimeCount();
                 }
             };
-
             timer.schedule(timerTask, taskIntervalInMillis);
         }
 
@@ -960,34 +912,19 @@ public class ColiPopThread extends Thread {
         //Thanks again!
         msg.setData(b);
         handler.sendMessage(msg);
-
     }
 
     public void destroy() {
         pause();
         ColiPopResources.destroy();
-        if (tablero != null) {
-            tablero.destroy();
+        if (board != null) {
+            board.destroy();
         }
-        if (personaje1 != null) {
-            personaje1.destroy();
+        if (character1 != null) {
+            character1.destroy();
         }
-        if (personaje2 != null) {
-            personaje2.destroy();
+        if (character2 != null) {
+            character2.destroy();
         }
-        //surfaceHolder=null;
-        //handler=null;
-        //context=null;
-        //res=null;
-        //eventQueue=null;
-        //keyContext=null;
-        //timerValue=null;
-        //timer=null;
-        //timerTask=null;
-        //tablero=null;
-        //personaje1=null;
-        //personaje2=null;
-        //eventActionDown=null;
     }
-
-}//end thread class
+}
