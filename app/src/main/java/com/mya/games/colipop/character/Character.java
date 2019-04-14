@@ -10,6 +10,8 @@ import java.util.Random;
 
 public abstract class Character {
 
+    static final String TAG = "ColiPop";
+
     public static final int POSICION_LEFT = 0;
     public static final int POSICION_RIGHT = 1;
     public static final int STATUS_NORMAL = 0;

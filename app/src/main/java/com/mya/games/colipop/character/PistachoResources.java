@@ -8,6 +8,9 @@ import com.mya.games.colipop.R;
 import com.mya.games.colipop.ResourceUtils;
 
 public class PistachoResources {
+
+    static final String TAG = "ColiPop";
+
     // Pistacho baseline sizes
     private static final int DEFAULT_SURFACE_WIDTH = 800;
     private static final int DEFAULT_WIDTH = 150;

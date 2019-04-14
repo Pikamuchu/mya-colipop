@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ColiPop extends Activity implements View.OnClickListener {
+
+    static final String TAG = "ColiPop";
+
     /**
      * A handle to the thread that's actually running the animation.
      */

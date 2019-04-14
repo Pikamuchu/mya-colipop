@@ -9,6 +9,8 @@ import com.mya.games.colipop.ResourceUtils;
 
 public class BubbleResources {
 
+    static final String TAG = "ColiPop";
+
     // Bubble baseline size
     public static int DEFAULT_BUBBLE_WIDTH = 32;
     public static int DEFAULT_BUBBLE_HEIGHT = 32;

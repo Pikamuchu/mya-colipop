@@ -10,6 +10,8 @@ import com.mya.games.colipop.R;
 
 public class Pistacho extends Character {
 
+    static final String TAG = "ColiPop";
+
     public Pistacho(Resources resources, int posicion) {
         super(resources, posicion);
 

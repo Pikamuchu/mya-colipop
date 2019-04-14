@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class ColiPopView extends SurfaceView implements SurfaceHolder.Callback {
 
-    //static final String TAG = "ColiPop";
+    static final String TAG = "ColiPop";
 
     /**
      * The thread that actually draws the animation

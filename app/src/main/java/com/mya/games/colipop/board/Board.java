@@ -12,6 +12,9 @@ import com.mya.games.colipop.character.Character;
 import java.util.Random;
 
 public class Board {
+
+    static final String TAG = "ColiPop";
+
     static final int DEFAULT_SURFACE_WIDTH = 800;
     static final int DEFAULT_SURFACE_HEIGHT = 480;
 

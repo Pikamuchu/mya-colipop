@@ -9,6 +9,8 @@ import com.mya.games.colipop.ResourceUtils;
 
 public class EfectoResources {
 
+    static final String TAG = "ColiPop";
+
     // Bubble baseline size
     public static int DEFAULT_EFECTO_WIDTH = 32;
     public static int DEFAULT_EFECTO_HEIGHT = 32;
@@ -163,7 +165,6 @@ public class EfectoResources {
             }
             i++;
         }
-
     }
 
     public static void destroy() {

@@ -9,6 +9,8 @@ import com.mya.games.colipop.ResourceUtils;
 
 public class ThingResources {
 
+    static final String TAG = "ColiPop";
+
     // Thing baseline size
     public static int DEFAULT_THING_WIDTH = 32;
     public static int DEFAULT_THING_HEIGHT = 32;

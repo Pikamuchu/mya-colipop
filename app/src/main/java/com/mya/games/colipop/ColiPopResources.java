@@ -7,7 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 public class ColiPopResources {
-    public static final String TAG = "ColiPop";
+
+    static final String TAG = "ColiPop";
 
     public static int DEFAULT_SURFACE_WIDTH = 800;
     public static int DEFAULT_SURFACE_HEIGHT = 480;

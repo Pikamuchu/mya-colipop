@@ -8,6 +8,9 @@ import com.mya.games.colipop.R;
 import com.mya.games.colipop.ResourceUtils;
 
 public class ColitaResources {
+
+    static final String TAG = "ColiPop";
+
     // Colita baseline sizes
     private static final int DEFAULT_SURFACE_WIDTH = 800;
     private static final int DEFAULT_SURFACE_HEIGHT = 480;

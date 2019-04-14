@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ColiPopThread extends Thread {
 
+    static final String TAG = "ColiPop";
+
     /**
      * State-tracking constants.
      */

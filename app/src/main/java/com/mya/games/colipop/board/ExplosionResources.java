@@ -9,6 +9,8 @@ import com.mya.games.colipop.ResourceUtils;
 
 public class ExplosionResources {
 
+    static final String TAG = "ColiPop";
+
     // Explosion baseline size
     public static int DEFAULT_EXPLOSION_WIDTH = 64;
     public static int DEFAULT_EXPLOSION_HEIGHT = 64;

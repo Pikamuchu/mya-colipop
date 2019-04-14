@@ -10,6 +10,8 @@ import com.mya.games.colipop.R;
 
 public class Colita extends Character {
 
+    static final String TAG = "ColiPop";
+
     public Colita(Resources resources, int posicion) {
         super(resources, posicion);
 
