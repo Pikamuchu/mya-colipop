@@ -286,7 +286,7 @@ public abstract class Personaje {
         if (numObjetos >= 3) {
             baseIndex = numObjetos - 2;
         }
-        int levelIndex = baseIndex + (5 - currentLevel);
+        int levelIndex = baseIndex + (3 - currentLevel);
         if (levelIndex < 1) {
             levelIndex = 1;
         }

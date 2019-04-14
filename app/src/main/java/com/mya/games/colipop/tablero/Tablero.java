@@ -63,7 +63,7 @@ public class Tablero {
     // Numero maximo de objetos animados independientes
     static int MAX_OBJETOS_ANIMADOS = 32;
 
-    static long DEFAULT_TIME_ENTRE_BURBUJAS = 1500;
+    static long DEFAULT_TIME_ENTRE_BURBUJAS = 1000;
 
     /**
      * Class properties
@@ -1142,7 +1142,6 @@ public class Tablero {
         }
 
         Objeto objeto = new Objeto();
-        ;
 
         objeto.status = ObjetoResources.OBJETO_ESTADO_BURBUJA;
 
@@ -1154,16 +1153,33 @@ public class Tablero {
             objeto.type = ObjetoResources.CARAMELO_OBJECT_TYPE;
 
         } else if (porcentaje < ObjetoResources.CARAMELO_PORCENTAJE + ObjetoResources.PIRULETA_PORCENTAJE + (2 * level)) {
+            if (level >= 1) {
+                objeto.type = ObjetoResources.PIRULETA_OBJECT_TYPE;
+            } else {
+                objeto.type = ObjetoResources.CARAMELO_OBJECT_TYPE;
+            }
 
-            objeto.type = ObjetoResources.PIRULETA_OBJECT_TYPE;
+        } else if (level >= 2 && porcentaje < ObjetoResources.CARAMELO_PORCENTAJE + ObjetoResources.PIRULETA_PORCENTAJE + ObjetoResources.RASPA_PORCENTAJE + (3 * level)) {
+            if (level >= 2) {
+                objeto.type = ObjetoResources.RASPA_OBJECT_TYPE;
+            } else {
+                if (level >= 1) {
+                    objeto.type = ObjetoResources.PIRULETA_OBJECT_TYPE;
+                } else {
+                    objeto.type = ObjetoResources.CARAMELO_OBJECT_TYPE;
+                }
+            }
 
-        } else if (porcentaje < ObjetoResources.CARAMELO_PORCENTAJE + ObjetoResources.PIRULETA_PORCENTAJE + ObjetoResources.RASPA_PORCENTAJE + (3 * level)) {
-
-            objeto.type = ObjetoResources.RASPA_OBJECT_TYPE;
-
-        } else if (porcentaje < ObjetoResources.CARAMELO_PORCENTAJE + ObjetoResources.PIRULETA_PORCENTAJE + ObjetoResources.RASPA_PORCENTAJE + ObjetoResources.PEINE_PORCENTAJE + (4 * level)) {
-
-            objeto.type = ObjetoResources.PEINE_OBJECT_TYPE;
+        } else if (level >= 4 && porcentaje < ObjetoResources.CARAMELO_PORCENTAJE + ObjetoResources.PIRULETA_PORCENTAJE + ObjetoResources.RASPA_PORCENTAJE + ObjetoResources.PEINE_PORCENTAJE + (4 * level)) {
+            if (level >= 4) {
+                objeto.type = ObjetoResources.PEINE_OBJECT_TYPE;
+            } else {
+                if (level >= 2) {
+                    objeto.type = ObjetoResources.PIRULETA_OBJECT_TYPE;
+                } else {
+                    objeto.type = ObjetoResources.CARAMELO_OBJECT_TYPE;
+                }
+            }
 
         } else {
             // Sin objeto

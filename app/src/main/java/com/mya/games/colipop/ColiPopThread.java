@@ -399,7 +399,9 @@ public class ColiPopThread extends Thread {
             try {
                 c = surfaceHolder.lockCanvas(null);
                 //synchronized (surfaceHolder) {
-                doDraw(c);
+                if (c != null) {
+                    doDraw(c);
+                }
                 //}
             } finally {
                 // do this in a finally so that if an exception is thrown
