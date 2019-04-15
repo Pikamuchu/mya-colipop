@@ -23,7 +23,7 @@ object ExplosionResources {
 
     // Explosion graphics & animation properties
     var EXPLOSION_GRAPHICS_SIZE = 4
-    var EXPLOSION_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var EXPLOSION_GRAPHICS_BITMAP: Array<Bitmap>
 
     fun initializeGraphics(resources: Resources) {
 
@@ -33,12 +33,11 @@ object ExplosionResources {
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
         EXPLOSION_GRAPHICS_SIZE = 4
-        EXPLOSION_GRAPHICS_BITMAP = arrayOfNulls(EXPLOSION_GRAPHICS_SIZE)
-
-        EXPLOSION_GRAPHICS_BITMAP[0] = BitmapFactory.decodeResource(resources, R.drawable.explosion_01, options)
-        EXPLOSION_GRAPHICS_BITMAP[1] = BitmapFactory.decodeResource(resources, R.drawable.explosion_02, options)
-        EXPLOSION_GRAPHICS_BITMAP[2] = BitmapFactory.decodeResource(resources, R.drawable.explosion_03, options)
-        EXPLOSION_GRAPHICS_BITMAP[3] = BitmapFactory.decodeResource(resources, R.drawable.explosion_04, options)
+        EXPLOSION_GRAPHICS_BITMAP = arrayOf(
+                BitmapFactory.decodeResource(resources, R.drawable.explosion_01, options),
+                BitmapFactory.decodeResource(resources, R.drawable.explosion_02, options),
+                BitmapFactory.decodeResource(resources, R.drawable.explosion_03, options),
+                BitmapFactory.decodeResource(resources, R.drawable.explosion_04, options))
 
         EXPLOSION_PIXEL_MOVE = 0
 

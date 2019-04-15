@@ -46,12 +46,12 @@ object BubbleResources {
 
     // Bubble graphics
     var BUBBLE_GRAPHICS_SIZE = 4
-    var BUBBLE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var BUBBLE_GRAPHICS_BITMAP: Array<Bitmap>
     var BUBBLE_ANIMATION_SEQUENCE = intArrayOf(1, 1, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
     // Bubble graphics
     var BUBBLE_MOVE_GRAPHICS_SIZE = 4
-    var BUBBLE_MOVE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var BUBBLE_MOVE_GRAPHICS_BITMAP: Array<Bitmap>
     var BUBBLE_MOVE_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3)
 
     /* Save memory
@@ -71,20 +71,18 @@ object BubbleResources {
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
         BUBBLE_GRAPHICS_SIZE = 4
-        BUBBLE_GRAPHICS_BITMAP = arrayOfNulls(BUBBLE_GRAPHICS_SIZE)
-
-        BUBBLE_GRAPHICS_BITMAP[0] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_01, options)
-        BUBBLE_GRAPHICS_BITMAP[1] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_02, options)
-        BUBBLE_GRAPHICS_BITMAP[2] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_03, options)
-        BUBBLE_GRAPHICS_BITMAP[3] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_04, options)
+        BUBBLE_GRAPHICS_BITMAP = arrayOf(
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_01, options),
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_02, options),
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_03, options),
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_04, options))
 
         BUBBLE_MOVE_GRAPHICS_SIZE = 4
-        BUBBLE_MOVE_GRAPHICS_BITMAP = arrayOfNulls(BUBBLE_MOVE_GRAPHICS_SIZE)
-
-        BUBBLE_MOVE_GRAPHICS_BITMAP[0] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_01, options)
-        BUBBLE_MOVE_GRAPHICS_BITMAP[1] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_02, options)
-        BUBBLE_MOVE_GRAPHICS_BITMAP[2] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_03, options)
-        BUBBLE_MOVE_GRAPHICS_BITMAP[3] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_04, options)
+        BUBBLE_MOVE_GRAPHICS_BITMAP = arrayOf(
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_01, options),
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_02, options),
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_03, options),
+                BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_04, options))
 
         /* Save memory
     	BUBBLE_STATUS_GRAPHICS_SIZE = 4;

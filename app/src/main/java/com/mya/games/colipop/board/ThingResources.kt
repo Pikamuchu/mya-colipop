@@ -45,14 +45,14 @@ object ThingResources {
 
     var THING_GRAPHICS_SIZE = 1
 
-    var CARAMELO_GRAPHICS_BITMAP: Array<Bitmap>
-    var CARAMELO_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
-    var PIRULETA_GRAPHICS_BITMAP: Array<Bitmap>
-    var PIRULETA_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
-    var RASPA_GRAPHICS_BITMAP: Array<Bitmap>
-    var RASPA_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
-    var PEINE_GRAPHICS_BITMAP: Array<Bitmap>
-    var PEINE_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var CARAMELO_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var CARAMELO_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var PIRULETA_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var PIRULETA_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var RASPA_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var RASPA_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var PEINE_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var PEINE_GRANDE_GRAPHICS_BITMAP: Array<Bitmap>
 
     var CARAMELO_PORCENTAJE = 12
     var PIRULETA_PORCENTAJE = 12

@@ -30,7 +30,7 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
         this.isGameover = false
         this.isWinner = false
         this.status = 0
-        this.talkingText = resources.getString(R.string.colita_talking_hello)
+        this.talkingText = resources!!.getString(R.string.colita_talking_hello)
         this.status = Character.STATUS_TALKING
     }
 

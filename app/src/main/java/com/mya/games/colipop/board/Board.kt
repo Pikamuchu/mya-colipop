@@ -15,35 +15,35 @@ class Board
 /**
  * Constructors
  */
-(resources: Resources, internal var character1: Character, character2: Character) {
+(resources: Resources, private var character1: Character) {
 
     /**
      * Class properties
      */
 
     // Resources
-    internal var resources: Resources? = null
+    private var resources: Resources? = null
 
-    internal var bubbleCommonAnimationIndex = 0
+    private var bubbleCommonAnimationIndex = 0
     //Character character2;
 
-    internal var cells = Array<Array<Cell>>(MAX_WIDTH) { arrayOfNulls(MAX_HEIGHT) }
+    private lateinit var cells: Array<Array<Cell?>>
 
-    internal var initFullBoard = true
-    internal var boardInitialized = false
-    internal var boardStable = false
-    internal var boardStableTime: Long = 0
-    internal var lastInitialBubbleTime: Long = 0
+    private var initFullBoard = true
+    private var boardInitialized = false
+    private var boardStable = false
+    private var boardStableTime: Long = 0
+    private var lastInitialBubbleTime: Long = 0
     var isBoardFullBubbles = false
     var isBoardFullThings = false
 
-    internal var things_animated: Array<Thing>? = arrayOfNulls(MAX_THINGS_ANIMATED)
+    private var things_animated: Array<Thing?> = arrayOfNulls(MAX_THINGS_ANIMATED)
 
-    internal var things_explodes = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    private var things_explodes = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-    internal var timeBetweenBubbles = DEFAULT_TIME_BETWEEN_BUBBLES
+    private var timeBetweenBubbles = DEFAULT_TIME_BETWEEN_BUBBLES
 
-    internal var lastLevel = 0
+    private var lastLevel = 0
 
     // Localizing external variables
     // No se ha encontrado cell inicial probamos otra vez desde el 0
@@ -95,7 +95,7 @@ class Board
     }
 
     fun initBoard() {
-        this.cells = Array(MAX_WIDTH) { arrayOfNulls(MAX_HEIGHT) }
+        this.cells = Array(MAX_WIDTH) { arrayOfNulls<Cell?>(MAX_HEIGHT) }
 
         this.character1.initCharacter()
         //this.character2.initCharacter();
@@ -131,14 +131,14 @@ class Board
 
                     // Comprobamos que el thing no pete nada
                     if (i >= 2 && cell.thing != null
-                            && cells[i - 1][j].thing != null && cells[i - 1][j].thing!!.type == cell.thing!!.type
-                            && cells[i - 2][j].thing != null && cells[i - 2][j].thing!!.type == cell.thing!!.type) {
+                            && cells[i - 1][j]!!.thing != null && cells[i - 1][j]!!.thing!!.type == cell.thing!!.type
+                            && cells[i - 2][j]!!.thing != null && cells[i - 2][j]!!.thing!!.type == cell.thing!!.type) {
 
                         cell.thing = null
                     }
                     if (j >= 2 && cell.thing != null
-                            && cells[i][j - 1].thing != null && cells[i][j - 1].thing!!.type == cell.thing!!.type
-                            && cells[i][j - 2].thing != null && cells[i][j - 2].thing!!.type == cell.thing!!.type) {
+                            && cells[i][j - 1]!!.thing != null && cells[i][j - 1]!!.thing!!.type == cell.thing!!.type
+                            && cells[i][j - 2]!!.thing != null && cells[i][j - 2]!!.thing!!.type == cell.thing!!.type) {
 
                         cell.thing = null
                     }
@@ -334,13 +334,13 @@ class Board
                                 // Si el thing est ubicado reseteamos statuss union de las bubbles que intervienen
                                 thing.status = THING_STATUS_BUBBLE
                                 if (bubble.union == BUBBLE_UNION_UP) {
-                                    cells[i][j + 1].bubble!!.union = BUBBLE_UNION_NONE
+                                    cells[i][j + 1]?.bubble!!.union = BUBBLE_UNION_NONE
                                 } else if (bubble.union == BUBBLE_UNION_DOWN) {
-                                    cells[i][j - 1].bubble!!.union = BUBBLE_UNION_NONE
+                                    cells[i][j - 1]?.bubble!!.union = BUBBLE_UNION_NONE
                                 } else if (bubble.union == BUBBLE_UNION_RIGHT) {
-                                    cells[i + 1][j].bubble!!.union = BUBBLE_UNION_NONE
+                                    cells[i + 1][j]?.bubble!!.union = BUBBLE_UNION_NONE
                                 } else if (bubble.union == BUBBLE_UNION_LEFT) {
-                                    cells[i - 1][j].bubble!!.union = BUBBLE_UNION_NONE
+                                    cells[i - 1][j]?.bubble!!.union = BUBBLE_UNION_NONE
                                 }
                                 bubble.union = BUBBLE_UNION_NONE
                             }
@@ -714,7 +714,7 @@ class Board
         }
     }
 
-    fun canBubbleMoveUp(cells: Array<Array<Cell>>, bubble: Bubble?, i: Int, j: Int): Boolean {
+    fun canBubbleMoveUp(cells: Array<Array<Cell?>>, bubble: Bubble?, i: Int, j: Int): Boolean {
         if (bubble == null) {
             // TODO: revisar esto
             return false
@@ -903,7 +903,7 @@ class Board
         lastInitialBubbleTime = System.currentTimeMillis()
     }
 
-    internal fun addRandomObject(cell: Cell?) {
+    private fun addRandomObject(cell: Cell?) {
         if (cell == null || cell.bubble == null) {
             return
         }
@@ -963,7 +963,7 @@ class Board
         cell.thing = thing
     }
 
-    fun moveAndUpdateBubblePosition(cells: Array<Array<Cell>>, bubble: Bubble, thing: Thing?, i: Int, j: Int, direction: Int, ignoreNewCell: Boolean) {
+    fun moveAndUpdateBubblePosition(cells: Array<Array<Cell?>>, bubble: Bubble, thing: Thing?, i: Int, j: Int, direction: Int, ignoreNewCell: Boolean) {
         // Movemos bubble
         if (direction == BubbleResources.BUBBLE_MOVE_UP) {
             bubble.drawY -= BubbleResources.BUBBLE_PIXEL_MOVE
@@ -981,17 +981,17 @@ class Board
                 return
 
         val newCell = cells[newCellPos.i][newCellPos.j]
-        if (newCell.bubble != null) {
+        if (newCell?.bubble != null) {
             // La cell ya est ocupada
             return
         }
 
         // Quitamos la bubble de su cell anterior
         val cell = cells[i][j]
-        cell.bubble = null
+        cell?.bubble = null
 
         // Ponemos la bubble en la nueva posicion
-        newCell.bubble = bubble
+        newCell?.bubble = bubble
 
         // Updateamos tambien el thing ( si hay )
         if (thing != null) {
@@ -1004,16 +1004,16 @@ class Board
             } else if (direction == BubbleResources.BUBBLE_MOVE_DOWN) {
                 thing.drawY += BubbleResources.BUBBLE_PIXEL_MOVE
             }
-            cell.thing = null
-            newCell.thing = thing
+            cell?.thing = null
+            newCell?.thing = thing
         }
 
         if (ignoreNewCell) {
-            newCell.ignore = true
+            newCell?.ignore = true
         }
     }
 
-    fun calculatePosBubbleInBoard(bubble: Bubble): CellPosition {
+    private fun calculatePosBubbleInBoard(bubble: Bubble): CellPosition {
         var xPos = (bubble.drawX - OFFSET_X) / BubbleResources.BUBBLE_WIDTH
         var yPos = (bubble.drawY - OFFSET_Y) / BubbleResources.BUBBLE_HEIGHT
 
@@ -1392,7 +1392,7 @@ class Board
         }
     }
 
-    internal fun animateThingEfectoFijo(canvas: Canvas?, i: Int, thing: Thing) {
+    private fun animateThingEfectoFijo(canvas: Canvas?, i: Int, thing: Thing) {
         thing.animationIndex++
         // Sin loop, lo quitamos
         if (thing.animationIndex >= EfectoResources.EFECTO_FIJO_ANIMATION_SEQUENCE.size) {
@@ -1490,7 +1490,7 @@ class Board
         }
     }
 
-    fun calculateNextMovement(character: Character): Array<IATouchEvent>? {
+    fun calculateNextMovement(character: Character): Array<IATouchEvent?>? {
         // Board no stable
         if (!boardStable) {
             return null
@@ -1571,53 +1571,53 @@ class Board
 
     companion object {
 
-        internal val TAG = "ColiPop"
+        private val TAG = "ColiPop"
 
-        internal val DEFAULT_SURFACE_WIDTH = 800
-        internal val DEFAULT_SURFACE_HEIGHT = 480
+        private val DEFAULT_SURFACE_WIDTH = 800
+        private val DEFAULT_SURFACE_HEIGHT = 480
 
         // Tamaos de boards
-        internal var DEFAULT_BOARD_WIDTH = 320
-        internal var DEFAULT_BOARD_HEIGHT = 320
+        private var DEFAULT_BOARD_WIDTH = 320
+        private var DEFAULT_BOARD_HEIGHT = 320
 
-        internal var BOARD_WIDTH = DEFAULT_BOARD_WIDTH
-        internal var BOARD_HEIGHT = DEFAULT_BOARD_HEIGHT
+        private var BOARD_WIDTH = DEFAULT_BOARD_WIDTH
+        private var BOARD_HEIGHT = DEFAULT_BOARD_HEIGHT
 
         // Offsets del board
-        internal var DEFAULT_OFFSET_X = 111
-        internal var DEFAULT_OFFSET_Y = 20
+        private var DEFAULT_OFFSET_X = 111
+        private var DEFAULT_OFFSET_Y = 20
 
-        internal var OFFSET_X = DEFAULT_OFFSET_X
-        internal var OFFSET_Y = DEFAULT_OFFSET_Y
+        private var OFFSET_X = DEFAULT_OFFSET_X
+        private var OFFSET_Y = DEFAULT_OFFSET_Y
 
         // OFFSET DE COUNTERS
-        internal var DEFAULT_OFFSET_X_LIKE = 650
-        internal var DEFAULT_OFFSET_Y_LIKE = 75
-        internal var DEFAULT_OFFSET_X_DISLIKE = 650
-        internal var DEFAULT_OFFSET_Y_DISLIKE = 250
+        private var DEFAULT_OFFSET_X_LIKE = 650
+        private var DEFAULT_OFFSET_Y_LIKE = 75
+        private var DEFAULT_OFFSET_X_DISLIKE = 650
+        private var DEFAULT_OFFSET_Y_DISLIKE = 250
 
-        internal var OFFSET_X_LIKE = DEFAULT_OFFSET_X_LIKE
-        internal var OFFSET_Y_LIKE = DEFAULT_OFFSET_Y_LIKE
-        internal var OFFSET_X_DISLIKE = DEFAULT_OFFSET_X_DISLIKE
-        internal var OFFSET_Y_DISLIKE = DEFAULT_OFFSET_Y_DISLIKE
+        private var OFFSET_X_LIKE = DEFAULT_OFFSET_X_LIKE
+        private var OFFSET_Y_LIKE = DEFAULT_OFFSET_Y_LIKE
+        private var OFFSET_X_DISLIKE = DEFAULT_OFFSET_X_DISLIKE
+        private var OFFSET_Y_DISLIKE = DEFAULT_OFFSET_Y_DISLIKE
 
-        internal var COUNTER_Y_SPACER = java.lang.Double.valueOf(1.2 * ThingResources.THING_HEIGHT)!!.toInt()
+        private var COUNTER_Y_SPACER = java.lang.Double.valueOf(1.2 * ThingResources.THING_HEIGHT)!!.toInt()
 
-        internal var OFFSET_X_LIKE_COUNTER = OFFSET_X_LIKE + ThingResources.THING_WIDTH
-        internal var OFFSET_Y_LIKE_COUNTER = OFFSET_Y_LIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
-        internal var OFFSET_X_DISLIKE_COUNTER = OFFSET_X_DISLIKE + ThingResources.THING_WIDTH
-        internal var OFFSET_Y_DISLIKE_COUNTER = OFFSET_Y_DISLIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
+        private var OFFSET_X_LIKE_COUNTER = OFFSET_X_LIKE + ThingResources.THING_WIDTH
+        private var OFFSET_Y_LIKE_COUNTER = OFFSET_Y_LIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
+        private var OFFSET_X_DISLIKE_COUNTER = OFFSET_X_DISLIKE + ThingResources.THING_WIDTH
+        private var OFFSET_Y_DISLIKE_COUNTER = OFFSET_Y_DISLIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
 
         // Board num cells
-        internal var MAX_WIDTH = 8
-        internal var MAX_HEIGHT = 8
+        private var MAX_WIDTH = 8
+        private var MAX_HEIGHT = 8
 
-        internal var random = Random()
+        private var random = Random()
 
         // Numero maximo de things animated independents
-        internal var MAX_THINGS_ANIMATED = 32
+        private var MAX_THINGS_ANIMATED = 32
 
-        internal var DEFAULT_TIME_BETWEEN_BUBBLES: Long = 1000
+        private var DEFAULT_TIME_BETWEEN_BUBBLES: Long = 1000
 
         fun resizeBoard(surfaceWidth: Int, surfaceHeight: Int) {
             //Log.d(TAG, "Surface resize: width = " + surfaceWidth + ", height = " + surfaceHeight);
@@ -1707,7 +1707,7 @@ class Board
  *
  * @author amarinji
  */
-internal class CellPosition(i: Int, j: Int) {
+private class CellPosition(i: Int, j: Int) {
     var i = 0
     var j = 0
 

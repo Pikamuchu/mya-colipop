@@ -33,12 +33,12 @@ abstract class Character(resources: Resources, posicion: Int) {
     var mainThingType: Int = 0
     var status = 0
     var talkingText = ""
-    var normalTalkingText: Array<String>
-    var happyTalkingText: Array<String>
-    var unhappyTalkingText: Array<String>
-    protected var levelUpTalkingText: Array<String>? = null
+    lateinit var normalTalkingText: Array<String>
+    lateinit var happyTalkingText: Array<String>
+    lateinit var unhappyTalkingText: Array<String>
+    lateinit var levelUpTalkingText: Array<String>
     // Resources
-    private var resources: Resources? = null
+    protected var resources: Resources? = null
 
     init {
         this.resources = resources
@@ -88,7 +88,7 @@ abstract class Character(resources: Resources, posicion: Int) {
     }
 
     fun doTalking(text: Int) {
-        this.talkingText = resources.getString(text)
+        this.talkingText = resources!!.getString(text)
         this.animationIndex = 0
         this.status = STATUS_TALKING
     }
@@ -194,7 +194,7 @@ abstract class Character(resources: Resources, posicion: Int) {
             meterIndex = 0
             isShowLevelUpText = true
             // Cambiamos el fondo del board
-            ColiPopResources.changeLevelBackground(resources, currentLevel)
+            ColiPopResources.changeLevelBackground(resources!!, currentLevel)
         }
         // Updateamos status del meter
         updateMeterStatus(meterIndex * 9)

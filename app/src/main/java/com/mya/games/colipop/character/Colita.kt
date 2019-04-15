@@ -36,7 +36,7 @@ class Colita(resources: Resources, posicion: Int) : Character(resources, posicio
 
         updateMeterStatus(0)
 
-        this.talkingText = resources.getString(R.string.colita_talking_hello)
+        this.talkingText = resources!!.getString(R.string.colita_talking_hello)
         this.status = Character.STATUS_TALKING
     }
 

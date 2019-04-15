@@ -12,7 +12,7 @@
 	<string name="timer">0:00</string>
 	<string name="help_explodeEmptyBubbles">Toca las burbujas vacías para que exploten!</string>
 	<string name="help_moveAnyBubble">Puedes mover las burbujas a derecha e izquierda!</string>
-	<string name="help.matchFilledBubbles">Junta las burbujas con objetos del mismo tipo!</string>
+	<string name="help_matchFilledBubbles">Junta las burbujas con objetos del mismo tipo!</string>
 	<string name="colita_talking_hello">Hola! Soy Colita!</string>
 	<string name="colita_talking_levelUp">SUBE NIVEL!</string>
 	<string-array name="colita_talking_happy">
@@ -48,7 +48,7 @@
 		<item>Mido 21,5 metros de altura a la cruz</item>
 		<item>Soy tierna y dulce como flor de invernadero</item>
 		<item>Tengo dos agujeros en la trufa</item>
-		<item>¿Sabes contar? Pues no cuentes conmigo...</item>
+		<item>Guau! Guau!</item>
 		<item>Bien pelado y limpio da para una cena</item>
 	</string-array>
 </resources>

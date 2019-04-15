@@ -109,29 +109,14 @@ object ColiPopResources {
         }
         backgroundImage = Bitmap.createScaledBitmap(backgroundImage!!, SURFACE_WIDTH, SURFACE_HEIGHT, true)
 
-        imageToRecicle.recycle()
+        imageToRecicle?.recycle()
     }
 
     fun destroy() {
-        if (titleBG != null) {
-            titleBG.recycle()
-            //titleBG=null;
-        }
-        //if ( titleBG2 != null ) {
-        //    titleBG2.recycle();
-        //titleBG2=null;
-        //}
-        if (backgroundImage != null) {
-            backgroundImage.recycle()
-            //backgroundImage=null;
-        }
-        if (boardImage != null) {
-            boardImage.recycle()
-            //boardImage=null;
-        }
-        if (backgroundImage != null) {
-            backgroundImage.recycle()
-            //backgroundImage=null;
-        }
+        titleBG?.recycle()
+        // titleBG2?.recycle();
+        backgroundImage?.recycle()
+        boardImage?.recycle()
+        backgroundImage?.recycle()
     }
 }

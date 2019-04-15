@@ -69,7 +69,7 @@ class ColiPopThread : Thread {
 
     // Players
     private lateinit var character1: Character
-    private lateinit var character2: Character
+//    private lateinit var character2: Character
 
     // Board game
     private lateinit var board: Board
@@ -147,7 +147,7 @@ class ColiPopThread : Thread {
         this.character1 = Colita(resources, Character.POSICION_LEFT)
         //this.character2 = new Pistacho( resources, Character.POSICION_RIGHT );
 
-        this.board = Board(resources, this.character1, this.character2)
+        this.board = Board(resources, this.character1)
 
         setInitialGameState()
 
@@ -259,16 +259,18 @@ class ColiPopThread : Thread {
             // Do nothing
         }
 
+/*
         if (turnoCPU) {
             //canvas.drawText("CPU Turn", 405, 30, new Paint());
             val iaEvents = board.calculateNextMovement(character2)
             if (iaEvents != null && iaEvents.size == 2) {
-                eventQueue.add(TouchGameEvent(TouchGameEvent.PLAYER_CPU.toInt(), iaEvents[0].action, iaEvents[0].x, iaEvents[0].y))
-                eventQueue.add(TouchGameEvent(TouchGameEvent.PLAYER_CPU.toInt(), iaEvents[1].action, iaEvents[1].x, iaEvents[1].y))
+                eventQueue.add(TouchGameEvent(TouchGameEvent.PLAYER_CPU.toInt(), iaEvents[0]!!.action, iaEvents[0]!!.x, iaEvents[0]!!.y))
+                eventQueue.add(TouchGameEvent(TouchGameEvent.PLAYER_CPU.toInt(), iaEvents[1]!!.action, iaEvents[1]!!.x, iaEvents[1]!!.y))
             }
         } else {
             //canvas.drawText("Player Turn", 20, 30, new Paint());
         }
+*/
 
         //long drawTime = System.currentTimeMillis() - initTime;
         //Log.d(TAG, "  DrawRunning time is " + drawTime + " ms");
@@ -462,7 +464,7 @@ class ColiPopThread : Thread {
                     //Log.d(TAG, "Cell con bubble en movimiento encontrada a la derecha.");
                     isOtherCell = true
                     cellOrigin = otherCell
-                    cellDestiny = board.getCell(cellDestiny!!.posX + 1, cellDestiny!!.posY)
+                    cellDestiny = board.getCell(cellDestiny!!.posX + 1, cellDestiny.posY)
                 }
                 // Miramos cell de la izquierda
                 otherCell = board.getCell(cellOrigin.posX - 1, cellOrigin.posY)
@@ -470,7 +472,7 @@ class ColiPopThread : Thread {
                     //Log.d(TAG, "Cell con bubble en movimiento encontrada a la izquierda.");
                     isOtherCell = true
                     cellOrigin = otherCell
-                    cellDestiny = board.getCell(cellDestiny!!.posX - 1, cellDestiny!!.posY)
+                    cellDestiny = board.getCell(cellDestiny!!.posX - 1, cellDestiny.posY)
                 }
                 if (!isOtherCell || cellOrigin == null || cellDestiny == null) {
                     //Log.d(TAG, "No se ha encontrado movimiento valido. No hacemos nada.");
@@ -838,9 +840,11 @@ class ColiPopThread : Thread {
         if (character1 != null) {
             character1.destroy()
         }
+        /*
         if (character2 != null) {
             character2.destroy()
         }
+        */
     }
 
     companion object {
@@ -890,7 +894,7 @@ class ColiPopThread : Thread {
             newThread.frameIntervalInMillis = thread.frameIntervalInMillis
             newThread.board = thread.board
             newThread.character1 = thread.character1
-            newThread.character2 = thread.character2
+            //newThread.character2 = thread.character2
             newThread.turnoCPU = thread.turnoCPU
             newThread.eventActionDown = thread.eventActionDown
             newThread.eventActionMoveAnterior = thread.eventActionMoveAnterior

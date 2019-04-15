@@ -41,33 +41,33 @@ object ColitaResources {
     var TEXTO_LARGO = 40
 
     // Colita graphics
-    var CARA_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var CARA_GRAPHICS_BITMAP: Array<Bitmap>
     // OJO! la logintud de esta array determina la longitud de todas las secuencias de animation
     var CARA_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-    var OJOS_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var OJOS_GRAPHICS_BITMAP: Array<Bitmap>
     var OJOS_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     var OJOS_TALKING_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1)
 
-    var BOCA_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var BOCA_GRAPHICS_BITMAP: Array<Bitmap>
     var BOCA_NORMAL_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     var BOCA_HAPPY_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 0, 0, 0, 0, 5, 5, 5, 5, 4, 4, 4, 4, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 5, 5, 5, 5, 3, 3, 3, 3)
     var BOCA_UNHAPPY_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 0, 0, 0, 0, 5, 5, 5, 5, 4, 4, 4, 4, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 5, 5, 5, 5, 3, 3, 3, 3)
     var BOCA_TALKING_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 3, 0, 0, 0, 0, 5, 5, 5, 5, 4, 4, 4, 4, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2, 4, 4, 4, 4, 5, 5, 5, 5, 3, 3, 3, 3)
 
-    var DIALOGO_CORTO_GRAPHICS_BITMAP: Array<Bitmap>
-    var DIALOGO_MEDIO_GRAPHICS_BITMAP: Array<Bitmap>
-    var DIALOGO_MEDIO2_GRAPHICS_BITMAP: Array<Bitmap>
-    var DIALOGO_LARGO_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var DIALOGO_CORTO_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var DIALOGO_MEDIO_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var DIALOGO_MEDIO2_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var DIALOGO_LARGO_GRAPHICS_BITMAP: Array<Bitmap>
     var DIALOGO_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0)
 
-    var METER_FONDO_GRAPHICS_BITMAP: Array<Bitmap>
-    var METER_FLECHA1_GRAPHICS_BITMAP: Array<Bitmap>
-    var METER_FLECHA2_GRAPHICS_BITMAP: Array<Bitmap>
-    var METER_FLECHA_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var METER_FONDO_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var METER_FLECHA1_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var METER_FLECHA2_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var METER_FLECHA_GRAPHICS_BITMAP: Array<Bitmap>
     var METER_FLECHA_ANIMATION_SEQUENCE = intArrayOf(0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1)
 
-    var LEVEL_UP_GRAPHICS_BITMAP: Array<Bitmap>
+    lateinit var LEVEL_UP_GRAPHICS_BITMAP: Array<Bitmap>
     var LEVEL_UP_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1)
 
     fun initializeGraphics(resources: Resources) {
