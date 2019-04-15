@@ -28,16 +28,13 @@ public class Colita extends Character {
 
     @Override
     public void initCharacter() {
-        // Indice animation
-        animationIndex = 0;
+        super.initCharacter();
 
-        // Indice Happy Meter;
+        animationIndex = 0;
         meterIndex = 0;
         currentLevel = 0;
         showLevelUpText = false;
         levelUpTextIndex = 0;
-
-        // Propiedades characters
         gameover = false;
         winner = false;
         status = 0;

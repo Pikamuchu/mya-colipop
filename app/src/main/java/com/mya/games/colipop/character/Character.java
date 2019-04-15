@@ -345,28 +345,22 @@ public abstract class Character {
 
     }
 
-    public abstract void initCharacter();
+    public void initCharacter() {
+        this.meterIndex = 0;
+        this.currentLevel = 0;
+        this.showLevelUpText = false;
+        this.levelUpTextIndex = 0;
+        this.gameover = false;
+        this.winner = false;
+        this.status = 0;
+    }
 
-    /**
-     * @param surfaceWidth
-     * @param surfaceHeight
-     */
     public abstract void resizeGraphics(int surfaceWidth, int surfaceHeight);
 
-    /**
-     * @param canvas
-     */
     public abstract void doCharacterAnimation(Canvas canvas);
 
-
-    /**
-     * @param index
-     */
     public abstract void updateMeterStatus(int index);
 
-    /**
-     *
-     */
     public abstract void destroy();
 
 }

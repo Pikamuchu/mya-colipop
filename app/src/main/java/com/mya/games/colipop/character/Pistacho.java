@@ -27,17 +27,15 @@ public class Pistacho extends Character {
 
     @Override
     public void initCharacter() {
+        super.initCharacter();
         this.animationIndex = 0;
-
         this.meterIndex = 0;
         this.currentLevel = 0;
         this.showLevelUpText = false;
         this.levelUpTextIndex = 0;
-
         this.gameover = false;
         this.winner = false;
         this.status = 0;
-
         this.talkingText = resources.getString(R.string.colita_talking_hello);
         this.status = STATUS_TALKING;
     }

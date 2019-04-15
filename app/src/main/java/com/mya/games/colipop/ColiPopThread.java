@@ -125,7 +125,7 @@ public class ColiPopThread extends Thread {
     // Used Limit frame Rate
     // 50 ms - 20 frames second
     // 100 ms - 10 frames second
-    private int frameIntervalInMillis = 33;
+    private int frameIntervalInMillis = 40;
 
     // Flag de control de turno
     private boolean turnoCPU;
@@ -773,8 +773,6 @@ public class ColiPopThread extends Thread {
 
                 // Game Initialization
                 this.board.initBoard();
-                this.character1.initCharacter();
-                //this.character2.initCharacter();
             }
         }
     }

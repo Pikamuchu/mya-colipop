@@ -204,6 +204,9 @@ public class Board {
     public void initBoard() {
         this.cells = new Cell[MAX_WIDTH][MAX_HEIGHT];
 
+        this.character1.initCharacter();
+        //this.character2.initCharacter();
+
         // Localizing external variables
         Cell[][] cells = this.cells;
         boolean initFullBoard = this.initFullBoard;
