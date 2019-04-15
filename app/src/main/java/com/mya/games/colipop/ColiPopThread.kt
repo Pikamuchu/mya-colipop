@@ -1,140 +1,126 @@
-package com.mya.games.colipop;
+package com.mya.games.colipop
 
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Canvas
+import android.os.Bundle
+import android.os.Handler
+import android.os.Message
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.view.SurfaceHolder
 
-import com.mya.games.colipop.character.Colita;
-import com.mya.games.colipop.character.Character;
-import com.mya.games.colipop.board.BubbleResources;
-import com.mya.games.colipop.board.Cell;
-import com.mya.games.colipop.board.EfectoResources;
-import com.mya.games.colipop.board.Board;
+import com.mya.games.colipop.character.Colita
+import com.mya.games.colipop.character.Character
+import com.mya.games.colipop.board.BubbleResources
+import com.mya.games.colipop.board.Cell
+import com.mya.games.colipop.board.EfectoResources
+import com.mya.games.colipop.board.Board
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.Timer
+import java.util.TimerTask
+import java.util.concurrent.ConcurrentLinkedQueue
 
-public class ColiPopThread extends Thread {
+class ColiPopThread : Thread {
 
-    static final String TAG = "ColiPop";
-
-    /**
-     * State-tracking constants.
-     */
-    public static final int STATE_START = -1;
-    public static final int STATE_PLAY = 0;
-    public static final int STATE_GAME_END = 1;
-    public static final int STATE_PAUSE = 2;
-    public static final int STATE_RUNNING = 3;
-
-    /**
-     * Play-mode constants.
-     */
-    public static final int PLAY_MODE_1PLAYER = 0;
-    public static final int PLAY_MODE_CPU_VERSUS = 1;
+    internal val TAG = "ColiPop"
 
     /**
      * Queue for GameEvents
      */
-    private ConcurrentLinkedQueue<GameEvent> eventQueue = new ConcurrentLinkedQueue<GameEvent>();
+    private var eventQueue = ConcurrentLinkedQueue<GameEvent>()
 
     /**
      * Context for processKey to maintain gameState across frames *
      */
-    private Object keyContext = null;
+    private var keyContext: Any? = null
 
     /**
      * Message handler used by thread to interact with TextView
      */
-    private Handler handler;
+    private lateinit var handler: Handler
 
     /**
      * Handle to the surface manager object we interact with
      */
-    private SurfaceHolder surfaceHolder;
+    private lateinit var surfaceHolder: SurfaceHolder
 
     /**
      * Handle to the application context, used to e.g. fetch Drawables.
      */
-    private Context context;
+    private lateinit var context: Context
 
     /**
      * Indicate whether the surface has been created & is ready to draw
      */
-    private boolean run = false;
+    private var run = false
 
     /**
      * Application main objects
      */
 
     // updates the screen clock. Also used for tempo timing.
-    Timer timer = null;
+    private lateinit var timer: Timer
 
-    TimerTask timerTask = null;
+    private var timerTask: TimerTask? = null
 
     // Graphics resources
-    Resources res;
+    private lateinit var res: Resources
 
     // Players
-    Character character1;
-    Character character2;
+    private lateinit var character1: Character
+    private lateinit var character2: Character
 
     // Board game
-    Board board;
+    private lateinit var board: Board
 
     // Temp vars to store the last cell touch MotionEvents
-    TouchGameEvent eventActionDown;
-    TouchGameEvent eventActionMoveAnterior;
+    private lateinit var eventActionDown: TouchGameEvent
+    private lateinit var eventActionMoveAnterior: TouchGameEvent
 
     /**
      * Application control flags
      */
 
-    private boolean initialized = false;
-    private int numDialogoTutorial = 0;
+    private var initialized = false
+    private var numDialogoTutorial = 0
 
     // the timer display in seconds
-    private int timerCount;
+    private var timerCount: Int = 0
 
     // start, play, running, lose are the states we use
-    private int gameState;
-    private int previousState;
+    private var gameState: Int = 0
+    private var previousState: Int = 0
 
     // Play Mode; 1 player, versus, etc
-    private int playMode;
+    private var playMode: Int = 0
 
     // string value for timer display
-    private String timerValue = "0:00";
+    private var timerValue = "0:00"
 
     // Indica si la musica est on o off
-    private boolean musicOn = false;
-    private boolean soundOn = false;
+    private var musicOn = false
+    private var soundOn = false
 
-    private long touchFireTime = 0;
+    private var touchFireTime: Long = 0
 
     // one second - used to update timer
-    private int taskIntervalInMillis = 1000;
+    private var taskIntervalInMillis = 1000
 
     // Used Limit frame Rate
     // 50 ms - 20 frames second
     // 100 ms - 10 frames second
-    private int frameIntervalInMillis = 40;
+    private var frameIntervalInMillis = 40
 
     // Flag de control de turno
-    private boolean turnoCPU;
+    private var turnoCPU: Boolean = false
+
+    private var isGameEnded: Boolean = false
 
     /**
      * The constructor without parameters
      */
-    public ColiPopThread() {
-    }
+    constructor() {}
 
     /**
      * This is the constructor
@@ -143,91 +129,51 @@ public class ColiPopThread extends Thread {
      * @param context The context
      * @param handler The handler
      */
-    public ColiPopThread(SurfaceHolder surfaceHolder, Context context, Handler handler) {
-        this.surfaceHolder = surfaceHolder;
-        this.handler = handler;
-        this.context = context;
+    constructor(surfaceHolder: SurfaceHolder, context: Context, handler: Handler) {
+        this.surfaceHolder = surfaceHolder
+        this.handler = handler
+        this.context = context
 
-        Resources resources = context.getResources();
-        this.res = resources;
+        val resources = context.resources
+        this.res = resources
 
         // always set gameState to start, ensure we come in from front door if
         // app gets tucked into background
-        this.gameState = STATE_START;
-        this.playMode = PLAY_MODE_1PLAYER;
+        this.gameState = STATE_START
+        this.playMode = PLAY_MODE_1PLAYER
 
-        ColiPopResources.initializeGraphics(resources);
+        ColiPopResources.initializeGraphics(resources)
 
-        this.character1 = new Colita(resources, Character.POSICION_LEFT);
+        this.character1 = Colita(resources, Character.POSICION_LEFT)
         //this.character2 = new Pistacho( resources, Character.POSICION_RIGHT );
 
-        this.board = new Board(resources, this.character1, this.character2);
+        this.board = Board(resources, this.character1, this.character2)
 
-        setInitialGameState();
+        setInitialGameState()
 
         //Log.d(TAG, "ColipopThread initiated");
     }
 
-    /**
-     * Creates a ColiPopThread clone
-     *
-     * @param thread The thread
-     */
-    public static ColiPopThread newColiPopThread(ColiPopThread thread) {
-        ColiPopThread newThread = new ColiPopThread();
-
-        newThread.surfaceHolder = thread.surfaceHolder;
-        newThread.handler = thread.handler;
-        newThread.context = thread.context;
-        newThread.res = thread.res;
-
-        newThread.initialized = thread.initialized;
-        newThread.eventQueue = thread.eventQueue;
-        newThread.keyContext = thread.keyContext;
-        newThread.timerCount = thread.timerCount;
-        newThread.timerValue = thread.timerValue;
-        newThread.gameState = thread.gameState;
-        newThread.previousState = thread.previousState;
-        newThread.playMode = thread.playMode;
-        newThread.musicOn = thread.musicOn;
-        newThread.soundOn = thread.soundOn;
-        newThread.touchFireTime = thread.touchFireTime;
-        newThread.run = thread.run;
-        newThread.timer = thread.timer;
-        newThread.timerTask = thread.timerTask;
-        newThread.taskIntervalInMillis = thread.taskIntervalInMillis;
-        newThread.frameIntervalInMillis = thread.frameIntervalInMillis;
-        newThread.board = thread.board;
-        newThread.character1 = thread.character1;
-        newThread.character2 = thread.character2;
-        newThread.turnoCPU = thread.turnoCPU;
-        newThread.eventActionDown = thread.eventActionDown;
-        newThread.eventActionMoveAnterior = thread.eventActionMoveAnterior;
-        newThread.numDialogoTutorial = thread.numDialogoTutorial;
-
-        return newThread;
+    private fun setInitialGameState() {
+        this.timerCount = 0
+        this.timer = Timer()
+        this.turnoCPU = false
+        this.initialized = true
     }
 
-    private void setInitialGameState() {
-        this.timerCount = 0;
-        this.timer = new Timer();
-        this.turnoCPU = false;
-        this.initialized = true;
-    }
-
-    private void doDraw(Canvas canvas) {
+    private fun doDraw(canvas: Canvas) {
         //long drawInitTime = System.currentTimeMillis();
 
-        int state = this.gameState;
+        val state = this.gameState
         if (state == STATE_RUNNING || state == STATE_GAME_END) {
-            doUpdate();
-            doDrawRunning(canvas);
+            doUpdate()
+            doDrawRunning(canvas)
 
         } else if (state == STATE_START) {
-            doDrawReady(canvas);
+            doDrawReady(canvas)
 
         } else if (state == STATE_PLAY) {
-            doDrawPlay(canvas);
+            doDrawPlay(canvas)
 
         } else if (state == STATE_PAUSE) {
             // Do nothing
@@ -237,43 +183,43 @@ public class ColiPopThread extends Thread {
         //Log.d(TAG, "Draw time is " + drawTime + " ms");
     }
 
-    private void doUpdate() {
+    private fun doUpdate() {
         //long initTime = System.currentTimeMillis();
 
         // Process any input and apply it to the game gameState
-        updateGameState();
+        updateGameState()
 
         //Log.d(TAG, "    updateGameState is " + ( System.currentTimeMillis() - initTime ) + " ms");
 
         // Create new Bubbles
-        doBubblesCreation();
+        doBubblesCreation()
 
         // Update Character talking
-        updateCharactersTalking();
+        updateCharactersTalking()
 
         //long drawTime = System.currentTimeMillis() - initTime;
         //Log.d(TAG, "  Update time is " + drawTime + " ms");
     }
 
-    private void updateCharactersTalking() {
+    private fun updateCharactersTalking() {
         if (playMode == PLAY_MODE_1PLAYER) {
             // Tutorial
-            if (timerCount < 60 && character1.getStatus() != Character.STATUS_TALKING) {
+            if (timerCount < 60 && character1.status != Character.STATUS_TALKING) {
                 if (timerCount < 10) {
                     // Nothing
                 } else if (timerCount < 20 && numDialogoTutorial < 1) {
-                    character1.doTalking(R.string.help_explodeEmptyBubbles);
-                    numDialogoTutorial++;
+                    character1.doTalking(R.string.help_explodeEmptyBubbles)
+                    numDialogoTutorial++
                 } else if (timerCount < 40 && numDialogoTutorial < 2) {
-                    character1.doTalking(R.string.help_moveAnyBubble);
-                    numDialogoTutorial++;
+                    character1.doTalking(R.string.help_moveAnyBubble)
+                    numDialogoTutorial++
                 } else if (timerCount < 60 && numDialogoTutorial < 3) {
-                    character1.doTalking(R.string.help_matchFilledBubbles);
-                    numDialogoTutorial++;
+                    character1.doTalking(R.string.help_matchFilledBubbles)
+                    numDialogoTutorial++
                 }
             } else {
-                if (timerCount % 30 == 0 && character1.getStatus() != Character.STATUS_TALKING) {
-                    character1.doNormalTalking();
+                if (timerCount % 30 == 0 && character1.status != Character.STATUS_TALKING) {
+                    character1.doNormalTalking()
                 }
             }
 
@@ -288,24 +234,24 @@ public class ColiPopThread extends Thread {
     /**
      * Draws current gameState of the game Canvas.
      */
-    void doDrawRunning(Canvas canvas) {
+    private fun doDrawRunning(canvas: Canvas) {
 
         //long initTime = System.currentTimeMillis();
 
-        canvas.drawBitmap(ColiPopResources.backgroundImage, 0, 0, null);
+        canvas.drawBitmap(ColiPopResources.backgroundImage!!, 0f, 0f, null)
 
-        canvas.drawBitmap(ColiPopResources.boardImage, 0, 0, null);
+        canvas.drawBitmap(ColiPopResources.boardImage!!, 0f, 0f, null)
 
-        board.doBoardAnimation(canvas);
+        board.doBoardAnimation(canvas)
 
 
         if (playMode == PLAY_MODE_1PLAYER) {
 
-            character1.doCharacterAnimation(canvas);
+            character1.doCharacterAnimation(canvas)
 
         } else if (playMode == PLAY_MODE_CPU_VERSUS) {
 
-            character1.doCharacterAnimation(canvas);
+            character1.doCharacterAnimation(canvas)
 
             //character2.doCharacterAnimation(canvas);
 
@@ -315,10 +261,10 @@ public class ColiPopThread extends Thread {
 
         if (turnoCPU) {
             //canvas.drawText("CPU Turn", 405, 30, new Paint());
-            IATouchEvent[] iaEvents = board.calculateNextMovement(character2);
-            if (iaEvents != null && iaEvents.length == 2) {
-                eventQueue.add(new TouchGameEvent(TouchGameEvent.PLAYER_CPU, iaEvents[0].action, iaEvents[0].x, iaEvents[0].y));
-                eventQueue.add(new TouchGameEvent(TouchGameEvent.PLAYER_CPU, iaEvents[1].action, iaEvents[1].x, iaEvents[1].y));
+            val iaEvents = board.calculateNextMovement(character2)
+            if (iaEvents != null && iaEvents.size == 2) {
+                eventQueue.add(TouchGameEvent(TouchGameEvent.PLAYER_CPU.toInt(), iaEvents[0].action, iaEvents[0].x, iaEvents[0].y))
+                eventQueue.add(TouchGameEvent(TouchGameEvent.PLAYER_CPU.toInt(), iaEvents[1].action, iaEvents[1].x, iaEvents[1].y))
             }
         } else {
             //canvas.drawText("Player Turn", 20, 30, new Paint());
@@ -329,15 +275,15 @@ public class ColiPopThread extends Thread {
 
     }
 
-    void doDrawReady(Canvas canvas) {
+    private fun doDrawReady(canvas: Canvas) {
         if (ColiPopResources.titleBG != null) {
-            canvas.drawBitmap(ColiPopResources.titleBG, 0, 0, null);
+            canvas.drawBitmap(ColiPopResources.titleBG!!, 0f, 0f, null)
         }
     }
 
-    void doDrawPlay(Canvas canvas) {
+    private fun doDrawPlay(canvas: Canvas) {
         if (ColiPopResources.backgroundImage != null) {
-            canvas.drawBitmap(ColiPopResources.backgroundImage, 0, 0, null);
+            canvas.drawBitmap(ColiPopResources.backgroundImage!!, 0f, 0f, null)
         }
     }
 
@@ -346,39 +292,40 @@ public class ColiPopThread extends Thread {
      *
      * @param frameInitTime
      */
-    void doSleep(long frameInitTime) {
+    private fun doSleep(frameInitTime: Long) {
 
-        long frameTime = System.currentTimeMillis() - frameInitTime;
+        val frameTime = System.currentTimeMillis() - frameInitTime
         //Log.d(TAG, "Frame rendered in " + frameTime + " ms");
 
         if (frameTime < frameIntervalInMillis) {
             try {
-                long sleepTime = frameIntervalInMillis - frameTime;
+                val sleepTime = frameIntervalInMillis - frameTime
                 //Log.d(TAG, "Sleeping " + sleepTime + " ms");
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
+                Thread.sleep(sleepTime)
+            } catch (e: InterruptedException) {
                 //Log.e(TAG, "Exception sleeping frame: " + e.getMessage() );
             }
+
         }
     }
 
     /**
      * the heart of the worker bee
      */
-    public void run() {
+    override fun run() {
         // while running do stuff in this loop...bzzz!
         while (run) {
 
-            long frameInitTime = System.currentTimeMillis();
+            val frameInitTime = System.currentTimeMillis()
 
-            initialize();
+            initialize()
 
-            Canvas c = null;
+            var c: Canvas? = null
             try {
-                c = surfaceHolder.lockCanvas(null);
+                c = surfaceHolder.lockCanvas(null)
                 //synchronized (surfaceHolder) {
                 if (c != null) {
-                    doDraw(c);
+                    doDraw(c)
                 }
                 //}
             } finally {
@@ -386,40 +333,40 @@ public class ColiPopThread extends Thread {
                 // during the above, we don't leave the Surface in an
                 // inconsistent gameState
                 if (c != null) {
-                    surfaceHolder.unlockCanvasAndPost(c);
+                    surfaceHolder.unlockCanvasAndPost(c)
                 }
             }// end finally block
 
             // Sleep logic
-            doSleep(frameInitTime);
+            doSleep(frameInitTime)
 
         }// end while mrun block
     }
 
-    void initialize() {
+    private fun initialize() {
 
         if (gameState == STATE_RUNNING) {
 
             // kick off the timer task for counter update if not already
             // initialized
             if (timerTask == null) {
-                timerTask = new TimerTask() {
-                    public void run() {
-                        doTimeCount();
+                timerTask = object : TimerTask() {
+                    override fun run() {
+                        doTimeCount()
                     }
-                };
+                }
 
-                timer.schedule(timerTask, taskIntervalInMillis);
+                timer.schedule(timerTask, taskIntervalInMillis.toLong())
 
             }// end of TimerTask init block
 
         } else if (gameState == STATE_PLAY && !initialized) {
 
-            setInitialGameState();
+            setInitialGameState()
 
         } else if (gameState == STATE_GAME_END) {
 
-            initialized = false;
+            initialized = false
 
         } else if (gameState == STATE_PAUSE) {
 
@@ -435,110 +382,99 @@ public class ColiPopThread extends Thread {
      * explosions), their gameState (animation frame, hit), creation of new
      * objects, etc.
      */
-    protected void updateGameState() {
-
+    private fun updateGameState() {
         // Process any game events and apply them
         while (true) {
-            GameEvent event = eventQueue.poll();
-            if (event == null) {
-                break;
-            }
+            val event = eventQueue.poll() ?: break
 
             // Log.d(TAG,"UpdateGameState: event.type=" + event.type );
 
             if (event.type == GameEvent.TOUCH_EVENT) {
-
-                updateTouch((TouchGameEvent) event);
-
+                updateTouch(event as TouchGameEvent)
             }
-
         }
-
     }
 
     /**
      * This method updates the laser status based on user input and shot
      * duration
      */
-    protected void updateTouch(TouchGameEvent event) {
-
-        if (event == null) {
-            return;
-        }
-
+    private fun updateTouch(event: TouchGameEvent) {
         // Ignoramos los toques de pantalla de los jugadores durante el turno de la CPU
-        if (turnoCPU && event.player != TouchGameEvent.PLAYER_CPU) {
-            return;
+        if (turnoCPU && event.player != TouchGameEvent.PLAYER_CPU.toInt()) {
+            return
         }
 
         // Ignoramos los toques de pantalla de los jugadores si el juego ha terminado
         if (gameState == STATE_GAME_END) {
-            return;
+            return
         }
 
         //long initTime = System.currentTimeMillis();
 
         if (event.motionEvent == MotionEvent.ACTION_DOWN) {
             //Log.d(TAG, "Motion Down en position: x=" + event.x + ", y=" +  event.y );
-            eventActionDown = event;
-            eventActionMoveAnterior = event;
+            eventActionDown = event
+            eventActionMoveAnterior = event
 
         } else if (event.motionEvent == MotionEvent.ACTION_MOVE) {
             //Log.d(TAG, "Motion Move en position: x=" + event.x + ", y=" +  event.y );
-            board.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE);
-            Cell cellOrigin = board.getCellInCoordinates(eventActionMoveAnterior.x, eventActionMoveAnterior.y);
-            Cell cellDestiny = board.getCellInCoordinates(event.x, event.y);
-            updateTouchBoard(cellOrigin, cellDestiny, board, event.player, true, false);
+            board.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE)
+            val cellOrigin = board.getCellInCoordinates(eventActionMoveAnterior.x, eventActionMoveAnterior.y)
+            val cellDestiny = board.getCellInCoordinates(event.x, event.y)
+            updateTouchBoard(cellOrigin, cellDestiny, board, event.player, true, false)
             if (cellOrigin == null || cellDestiny == null || cellOrigin.posX != cellDestiny.posX || cellOrigin.posY != cellDestiny.posY) {
-                eventActionMoveAnterior = event;
+                eventActionMoveAnterior = event
             }
 
         } else if (event.motionEvent == MotionEvent.ACTION_UP) {
             //Log.d(TAG, "Motion Up en position: x=" + event.x + ", y=" +  event.y );
-            Cell cellOrigin = board.getCellInCoordinates(eventActionDown.x, eventActionDown.y);
-            Cell cellDestiny = board.getCellInCoordinates(event.x, event.y);
-            updateTouchBoard(cellOrigin, cellDestiny, board, event.player, false, true);
+            val cellOrigin = board.getCellInCoordinates(eventActionDown.x, eventActionDown.y)
+            val cellDestiny = board.getCellInCoordinates(event.x, event.y)
+            updateTouchBoard(cellOrigin, cellDestiny, board, event.player, false, true)
         }
 
         //long updateTime = System.currentTimeMillis() - initTime;
         //Log.d(TAG, "UpdateTouch time is " + updateTime + " ms");
     }
 
-    private void updateTouchBoard(Cell cellOrigin, Cell cellDestiny, Board board, int player, boolean ignoreRemove, boolean ignoreMove) {
+    private fun updateTouchBoard(cellOrigin: Cell?, cellDestiny: Cell?, board: Board, player: Int, ignoreRemove: Boolean, ignoreMove: Boolean) {
+        var cellOrigin = cellOrigin
+        var cellDestiny = cellDestiny
 
         if (cellOrigin != null && cellDestiny != null) {
 
             // Caso la bubble esta en movimiento y ya no esta donde se ha producido el evento
             if (cellOrigin.bubble == null) {
                 //Log.d(TAG, "Cell sin bubble: Buscamos posible bubble en Movimiento.");
-                boolean isOtraCell = false;
+                var isOtherCell = false
                 // Miramos cell de arriba
-                Cell otraCell = board.getCell(cellOrigin.posX, cellOrigin.posY - 1);
-                if (otraCell != null && otraCell.bubble != null && otraCell.bubble.move == BubbleResources.BUBBLE_MOVE_UP) {
+                var otherCell = board.getCell(cellOrigin.posX, cellOrigin.posY - 1)
+                if (otherCell != null && otherCell.bubble != null && otherCell.bubble?.move == BubbleResources.BUBBLE_MOVE_UP) {
                     //Log.d(TAG, "Cell con bubble en movimiento encontrada arriba.");
-                    isOtraCell = true;
-                    cellOrigin = otraCell;
-                    cellDestiny = board.getCell(cellDestiny.posX, cellDestiny.posY - 1);
+                    isOtherCell = true
+                    cellOrigin = otherCell
+                    cellDestiny = board.getCell(cellDestiny.posX, cellDestiny.posY - 1)
                 }
                 // Miramos cell de la derecha
-                otraCell = board.getCell(cellOrigin.posX + 1, cellOrigin.posY);
-                if (!isOtraCell && otraCell != null && otraCell.bubble != null && otraCell.bubble.move == BubbleResources.BUBBLE_MOVE_RIGHT) {
+                otherCell = board.getCell(cellOrigin.posX + 1, cellOrigin.posY)
+                if (!isOtherCell && otherCell != null && otherCell.bubble != null && otherCell.bubble?.move == BubbleResources.BUBBLE_MOVE_RIGHT) {
                     //Log.d(TAG, "Cell con bubble en movimiento encontrada a la derecha.");
-                    isOtraCell = true;
-                    cellOrigin = otraCell;
-                    cellDestiny = board.getCell(cellDestiny.posX + 1, cellDestiny.posY);
+                    isOtherCell = true
+                    cellOrigin = otherCell
+                    cellDestiny = board.getCell(cellDestiny!!.posX + 1, cellDestiny!!.posY)
                 }
                 // Miramos cell de la izquierda
-                otraCell = board.getCell(cellOrigin.posX - 1, cellOrigin.posY);
-                if (!isOtraCell && otraCell != null && otraCell.bubble != null && otraCell.bubble.move == BubbleResources.BUBBLE_MOVE_LEFT) {
+                otherCell = board.getCell(cellOrigin.posX - 1, cellOrigin.posY)
+                if (!isOtherCell && otherCell != null && otherCell.bubble != null && otherCell.bubble?.move == BubbleResources.BUBBLE_MOVE_LEFT) {
                     //Log.d(TAG, "Cell con bubble en movimiento encontrada a la izquierda.");
-                    isOtraCell = true;
-                    cellOrigin = otraCell;
-                    cellDestiny = board.getCell(cellDestiny.posX - 1, cellDestiny.posY);
+                    isOtherCell = true
+                    cellOrigin = otherCell
+                    cellDestiny = board.getCell(cellDestiny!!.posX - 1, cellDestiny!!.posY)
                 }
-                if (!isOtraCell || cellOrigin == null || cellDestiny == null) {
+                if (!isOtherCell || cellOrigin == null || cellDestiny == null) {
                     //Log.d(TAG, "No se ha encontrado movimiento valido. No hacemos nada.");
-                    return;
+                    return
                 }
             }
 
@@ -551,18 +487,18 @@ public class ColiPopThread extends Thread {
                     //Log.d(TAG, "Removendo bubble en Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 
                     if (turnoCPU) {
-                        board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_CPU_TOUCH_OBJECT_TYPE);
+                        board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_CPU_TOUCH_OBJECT_TYPE)
                     } else {
-                        board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_PLAYER_TOUCH_OBJECT_TYPE);
+                        board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_PLAYER_TOUCH_OBJECT_TYPE)
                     }
 
-                    board.removeBubble(cellDestiny);
+                    board.removeBubble(cellDestiny)
 
                     if (playMode == PLAY_MODE_CPU_VERSUS) {
-                        if (player == TouchGameEvent.PLAYER_CPU) {
-                            turnoCPU = false;
+                        if (player == TouchGameEvent.PLAYER_CPU.toInt()) {
+                            turnoCPU = false
                         } else {
-                            turnoCPU = true;
+                            turnoCPU = true
                         }
                     }
 
@@ -572,37 +508,37 @@ public class ColiPopThread extends Thread {
                         //Log.d(TAG, "No se puede remover bubble en Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 
                         // Si la bubble no se puede remover mostramos efecto bloqueo ( solo para jugadores )
-                        if (player != TouchGameEvent.PLAYER_CPU) {
-                            board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_BLOQUEO_OBJECT_TYPE);
+                        if (player != TouchGameEvent.PLAYER_CPU.toInt()) {
+                            board.addEfectoBubble(cellDestiny.bubble, EfectoResources.EFECTO_BLOQUEO_OBJECT_TYPE)
                         }
                     }
                 }
 
                 // TODO: Trigger explosion sound
 
-                // Caso movimiento de bubbles between cells
+            // Caso movimiento de bubbles between cells
             } else {
 
                 if (!ignoreMove) {
 
-                    int deltaX = cellOrigin.posX - cellDestiny.posX;
-                    int deltaY = cellOrigin.posY - cellDestiny.posY;
+                    val deltaX = cellOrigin.posX - cellDestiny.posX
+                    val deltaY = cellOrigin.posY - cellDestiny.posY
 
                     // Solo se permite movimientos de 1 cell como maximo
-                    int cell_i = cellOrigin.posX;
-                    int cell_j = cellOrigin.posY;
+                    var cell_i = cellOrigin.posX
+                    val cell_j = cellOrigin.posY
                     if (deltaX > 0) {
-                        cell_i -= 1;
+                        cell_i -= 1
                     }
                     if (deltaX < 0) {
-                        cell_i += 1;
+                        cell_i += 1
                     }
-                    cellDestiny = board.getCell(cell_i, cell_j);
+                    cellDestiny = board.getCell(cell_i, cell_j)
 
                     // Control de cell valida
                     if (cellDestiny == null || cellDestiny.thing != null) {
                         //Log.d(TAG, "Movimiento ignorado: cell destiny nula o con bubble");
-                        board.touchBubble(cellOrigin, deltaX, deltaY);
+                        board.touchBubble(cellOrigin, deltaX, deltaY)
 
                     } else {
 
@@ -610,25 +546,25 @@ public class ColiPopThread extends Thread {
 
                         if (turnoCPU) {
                             if (cellOrigin.posX < cellDestiny.posX) {
-                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_CPU_MOVE_RIGHT_OBJECT_TYPE);
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_CPU_MOVE_RIGHT_OBJECT_TYPE)
                             } else {
-                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_CPU_MOVE_LEFT_OBJECT_TYPE);
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_CPU_MOVE_LEFT_OBJECT_TYPE)
                             }
                         } else {
                             if (cellOrigin.posX < cellDestiny.posX) {
-                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_PLAYER_MOVE_RIGHT_OBJECT_TYPE);
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_PLAYER_MOVE_RIGHT_OBJECT_TYPE)
                             } else {
-                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_PLAYER_MOVE_LEFT_OBJECT_TYPE);
+                                board.addEfectoBubble(cellOrigin.bubble, EfectoResources.EFECTO_PLAYER_MOVE_LEFT_OBJECT_TYPE)
                             }
                         }
 
-                        board.moveBubbleBetweenCells(cellOrigin, cellDestiny);
+                        board.moveBubbleBetweenCells(cellOrigin, cellDestiny)
 
                         if (playMode == PLAY_MODE_CPU_VERSUS) {
-                            if (player == TouchGameEvent.PLAYER_CPU) {
-                                turnoCPU = false;
+                            if (player == TouchGameEvent.PLAYER_CPU.toInt()) {
+                                turnoCPU = false
                             } else {
-                                turnoCPU = true;
+                                turnoCPU = true
                             }
                         }
 
@@ -639,35 +575,35 @@ public class ColiPopThread extends Thread {
             }
 
             // Caso movimiento de thing between bubbles
-		    /* comentado: de momento no movemos things between bubbles, se move la bubble entera
+            /* comentado: de momento no movemos things between bubbles, se move la bubble entera
 			} else {
-				
+
 		        // Si la cell inicial no tiene thing ignoramos el movimiento
 		        if ( cellOrigin.thing == null ) {
 		        	Log.d(TAG, "Movimiento ignorado: cell origin sin thing");
-		        	
+
 		        } else if ( cellDestiny.thing != null ){
 		        	Log.d(TAG, "Movimiento ignorado: cell destiny con thing");
-		        	
+
 		        } else {
-		        	
+
 		        	int deltaX = cellOrigin.posX - cellDestiny.posX;
 		        	int deltaY = cellOrigin.posY - cellDestiny.posY;
 		        	if ( deltaX > 1 || deltaX < -1 || deltaY > 1 || deltaY < -1 ) {
 		        		Log.d(TAG, "Movimiento ignorado: fuera de rango");
-		        		
+
 		        	} else {
-		        		
+
 		        		// comentado
 		            	//if ( turnoCPU ) {
 		            	//	board.addEfectoFijoCell(cellDestiny, Board.EFECTO_CPU_TOUCH_OBJECT_TYPE );
 		            	//} else {
 		            	//	board.addEfectoFijoCell(cellDestiny, Board.EFECTO_PLAYER_TOUCH_OBJECT_TYPE );
 		            	//}
-		            	
+
 
 		            	Log.d(TAG, "Moviendo bubble de Cell: posX=" + cellOrigin.posX + ", posY=" + cellOrigin.posY + " a Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
-		            	
+
 		            	board.moveThingBetweenBubbles(cellOrigin, cellDestiny);
 
 		            	if ( playMode == PLAY_MODE_CPU_VERSUS ) {
@@ -677,29 +613,24 @@ public class ColiPopThread extends Thread {
 		            			turnoCPU = true;
 		            		}
 		            	}
-		        	
+
 		        	}
-		        	
-		        }	            		
-				
+
+		        }
+
 			}
 			*/
 
         } else {
-
             //TODO: Trigger touch sound ?
-
         }
     }
 
-    void doBubblesCreation() {
-
+    private fun doBubblesCreation() {
         // Log.d(TAG, "bubble created");
 
-        board.addInitialBubble();
-
+        board.addInitialBubble()
     }
-
 
     /**
      * Used to signal the thread whether it should be running or not.
@@ -709,12 +640,10 @@ public class ColiPopThread extends Thread {
      *
      * @param b true to run, false to shut down
      */
-    public void setRunning(boolean b) {
-        run = b;
-
+    fun setRunning(b: Boolean) {
+        run = b
         if (run == false) {
-            if (timerTask != null)
-                timerTask.cancel();
+            timerTask?.cancel()
         }
     }
 
@@ -725,9 +654,9 @@ public class ColiPopThread extends Thread {
      *
      * @return
      */
-    public int getGameState() {
-        synchronized (surfaceHolder) {
-            return gameState;
+    fun getGameState(): Int {
+        synchronized(surfaceHolder) {
+            return gameState
         }
     }
 
@@ -737,11 +666,11 @@ public class ColiPopThread extends Thread {
      * failure gameState, in the victory gameState, etc.
      *
      * @param mode one of the STATE_* constants
-     * @see #setGameState(int, CharSequence)
+     * @see .setGameState
      */
-    public void setGameState(int mode) {
-        synchronized (surfaceHolder) {
-            setGameState(mode, null);
+    fun setGameState(mode: Int) {
+        synchronized(surfaceHolder) {
+            setGameState(mode, null)
         }
     }
 
@@ -751,13 +680,12 @@ public class ColiPopThread extends Thread {
      * @param state
      * @param message
      */
-    public void setGameState(int state, CharSequence message) {
-
-        synchronized (surfaceHolder) {
+    fun setGameState(state: Int, message: CharSequence?) {
+        synchronized(surfaceHolder) {
             // change gameState if needed
             if (this.gameState != state) {
-                this.previousState = this.gameState;
-                this.gameState = state;
+                this.previousState = this.gameState
+                this.gameState = state
             }
 
             if (state == STATE_PLAY) {
@@ -766,66 +694,55 @@ public class ColiPopThread extends Thread {
             } else if (state == STATE_RUNNING) {
                 // When we enter the running gameState we should clear any old
                 // events in the queue
-                this.eventQueue.clear();
+                this.eventQueue.clear()
 
                 // And reset the key gameState so we don't think a button is pressed when it isn't
-                this.keyContext = null;
+                this.keyContext = null
 
                 // Game Initialization
-                this.board.initBoard();
+                this.board.initBoard()
             }
         }
     }
 
-    boolean isGameEnded() {
-    	/*
-    	if ( board.isFinPartida(character1, character2) ) {
-    		return true;
-    	} else {
-    		return false;
-    	}
-    	*/
-        return false;
+    /**
+     * Add key press input to the GameEvent queue
+     */
+    fun doKeyDown(keyCode: Int, msg: KeyEvent): Boolean {
+        eventQueue.add(KeyGameEvent(keyCode, false, msg))
+        return true
     }
 
     /**
      * Add key press input to the GameEvent queue
      */
-    public boolean doKeyDown(int keyCode, KeyEvent msg) {
-        eventQueue.add(new KeyGameEvent(keyCode, false, msg));
-        return true;
-    }
-
-    /**
-     * Add key press input to the GameEvent queue
-     */
-    public boolean doKeyUp(int keyCode, KeyEvent msg) {
-        eventQueue.add(new KeyGameEvent(keyCode, true, msg));
-        return true;
+    fun doKeyUp(keyCode: Int, msg: KeyEvent): Boolean {
+        eventQueue.add(KeyGameEvent(keyCode, true, msg))
+        return true
     }
 
     /**
      * Add Touch event to the GameEvent queue
      */
-    public boolean doTouchMotion(int motionEvent, int x, int y) {
-        eventQueue.add(new TouchGameEvent(motionEvent, x, y));
-        return true;
+    fun doTouchMotion(motionEvent: Int, x: Int, y: Int): Boolean {
+        eventQueue.add(TouchGameEvent(motionEvent, x, y))
+        return true
     }
 
     /* Callback invoked when the surface dimensions change. */
-    public void setSurfaceSize(int width, int height) {
+    fun setSurfaceSize(width: Int, height: Int) {
         // synchronized to make sure these all change atomically
-        synchronized (surfaceHolder) {
+        synchronized(surfaceHolder) {
             //Log.i(TAG, "setting surface: width=" + width + ", height=" + height);
 
             // Reescalado de fondos
-            ColiPopResources.resizeGraphics(width, height);
+            ColiPopResources.resizeGraphics(width, height)
 
             // En principio solo hay una instacia de board
-            Board.resizeBoard(width, height);
+            Board.resizeBoard(width, height)
 
             // Reescalado de characters
-            character1.resizeGraphics(width, height);
+            character1.resizeGraphics(width, height)
             /* save memory
             character2.resizeGraphics(width, height);
             */
@@ -835,55 +752,53 @@ public class ColiPopThread extends Thread {
     /**
      * Pauses the physics update & animation.
      */
-    public void pause() {
-        synchronized (surfaceHolder) {
+    fun pause() {
+        synchronized(surfaceHolder) {
             if (gameState == STATE_RUNNING)
-                setGameState(STATE_PAUSE);
-            if (timerTask != null) {
-                timerTask.cancel();
-            }
+                setGameState(STATE_PAUSE)
+            timerTask?.cancel()
         }
     }
 
     /**
      * Does the work of updating timer
      */
-    void doTimeCount() {
+    private fun doTimeCount() {
         //Log.d(TAG,"Current time is " + timerCount);
 
-        timerCount = timerCount + 1;
+        timerCount = timerCount + 1
         try {
-            int minutes = Double.valueOf(timerCount / 60).intValue();
-            int seconds = timerCount - Double.valueOf(minutes * 60).intValue();
+            val minutes = java.lang.Double.valueOf((timerCount / 60).toDouble()).toInt()
+            val seconds = timerCount - java.lang.Double.valueOf((minutes * 60).toDouble()).toInt()
             if (seconds > 9) {
-                timerValue = minutes + ":" + seconds;
+                timerValue = "$minutes:$seconds"
             } else {
-                timerValue = minutes + ":0" + seconds;
+                timerValue = "$minutes:0$seconds"
             }
-        } catch (Exception e1) {
+        } catch (e1: Exception) {
             //Log.e(TAG, "doCountDown threw " + e1.toString());
         }
 
-        Message msg = handler.obtainMessage();
+        val msg = handler.obtainMessage()
 
-        Bundle b = new Bundle();
-        b.putString("text", timerValue);
+        val b = Bundle()
+        b.putString("text", timerValue)
 
         // Condicion de fin de juego
-        if (board.isBoardFullThings()) {
+        if (board.isBoardFullThings) {
 
             // Enviamos mensaje de juego acabado y winner
-            b.putString("STATE_GAME_END", "" + STATE_GAME_END);
-            b.putString("GAME_OVER", "" + true);
+            b.putString("STATE_GAME_END", "" + STATE_GAME_END)
+            b.putString("GAME_OVER", "" + true)
 
-            timerTask = null;
+            timerTask = null
 
-            gameState = STATE_GAME_END;
+            gameState = STATE_GAME_END
 
-/*
+            /*
 		// Caso 2 players. Hay algun winner. Condicion de fin de juego
 		} else if ( isGameEnded() ) {
-        	
+
         	// Enviamos mensaje de juego acabado y winner
             b.putString("STATE_GAME_END", "" + STATE_GAME_END);
             if ( character1.isWinner() ) {
@@ -891,40 +806,97 @@ public class ColiPopThread extends Thread {
             }
             if ( character2.isWinner() ) {
             	b.putString("CPU_WIN", "" + true);
-            }               
-             
+            }
+
             timerTask = null;
 
             gameState = STATE_GAME_END;
 */
         } else {
-            timerTask = new TimerTask() {
-                public void run() {
-                    doTimeCount();
+            timerTask = object : TimerTask() {
+                override fun run() {
+                    doTimeCount()
                 }
-            };
-            timer.schedule(timerTask, taskIntervalInMillis);
+            }
+            timer.schedule(timerTask, taskIntervalInMillis.toLong())
         }
 
         //this is how we send data back up to the main ColiPopView thread.
         //if you look in constructor of ColiPopView you will see code for
         //Handling of messages. This is borrowed directly from lunar lander.
         //Thanks again!
-        msg.setData(b);
-        handler.sendMessage(msg);
+        msg.data = b
+        handler.sendMessage(msg)
     }
 
-    public void destroy() {
-        pause();
-        ColiPopResources.destroy();
+    override fun destroy() {
+        pause()
+        ColiPopResources.destroy()
         if (board != null) {
-            board.destroy();
+            board.destroy()
         }
         if (character1 != null) {
-            character1.destroy();
+            character1.destroy()
         }
         if (character2 != null) {
-            character2.destroy();
+            character2.destroy()
+        }
+    }
+
+    companion object {
+        /**
+         * State-tracking constants.
+         */
+        val STATE_START = -1
+        val STATE_PLAY = 0
+        val STATE_GAME_END = 1
+        val STATE_PAUSE = 2
+        val STATE_RUNNING = 3
+
+        /**
+         * Play-mode constants.
+         */
+        val PLAY_MODE_1PLAYER = 0
+        val PLAY_MODE_CPU_VERSUS = 1
+
+        /**
+         * Creates a ColiPopThread clone
+         *
+         * @param thread The thread
+         */
+        fun newColiPopThread(thread: ColiPopThread): ColiPopThread {
+            val newThread = ColiPopThread()
+
+            newThread.surfaceHolder = thread.surfaceHolder
+            newThread.handler = thread.handler
+            newThread.context = thread.context
+            newThread.res = thread.res
+
+            newThread.initialized = thread.initialized
+            newThread.eventQueue = thread.eventQueue
+            newThread.keyContext = thread.keyContext
+            newThread.timerCount = thread.timerCount
+            newThread.timerValue = thread.timerValue
+            newThread.gameState = thread.gameState
+            newThread.previousState = thread.previousState
+            newThread.playMode = thread.playMode
+            newThread.musicOn = thread.musicOn
+            newThread.soundOn = thread.soundOn
+            newThread.touchFireTime = thread.touchFireTime
+            newThread.run = thread.run
+            newThread.timer = thread.timer
+            newThread.timerTask = thread.timerTask
+            newThread.taskIntervalInMillis = thread.taskIntervalInMillis
+            newThread.frameIntervalInMillis = thread.frameIntervalInMillis
+            newThread.board = thread.board
+            newThread.character1 = thread.character1
+            newThread.character2 = thread.character2
+            newThread.turnoCPU = thread.turnoCPU
+            newThread.eventActionDown = thread.eventActionDown
+            newThread.eventActionMoveAnterior = thread.eventActionMoveAnterior
+            newThread.numDialogoTutorial = thread.numDialogoTutorial
+
+            return newThread
         }
     }
 }
