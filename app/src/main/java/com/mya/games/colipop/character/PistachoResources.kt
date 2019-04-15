@@ -9,7 +9,7 @@ import com.mya.games.colipop.ResourceUtils
 
 object PistachoResources {
 
-    internal val TAG = "ColiPop"
+    private val TAG = "ColiPop"
 
     // Pistacho baseline sizes
     private val DEFAULT_SURFACE_WIDTH = 800
@@ -59,9 +59,9 @@ object PistachoResources {
         }
 
         // Cogemos el valor por debajo
-        val width = java.lang.Float.valueOf(DEFAULT_WIDTH * refactorIndex)!!.toInt()
-        val height = java.lang.Float.valueOf(DEFAULT_HEIGHT * refactorIndex)!!.toInt()
-        val pixel_move = java.lang.Float.valueOf(DEFAULT_PIXEL_MOVE * refactorIndex)!!.toInt()
+        val width = java.lang.Float.valueOf(DEFAULT_WIDTH * refactorIndex).toInt()
+        val height = java.lang.Float.valueOf(DEFAULT_HEIGHT * refactorIndex).toInt()
+        val pixel_move = java.lang.Float.valueOf(DEFAULT_PIXEL_MOVE * refactorIndex).toInt()
 
         WIDTH = width
         HEIGHT = height

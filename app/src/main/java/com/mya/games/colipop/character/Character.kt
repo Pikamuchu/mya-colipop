@@ -38,7 +38,7 @@ abstract class Character(resources: Resources, posicion: Int) {
     var unhappyTalkingText: Array<String>
     protected var levelUpTalkingText: Array<String>? = null
     // Resources
-    internal var resources: Resources? = null
+    private var resources: Resources? = null
 
     init {
         this.resources = resources
@@ -69,26 +69,26 @@ abstract class Character(resources: Resources, posicion: Int) {
         }
 
         if (this.posicion == POSICION_LEFT) {
-            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSICION_LEFT_OFFSET_X * refactorIndexWidth)!!.toInt()
-            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSICION_LEFT_OFFSET_Y * refactorIndexHeight)!!.toInt()
+            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSICION_LEFT_OFFSET_X * refactorIndexWidth).toInt()
+            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSICION_LEFT_OFFSET_Y * refactorIndexHeight).toInt()
         } else {
-            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSICION_RIGHT_OFFSET_X * refactorIndexWidth)!!.toInt()
-            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSICION_RIGHT_OFFSET_Y * refactorIndexHeight)!!.toInt()
+            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSICION_RIGHT_OFFSET_X * refactorIndexWidth).toInt()
+            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSICION_RIGHT_OFFSET_Y * refactorIndexHeight).toInt()
         }
 
         this.meterOffsetX = offsetX
-        this.meterOffsetY = java.lang.Double.valueOf(4.25 * offsetY)!!.toInt()
+        this.meterOffsetY = java.lang.Double.valueOf(4.25 * offsetY).toInt()
 
         this.dialogoOffsetX = 2 * offsetX
-        this.dialogoOffsetY = java.lang.Double.valueOf(0.55 * offsetY)!!.toInt()
+        this.dialogoOffsetY = java.lang.Double.valueOf(0.55 * offsetY).toInt()
 
         this.levelOffsetX = 10 * meterOffsetX
-        this.levelOffsetY = java.lang.Double.valueOf(1.75 * meterOffsetY)!!.toInt()
+        this.levelOffsetY = java.lang.Double.valueOf(1.75 * meterOffsetY).toInt()
 
     }
 
     fun doTalking(text: Int) {
-        this.talkingText = resources!!.getString(text)
+        this.talkingText = resources.getString(text)
         this.animationIndex = 0
         this.status = STATUS_TALKING
     }
@@ -221,7 +221,7 @@ abstract class Character(resources: Resources, posicion: Int) {
 
     companion object {
 
-        internal val TAG = "ColiPop"
+        private val TAG = "ColiPop"
 
         val POSICION_LEFT = 0
         val POSICION_RIGHT = 1
@@ -229,12 +229,12 @@ abstract class Character(resources: Resources, posicion: Int) {
         val STATUS_HAPPY = 1
         val STATUS_UNHAPPY = 2
         val STATUS_TALKING = 3
-        internal val DEFAULT_SURFACE_WIDTH = 800
-        internal val DEFAULT_SURFACE_HEIGHT = 480
-        internal val DEFAULT_POSICION_LEFT_OFFSET_X = 10
-        internal val DEFAULT_POSICION_LEFT_OFFSET_Y = 60
-        internal val DEFAULT_POSICION_RIGHT_OFFSET_X = 625
-        internal val DEFAULT_POSICION_RIGHT_OFFSET_Y = 60
+        private val DEFAULT_SURFACE_WIDTH = 800
+        private val DEFAULT_SURFACE_HEIGHT = 480
+        private val DEFAULT_POSICION_LEFT_OFFSET_X = 10
+        private val DEFAULT_POSICION_LEFT_OFFSET_Y = 60
+        private val DEFAULT_POSICION_RIGHT_OFFSET_X = 625
+        private val DEFAULT_POSICION_RIGHT_OFFSET_Y = 60
         protected var random = Random()
     }
 

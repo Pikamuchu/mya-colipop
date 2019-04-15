@@ -9,7 +9,7 @@ import com.mya.games.colipop.ResourceUtils
 
 object ColitaResources {
 
-    internal val TAG = "ColiPop"
+    private val TAG = "ColiPop"
 
     // Colita baseline sizes
     private val DEFAULT_SURFACE_WIDTH = 800
@@ -120,9 +120,9 @@ object ColitaResources {
         }
 
         // Cogemos el valor por debajo
-        val width = java.lang.Float.valueOf(DEFAULT_WIDTH * refactorIndex)!!.toInt()
-        val height = java.lang.Float.valueOf(DEFAULT_HEIGHT * refactorIndex)!!.toInt()
-        val pixel_move = java.lang.Float.valueOf(DEFAULT_PIXEL_MOVE * refactorIndex)!!.toInt()
+        val width = java.lang.Float.valueOf(DEFAULT_WIDTH * refactorIndex).toInt()
+        val height = java.lang.Float.valueOf(DEFAULT_HEIGHT * refactorIndex).toInt()
+        val pixel_move = java.lang.Float.valueOf(DEFAULT_PIXEL_MOVE * refactorIndex).toInt()
 
         WIDTH = width
         HEIGHT = height
@@ -195,11 +195,11 @@ object ColitaResources {
         }
 
         // Cogemos el valor por debajo
-        val dialogo_corto_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_CORTO_WIDTH * refactorIndex)!!.toInt()
-        val dialogo_medio_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO_WIDTH * refactorIndex)!!.toInt()
-        val dialogo_medio2_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO2_WIDTH * refactorIndex)!!.toInt()
-        val dialogo_largo_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_LARGO_WIDTH * refactorIndex)!!.toInt()
-        val dialogo_height = java.lang.Float.valueOf(DEFAULT_DIALOGO_HEIGHT * refactorIndexHeight)!!.toInt()
+        val dialogo_corto_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_CORTO_WIDTH * refactorIndex).toInt()
+        val dialogo_medio_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO_WIDTH * refactorIndex).toInt()
+        val dialogo_medio2_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO2_WIDTH * refactorIndex).toInt()
+        val dialogo_largo_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_LARGO_WIDTH * refactorIndex).toInt()
+        val dialogo_height = java.lang.Float.valueOf(DEFAULT_DIALOGO_HEIGHT * refactorIndexHeight).toInt()
 
         DIALOGO_CORTO_WIDTH = dialogo_corto_width
         DIALOGO_MEDIO_WIDTH = dialogo_medio_width

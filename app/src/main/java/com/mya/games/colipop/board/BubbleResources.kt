@@ -9,7 +9,7 @@ import com.mya.games.colipop.ResourceUtils
 
 object BubbleResources {
 
-    internal val TAG = "ColiPop"
+    private val TAG = "ColiPop"
 
     // Bubble baseline size
     var DEFAULT_BUBBLE_WIDTH = 32
@@ -115,9 +115,9 @@ object BubbleResources {
         }
 
         // Cogemos el valor por debajo
-        val width = java.lang.Float.valueOf(DEFAULT_BUBBLE_WIDTH * refactorIndex)!!.toInt()
-        val height = java.lang.Float.valueOf(DEFAULT_BUBBLE_HEIGHT * refactorIndex)!!.toInt()
-        val pixel_move = java.lang.Float.valueOf(DEFAULT_BUBBLE_PIXEL_MOVE * refactorIndex)!!.toInt()
+        val width = java.lang.Float.valueOf(DEFAULT_BUBBLE_WIDTH * refactorIndex).toInt()
+        val height = java.lang.Float.valueOf(DEFAULT_BUBBLE_HEIGHT * refactorIndex).toInt()
+        val pixel_move = java.lang.Float.valueOf(DEFAULT_BUBBLE_PIXEL_MOVE * refactorIndex).toInt()
 
         BUBBLE_WIDTH = width
         BUBBLE_HEIGHT = height

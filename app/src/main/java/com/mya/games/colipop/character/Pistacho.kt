@@ -11,7 +11,6 @@ import com.mya.games.colipop.R
 class Pistacho(resources: Resources, posicion: Int) : Character(resources, posicion) {
 
     init {
-
         ColitaResources.initializeGraphics(resources)
 
         // Initailizing text resources
@@ -19,7 +18,6 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
         this.happyTalkingText = resources.getStringArray(R.array.colita_talking_happy)
         this.unhappyTalkingText = resources.getStringArray(R.array.colita_talking_unhappy)
         this.levelUpTalkingText = resources.getStringArray(R.array.colita_talking_levelup)
-
     }
 
     override fun initCharacter() {
@@ -32,7 +30,7 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
         this.isGameover = false
         this.isWinner = false
         this.status = 0
-        this.talkingText = resources!!.getString(R.string.colita_talking_hello)
+        this.talkingText = resources.getString(R.string.colita_talking_hello)
         this.status = Character.STATUS_TALKING
     }
 
@@ -193,6 +191,6 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
 
     companion object {
 
-        internal val TAG = "ColiPop"
+        private val TAG = "ColiPop"
     }
 }

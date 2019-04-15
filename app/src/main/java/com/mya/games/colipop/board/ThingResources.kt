@@ -9,7 +9,7 @@ import com.mya.games.colipop.ResourceUtils
 
 object ThingResources {
 
-    internal val TAG = "ColiPop"
+    private val TAG = "ColiPop"
 
     // Thing baseline size
     var DEFAULT_THING_WIDTH = 32
@@ -97,9 +97,9 @@ object ThingResources {
         }
 
         // Cogemos el valor por debajo
-        var width = java.lang.Float.valueOf(DEFAULT_THING_WIDTH * refactorIndex)!!.toInt()
-        var height = java.lang.Float.valueOf(DEFAULT_THING_HEIGHT * refactorIndex)!!.toInt()
-        var pixel_move = java.lang.Float.valueOf(DEFAULT_THING_PIXEL_MOVE * refactorIndex)!!.toInt()
+        var width = java.lang.Float.valueOf(DEFAULT_THING_WIDTH * refactorIndex).toInt()
+        var height = java.lang.Float.valueOf(DEFAULT_THING_HEIGHT * refactorIndex).toInt()
+        var pixel_move = java.lang.Float.valueOf(DEFAULT_THING_PIXEL_MOVE * refactorIndex).toInt()
 
         THING_WIDTH = width
         THING_HEIGHT = height
@@ -140,9 +140,9 @@ object ThingResources {
         }
 
         // Cogemos el valor por debajo
-        width = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_WIDTH * refactorIndex)!!.toInt()
-        height = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_HEIGHT * refactorIndex)!!.toInt()
-        pixel_move = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_PIXEL_MOVE * refactorIndex)!!.toInt()
+        width = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_WIDTH * refactorIndex).toInt()
+        height = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_HEIGHT * refactorIndex).toInt()
+        pixel_move = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_PIXEL_MOVE * refactorIndex).toInt()
 
         THING_GRANDE_WIDTH = width
         THING_GRANDE_HEIGHT = height

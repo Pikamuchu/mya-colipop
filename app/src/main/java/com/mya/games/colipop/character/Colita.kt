@@ -11,7 +11,6 @@ import com.mya.games.colipop.R
 class Colita(resources: Resources, posicion: Int) : Character(resources, posicion) {
 
     init {
-
         ColitaResources.initializeGraphics(resources)
 
         // Initailizing text resources
@@ -37,7 +36,7 @@ class Colita(resources: Resources, posicion: Int) : Character(resources, posicio
 
         updateMeterStatus(0)
 
-        this.talkingText = resources!!.getString(R.string.colita_talking_hello)
+        this.talkingText = resources.getString(R.string.colita_talking_hello)
         this.status = Character.STATUS_TALKING
     }
 
@@ -199,6 +198,6 @@ class Colita(resources: Resources, posicion: Int) : Character(resources, posicio
 
     companion object {
 
-        internal val TAG = "ColiPop"
+        private val TAG = "ColiPop"
     }
 }
