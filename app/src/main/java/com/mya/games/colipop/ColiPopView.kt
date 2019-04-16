@@ -12,17 +12,15 @@ import android.widget.TextView
 
 class ColiPopView (context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback {
 
+    private val TAG = "ColiPop"
+
     lateinit var thread: ColiPopThread
         private set
-
     lateinit var timerView: TextView
-
     lateinit var buttonRetry: Button
-
     lateinit var textView: TextView
 
     init {
-
         // register our interest in hearing about changes to our surface
         val holder = holder
         holder.addCallback(this)
@@ -109,10 +107,6 @@ class ColiPopView (context: Context, attrs: AttributeSet) : SurfaceView(context,
 
     fun destroy() {
         thread.destroy()
-    }
-
-    companion object {
-        private val TAG = "ColiPop"
     }
 }
 

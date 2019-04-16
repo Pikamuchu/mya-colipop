@@ -16,21 +16,16 @@ open class GameEvent {
     }
 
     companion object {
-
         val TIMER_EVENT: Byte = 0
         val KEY_EVENT: Byte = 1
         val TOUCH_EVENT: Byte = 2
     }
-
 }
 
 /**
  * A GameEvent subclass for time based
  */
 internal class TimerGameEvent : GameEvent() {
-    /**
-     * Simple constructor to make populating this event easier.
-     */
     init {
         this.type = GameEvent.TIMER_EVENT
     }
@@ -40,11 +35,7 @@ internal class TimerGameEvent : GameEvent() {
  * A GameEvent subclass for key based user input. Values are those used by
  * the standard onKey
  */
-internal class KeyGameEvent
-/**
- * Simple constructor to make populating this event easier.
- */
-(var keyCode: Int, var up: Boolean, var msg: KeyEvent) : GameEvent() {
+internal class KeyGameEvent (var keyCode: Int, var up: Boolean, var msg: KeyEvent) : GameEvent() {
     init {
         this.type = GameEvent.KEY_EVENT
     }
@@ -79,7 +70,6 @@ internal class TouchGameEvent : GameEvent {
     }
 
     companion object {
-
         val PLAYER_CPU: Byte = 0
         val PLAYER_1: Byte = 1
         val PLAYER_2: Byte = 2

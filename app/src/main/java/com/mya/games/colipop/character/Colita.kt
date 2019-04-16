@@ -10,6 +10,8 @@ import com.mya.games.colipop.R
 
 class Colita(resources: Resources, posicion: Int) : Character(resources, posicion) {
 
+    private val TAG = "ColiPop"
+
     init {
         ColitaResources.initializeGraphics(resources)
 
@@ -109,7 +111,7 @@ class Colita(resources: Resources, posicion: Int) : Character(resources, posicio
                 graphicIndex = 0
             }
             val talkingText = this.talkingText
-            if (talkingText == null || talkingText.length < ColitaResources.TEXTO_CORTO) {
+            if (talkingText.length < ColitaResources.TEXTO_CORTO) {
                 canvas.drawBitmap(ColitaResources.DIALOGO_CORTO_GRAPHICS_BITMAP[graphicIndex], 0f, 0f, null)
             } else if (talkingText.length < ColitaResources.TEXTO_MEDIO) {
                 canvas.drawBitmap(ColitaResources.DIALOGO_MEDIO_GRAPHICS_BITMAP[graphicIndex], 0f, 0f, null)
@@ -184,20 +186,13 @@ class Colita(resources: Resources, posicion: Int) : Character(resources, posicio
         // Rotating Bitmap
         var i = 0
         for (bitmap in flecha_bitmaps) {
-            if (bitmap != null) {
-                // El meter es cuadrado !!
-                ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, mtx, true)
-            }
+            // El meter es cuadrado !!
+            ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, mtx, true)
             i++
         }
     }
 
     override fun destroy() {
         ColitaResources.destroy()
-    }
-
-    companion object {
-
-        private val TAG = "ColiPop"
     }
 }

@@ -22,7 +22,6 @@ object ColiPopResources {
 
     // Fondos de titulos
     var titleBG: Bitmap? = null
-    //var titleBG2: Bitmap? = null
 
     // Formato de textos
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -31,19 +30,17 @@ object ColiPopResources {
     fun initializeGraphics(resources: Resources) {
         // Fondo en baja calidad
         val options = BitmapFactory.Options()
-        options.inPurgeable = true
         options.inPreferredConfig = Bitmap.Config.RGB_565
 
         // Fondos de los titulos
-        titleBG = BitmapFactory.decodeResource(resources, R.drawable.title_background, options)
-        //titleBG2 = BitmapFactory.decodeResource(resources, R.drawable.intermediate_background, options);
+        this.titleBG = BitmapFactory.decodeResource(resources, R.drawable.title_background, options)
 
         // Fondos de boards de juego
-        backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01, options)
+        this.backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01, options)
 
         // Board es muy baja calidad
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
-        boardImage = BitmapFactory.decodeResource(resources, R.drawable.tablero, options)
+        this.boardImage = BitmapFactory.decodeResource(resources, R.drawable.tablero, options)
     }
 
     fun resizeGraphics(width: Int, height: Int) {
@@ -51,17 +48,14 @@ object ColiPopResources {
         SURFACE_HEIGHT = height
 
         // Reescalado de fondos
-        if (titleBG != null) {
-            titleBG = Bitmap.createScaledBitmap(titleBG!!, width, height, true)
+        if (this.titleBG != null) {
+            this.titleBG = Bitmap.createScaledBitmap(titleBG!!, width, height, true)
         }
-        //if ( titleBG2 != null ) {
-        //	titleBG2 = Bitmap.createScaledBitmap(titleBG2, width, height, true);
-        //}
-        if (backgroundImage != null) {
-            backgroundImage = Bitmap.createScaledBitmap(backgroundImage!!, width, height, true)
+        if (this.backgroundImage != null) {
+            this.backgroundImage = Bitmap.createScaledBitmap(backgroundImage!!, width, height, true)
         }
-        if (boardImage != null) {
-            boardImage = Bitmap.createScaledBitmap(boardImage!!, width, height, true)
+        if (this.boardImage != null) {
+            this.boardImage = Bitmap.createScaledBitmap(boardImage!!, width, height, true)
         }
 
         var refactorIndex = width.toFloat()
@@ -72,51 +66,49 @@ object ColiPopResources {
         }
 
         // Formato Textos
-        paint.textSize = 20 * refactorIndex
-        paint.color = Color.BLACK
+        this.paint.textSize = 20 * refactorIndex
+        this.paint.color = Color.BLACK
 
         // Formato Talking Text
-        paintText.textSize = 24 * refactorIndex
-        paintText.color = Color.BLACK
+        this.paintText.textSize = 24 * refactorIndex
+        this.paintText.color = Color.BLACK
     }
 
     fun changeLevelBackground(resources: Resources, level: Int) {
-        var level = level
-        val imageToRecicle = backgroundImage
+        val imageToRecicle = this.backgroundImage
 
         // Fondos de boards de juego
-        level = (level + 1) % 10
-        if (level == 1) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01)
-        } else if (level == 2) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_02)
-        } else if (level == 3) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_03)
-        } else if (level == 4) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_04)
-        } else if (level == 5) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_05)
-        } else if (level == 6) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_06)
-        } else if (level == 7) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_07)
-        } else if (level == 8) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_08)
-        } else if (level == 9) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_09)
-        } else if (level == 0) {
-            backgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_10)
+        var normLevel = (level + 1) % 10
+        var levelBackgroundImage: Bitmap? = null
+        if (normLevel == 1) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01)
+        } else if (normLevel == 2) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_02)
+        } else if (normLevel == 3) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_03)
+        } else if (normLevel == 4) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_04)
+        } else if (normLevel == 5) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_05)
+        } else if (normLevel == 6) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_06)
+        } else if (normLevel == 7) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_07)
+        } else if (normLevel == 8) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_08)
+        } else if (normLevel == 9) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_09)
+        } else if (normLevel == 0) {
+            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_10)
         }
-        backgroundImage = Bitmap.createScaledBitmap(backgroundImage!!, SURFACE_WIDTH, SURFACE_HEIGHT, true)
+        this.backgroundImage = Bitmap.createScaledBitmap(levelBackgroundImage!!, SURFACE_WIDTH, SURFACE_HEIGHT, true)
 
         imageToRecicle?.recycle()
     }
 
     fun destroy() {
-        titleBG?.recycle()
-        // titleBG2?.recycle();
-        backgroundImage?.recycle()
-        boardImage?.recycle()
-        backgroundImage?.recycle()
+        this.titleBG?.recycle()
+        this.backgroundImage?.recycle()
+        this.boardImage?.recycle()
     }
 }

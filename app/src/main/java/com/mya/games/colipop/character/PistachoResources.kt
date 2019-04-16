@@ -69,41 +69,33 @@ object PistachoResources {
 
         var i = 0
         for (bitmap in CARA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                CARA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            CARA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in OJOS_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                OJOS_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            OJOS_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in BOCA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                BOCA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            BOCA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in BIGOTES_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                BIGOTES_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            BIGOTES_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
     }
 
     fun destroy() {
-        ResourceUtils.recicleBitmaps(CARA_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(OJOS_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(BOCA_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(BIGOTES_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(CARA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(OJOS_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(BOCA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(BIGOTES_GRAPHICS_BITMAP)
     }
 }

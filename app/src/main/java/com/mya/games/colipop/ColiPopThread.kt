@@ -69,7 +69,6 @@ class ColiPopThread : Thread {
 
     // Players
     private lateinit var character1: Character
-//    private lateinit var character2: Character
 
     // Board game
     private lateinit var board: Board
@@ -114,8 +113,6 @@ class ColiPopThread : Thread {
 
     // Flag de control de turno
     private var turnoCPU: Boolean = false
-
-    private var isGameEnded: Boolean = false
 
     /**
      * The constructor without parameters
@@ -440,9 +437,9 @@ class ColiPopThread : Thread {
         //Log.d(TAG, "UpdateTouch time is " + updateTime + " ms");
     }
 
-    private fun updateTouchBoard(cellOrigin: Cell?, cellDestiny: Cell?, board: Board, player: Int, ignoreRemove: Boolean, ignoreMove: Boolean) {
-        var cellOrigin = cellOrigin
-        var cellDestiny = cellDestiny
+    private fun updateTouchBoard(cellFrom: Cell?, cellTo: Cell?, board: Board, player: Int, ignoreRemove: Boolean, ignoreMove: Boolean) {
+        var cellOrigin = cellFrom
+        var cellDestiny = cellTo
 
         if (cellOrigin != null && cellDestiny != null) {
 
@@ -474,7 +471,7 @@ class ColiPopThread : Thread {
                     cellOrigin = otherCell
                     cellDestiny = board.getCell(cellDestiny!!.posX - 1, cellDestiny.posY)
                 }
-                if (!isOtherCell || cellOrigin == null || cellDestiny == null) {
+                if (!isOtherCell || cellDestiny == null) {
                     //Log.d(TAG, "No se ha encontrado movimiento valido. No hacemos nada.");
                     return
                 }
@@ -496,16 +493,7 @@ class ColiPopThread : Thread {
 
                     board.removeBubble(cellDestiny)
 
-                    if (playMode == PLAY_MODE_CPU_VERSUS) {
-                        if (player == TouchGameEvent.PLAYER_CPU.toInt()) {
-                            turnoCPU = false
-                        } else {
-                            turnoCPU = true
-                        }
-                    }
-
                 } else {
-
                     if (!ignoreRemove) {
                         //Log.d(TAG, "No se puede remover bubble en Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
 
@@ -520,9 +508,7 @@ class ColiPopThread : Thread {
 
             // Caso movimiento de bubbles between cells
             } else {
-
                 if (!ignoreMove) {
-
                     val deltaX = cellOrigin.posX - cellDestiny.posX
                     val deltaY = cellOrigin.posY - cellDestiny.posY
 
@@ -561,67 +547,9 @@ class ColiPopThread : Thread {
                         }
 
                         board.moveBubbleBetweenCells(cellOrigin, cellDestiny)
-
-                        if (playMode == PLAY_MODE_CPU_VERSUS) {
-                            if (player == TouchGameEvent.PLAYER_CPU.toInt()) {
-                                turnoCPU = false
-                            } else {
-                                turnoCPU = true
-                            }
-                        }
-
                     }
-
                 }
-
             }
-
-            // Caso movimiento de thing between bubbles
-            /* comentado: de momento no movemos things between bubbles, se move la bubble entera
-			} else {
-
-		        // Si la cell inicial no tiene thing ignoramos el movimiento
-		        if ( cellOrigin.thing == null ) {
-		        	Log.d(TAG, "Movimiento ignorado: cell origin sin thing");
-
-		        } else if ( cellDestiny.thing != null ){
-		        	Log.d(TAG, "Movimiento ignorado: cell destiny con thing");
-
-		        } else {
-
-		        	int deltaX = cellOrigin.posX - cellDestiny.posX;
-		        	int deltaY = cellOrigin.posY - cellDestiny.posY;
-		        	if ( deltaX > 1 || deltaX < -1 || deltaY > 1 || deltaY < -1 ) {
-		        		Log.d(TAG, "Movimiento ignorado: fuera de rango");
-
-		        	} else {
-
-		        		// comentado
-		            	//if ( turnoCPU ) {
-		            	//	board.addEfectoFijoCell(cellDestiny, Board.EFECTO_CPU_TOUCH_OBJECT_TYPE );
-		            	//} else {
-		            	//	board.addEfectoFijoCell(cellDestiny, Board.EFECTO_PLAYER_TOUCH_OBJECT_TYPE );
-		            	//}
-
-
-		            	Log.d(TAG, "Moviendo bubble de Cell: posX=" + cellOrigin.posX + ", posY=" + cellOrigin.posY + " a Cell: posX=" + cellDestiny.posX + ", posY=" + cellDestiny.posY );
-
-		            	board.moveThingBetweenBubbles(cellOrigin, cellDestiny);
-
-		            	if ( playMode == PLAY_MODE_CPU_VERSUS ) {
-		            		if ( event.player == TouchGameEvent.PLAYER_CPU ) {
-		            			turnoCPU = false;
-		            		} else {
-		            			turnoCPU = true;
-		            		}
-		            	}
-
-		        	}
-
-		        }
-
-			}
-			*/
 
         } else {
             //TODO: Trigger touch sound ?
@@ -630,7 +558,6 @@ class ColiPopThread : Thread {
 
     private fun doBubblesCreation() {
         // Log.d(TAG, "bubble created");
-
         board.addInitialBubble()
     }
 
@@ -745,9 +672,6 @@ class ColiPopThread : Thread {
 
             // Reescalado de characters
             character1.resizeGraphics(width, height)
-            /* save memory
-            character2.resizeGraphics(width, height);
-            */
         }
     }
 
@@ -768,59 +692,42 @@ class ColiPopThread : Thread {
     private fun doTimeCount() {
         //Log.d(TAG,"Current time is " + timerCount);
 
-        timerCount = timerCount + 1
+        this.timerCount = timerCount + 1
         try {
-            val minutes = java.lang.Double.valueOf((timerCount / 60).toDouble()).toInt()
-            val seconds = timerCount - java.lang.Double.valueOf((minutes * 60).toDouble()).toInt()
+            val minutes = java.lang.Double.valueOf((this.timerCount / 60).toDouble()).toInt()
+            val seconds = this.timerCount - java.lang.Double.valueOf((minutes * 60).toDouble()).toInt()
             if (seconds > 9) {
-                timerValue = "$minutes:$seconds"
+                this.timerValue = "$minutes:$seconds"
             } else {
-                timerValue = "$minutes:0$seconds"
+                this.timerValue = "$minutes:0$seconds"
             }
         } catch (e1: Exception) {
             //Log.e(TAG, "doCountDown threw " + e1.toString());
         }
 
-        val msg = handler.obtainMessage()
+        val msg = this.handler.obtainMessage()
 
         val b = Bundle()
-        b.putString("text", timerValue)
+        b.putString("text", this.timerValue)
 
         // Condicion de fin de juego
-        if (board.isBoardFullThings) {
+        if (this.board.isBoardFullThings) {
 
             // Enviamos mensaje de juego acabado y winner
             b.putString("STATE_GAME_END", "" + STATE_GAME_END)
             b.putString("GAME_OVER", "" + true)
 
-            timerTask = null
+            this.timerTask = null
 
-            gameState = STATE_GAME_END
+            this.gameState = STATE_GAME_END
 
-            /*
-		// Caso 2 players. Hay algun winner. Condicion de fin de juego
-		} else if ( isGameEnded() ) {
-
-        	// Enviamos mensaje de juego acabado y winner
-            b.putString("STATE_GAME_END", "" + STATE_GAME_END);
-            if ( character1.isWinner() ) {
-            	b.putString("PLAYER_WIN", "" + true);
-            }
-            if ( character2.isWinner() ) {
-            	b.putString("CPU_WIN", "" + true);
-            }
-
-            timerTask = null;
-
-            gameState = STATE_GAME_END;
-*/
         } else {
-            timerTask = object : TimerTask() {
+            this.timerTask = object : TimerTask() {
                 override fun run() {
                     doTimeCount()
                 }
             }
-            timer.schedule(timerTask, taskIntervalInMillis.toLong())
+            this.timer.schedule(this.timerTask, this.taskIntervalInMillis.toLong())
         }
 
         //this is how we send data back up to the main ColiPopView thread.
@@ -834,17 +741,8 @@ class ColiPopThread : Thread {
     override fun destroy() {
         pause()
         ColiPopResources.destroy()
-        if (board != null) {
-            board.destroy()
-        }
-        if (character1 != null) {
-            character1.destroy()
-        }
-        /*
-        if (character2 != null) {
-            character2.destroy()
-        }
-        */
+        this.board.destroy()
+        this.character1.destroy()
     }
 
     companion object {
@@ -894,7 +792,6 @@ class ColiPopThread : Thread {
             newThread.frameIntervalInMillis = thread.frameIntervalInMillis
             newThread.board = thread.board
             newThread.character1 = thread.character1
-            //newThread.character2 = thread.character2
             newThread.turnoCPU = thread.turnoCPU
             newThread.eventActionDown = thread.eventActionDown
             newThread.eventActionMoveAnterior = thread.eventActionMoveAnterior

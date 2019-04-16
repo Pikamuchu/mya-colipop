@@ -29,7 +29,7 @@ object ThingResources {
     var THING_GRANDE_HEIGHT = DEFAULT_THING_GRANDE_HEIGHT
     var THING_GRANDE_PIXEL_MOVE = DEFAULT_THING_GRANDE_PIXEL_MOVE
 
-    // Statuss de thing
+    // Thing status
     var THING_STATUS_BUBBLE = 0
     var THING_STATUS_EXPLODE = 1
     var THING_STATUS_MOVIDO = 2
@@ -66,40 +66,30 @@ object ThingResources {
 
 
     fun initializeGraphics(resources: Resources) {
-
         // Si se anyaden mas bitmaps hay que subir esto
         THING_GRAPHICS_SIZE = 1
-
         CARAMELO_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.caramelo_01))
-
         PIRULETA_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.piruleta_01))
-
         RASPA_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.raspa_01))
-
         PEINE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.peine_01))
-
         CARAMELO_GRANDE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.caramelo_grande_01))
-
         PIRULETA_GRANDE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.piruleta_grande_01))
-
         RASPA_GRANDE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.raspa_grande_01))
-
         PEINE_GRANDE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.peine_grande_01))
-
     }
 
     fun resizeGraphics(refactorIndex: Float) {
-        var refactorIndex = refactorIndex
+        var normRefactorIndex = refactorIndex
 
         // Prevencin de cosas raras
-        if (refactorIndex == 0f) {
-            refactorIndex = 1f
+        if (normRefactorIndex == 0f) {
+            normRefactorIndex = 1f
         }
 
         // Cogemos el valor por debajo
-        var width = java.lang.Float.valueOf(DEFAULT_THING_WIDTH * refactorIndex).toInt()
-        var height = java.lang.Float.valueOf(DEFAULT_THING_HEIGHT * refactorIndex).toInt()
-        var pixel_move = java.lang.Float.valueOf(DEFAULT_THING_PIXEL_MOVE * refactorIndex).toInt()
+        var width = java.lang.Float.valueOf(DEFAULT_THING_WIDTH * normRefactorIndex).toInt()
+        var height = java.lang.Float.valueOf(DEFAULT_THING_HEIGHT * normRefactorIndex).toInt()
+        var pixel_move = java.lang.Float.valueOf(DEFAULT_THING_PIXEL_MOVE * normRefactorIndex).toInt()
 
         THING_WIDTH = width
         THING_HEIGHT = height
@@ -109,40 +99,32 @@ object ThingResources {
 
         var i = 0
         for (bitmap in CARAMELO_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                CARAMELO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            CARAMELO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in PIRULETA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                PIRULETA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            PIRULETA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in RASPA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                RASPA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            RASPA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in PEINE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                PEINE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            PEINE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         // Cogemos el valor por debajo
-        width = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_WIDTH * refactorIndex).toInt()
-        height = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_HEIGHT * refactorIndex).toInt()
-        pixel_move = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_PIXEL_MOVE * refactorIndex).toInt()
+        width = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_WIDTH * normRefactorIndex).toInt()
+        height = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_HEIGHT * normRefactorIndex).toInt()
+        pixel_move = java.lang.Float.valueOf(DEFAULT_THING_GRANDE_PIXEL_MOVE * normRefactorIndex).toInt()
 
         THING_GRANDE_WIDTH = width
         THING_GRANDE_HEIGHT = height
@@ -150,55 +132,37 @@ object ThingResources {
 
         i = 0
         for (bitmap in CARAMELO_GRANDE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                CARAMELO_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            CARAMELO_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in PIRULETA_GRANDE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                PIRULETA_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            PIRULETA_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in RASPA_GRANDE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                RASPA_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            RASPA_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in PEINE_GRANDE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                PEINE_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            PEINE_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
-
     }
 
     fun destroy() {
-        ResourceUtils.recicleBitmaps(CARAMELO_GRAPHICS_BITMAP)
-        //CARAMELO_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(CARAMELO_GRANDE_GRAPHICS_BITMAP)
-        //CARAMELO_GRANDE_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(PIRULETA_GRAPHICS_BITMAP)
-        //PIRULETA_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(PIRULETA_GRANDE_GRAPHICS_BITMAP)
-        //PIRULETA_GRANDE_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(RASPA_GRAPHICS_BITMAP)
-        //RASPA_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(RASPA_GRANDE_GRAPHICS_BITMAP)
-        //RASPA_GRANDE_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(PEINE_GRAPHICS_BITMAP)
-        //PEINE_GRAPHICS_BITMAP=null;
-        ResourceUtils.recicleBitmaps(PEINE_GRANDE_GRAPHICS_BITMAP)
-        //PEINE_GRANDE_GRAPHICS_BITMAP=null;
+        ResourceUtils.recycleBitmaps(CARAMELO_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(CARAMELO_GRANDE_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(PIRULETA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(PIRULETA_GRANDE_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(RASPA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(RASPA_GRANDE_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(PEINE_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(PEINE_GRANDE_GRAPHICS_BITMAP)
     }
-
 }

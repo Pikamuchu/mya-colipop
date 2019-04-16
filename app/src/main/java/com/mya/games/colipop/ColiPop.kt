@@ -78,14 +78,14 @@ class ColiPop : Activity(), View.OnClickListener {
             this.textView.setText(R.string.helpText)
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY)
 
-            // we have entered game play, now we about to start running
+        // we have entered game play, now we about to start running
         } else if (this.coliPopThread.getGameState() == ColiPopThread.STATE_PLAY) {
             this.button.visibility = View.INVISIBLE
             this.textView.visibility = View.INVISIBLE
             this.timerView.visibility = View.VISIBLE
             this.coliPopThread.setGameState(ColiPopThread.STATE_RUNNING)
 
-            // this is a retry button
+        // this is a retry button
         } else if (this.buttonRetry == v) {
             this.buttonRetry.visibility = View.INVISIBLE
             this.button.text = "PLAY!"
@@ -95,7 +95,7 @@ class ColiPop : Activity(), View.OnClickListener {
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY)
 
         } else {
-            Log.d("COLIPOP VIEW", "unknown click " + v.id)
+            Log.d(TAG,"unknown click " + v.id)
         }
     }
 

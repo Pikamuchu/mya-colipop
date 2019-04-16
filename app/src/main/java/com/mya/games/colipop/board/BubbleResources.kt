@@ -23,21 +23,14 @@ object BubbleResources {
     var BUBBLE_HEIGHT_MEDIOS = BUBBLE_HEIGHT / 2
     var BUBBLE_PIXEL_MOVE = DEFAULT_BUBBLE_PIXEL_MOVE
 
-    // Statuss de condicion de bubble
-    var BUBBLE_STATUS_NONE = -1
-    var BUBBLE_STATUS_TURQUESA = 0
-    var BUBBLE_STATUS_VERDE = 1
-    var BUBBLE_STATUS_AMARILLO = 2
-    var BUBBLE_STATUS_ROJO = 3
-
-    // Statuss de union between bubbles
+    // Status de union between bubbles
     var BUBBLE_UNION_NONE = 0
     var BUBBLE_UNION_UP = 1
     var BUBBLE_UNION_DOWN = 2
     var BUBBLE_UNION_LEFT = 3
     var BUBBLE_UNION_RIGHT = 4
 
-    // Statuss de movimiento
+    // Status de movimiento
     var BUBBLE_MOVE_NONE = 0
     var BUBBLE_MOVE_UP = 1
     var BUBBLE_MOVE_DOWN = 2
@@ -125,44 +118,19 @@ object BubbleResources {
 
         var i = 0
         for (bitmap in BUBBLE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                BUBBLE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            BUBBLE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in BUBBLE_MOVE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                BUBBLE_MOVE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            BUBBLE_MOVE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
-        /* Save memory
-    	i = 0;
-    	for ( Bitmap bitmap : BUBBLE_STATUS_GRAPHICS_BITMAP ) {
-    		if ( bitmap != null ) {
-    			BUBBLE_STATUS_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true);
-    		}
-    		i++;
-    	}
-
-    	i = 0;
-    	for ( Bitmap bitmap : BUBBLE_UNION_GRAPHICS_BITMAP ) {
-    		if ( bitmap != null ) {
-    			BUBBLE_UNION_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true);
-    		}
-    		i++;
-    	}
-    	*/
     }
 
     fun destroy() {
-        ResourceUtils.recicleBitmaps(BUBBLE_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(BUBBLE_MOVE_GRAPHICS_BITMAP)
-        /* Save memory
-    	ResourceUtils.recicleBitmaps(BUBBLE_STATUS_GRAPHICS_BITMAP);
-    	ResourceUtils.recicleBitmaps(BUBBLE_UNION_GRAPHICS_BITMAP);
-    	*/
+        ResourceUtils.recycleBitmaps(BUBBLE_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(BUBBLE_MOVE_GRAPHICS_BITMAP)
     }
 }

@@ -17,15 +17,12 @@ class Board
  */
 (resources: Resources, private var character1: Character) {
 
-    /**
-     * Class properties
-     */
+    private val TAG = "ColiPop"
 
     // Resources
     private var resources: Resources? = null
 
     private var bubbleCommonAnimationIndex = 0
-    //Character character2;
 
     private lateinit var cells: Array<Array<Cell?>>
 
@@ -73,7 +70,6 @@ class Board
 
     init {
         this.resources = resources
-        //this.character2 = character2;
 
         BubbleResources.initializeGraphics(resources)
 
@@ -112,14 +108,11 @@ class Board
         val MAX_HEIGHT = Board.MAX_HEIGHT
 
         for (i in 0 until MAX_WIDTH) {
-
             for (j in 0 until MAX_HEIGHT) {
-
                 val cell = Cell(i, j)
 
                 // Condicion de inicializar board full de bubbles
                 if (initFullBoard) {
-
                     val bubble = Bubble()
 
                     bubble.drawX = OFFSET_X + i * BUBBLE_WIDTH
@@ -142,13 +135,10 @@ class Board
 
                         cell.thing = null
                     }
-
                 }
 
                 cells[i][j] = cell
-
             }
-
         }
 
         boardStable = true
@@ -196,13 +186,6 @@ class Board
         // Localizing external variables
         val BUBBLE_WIDTH = BubbleResources.BUBBLE_WIDTH
         val BUBBLE_HEIGHT = BubbleResources.BUBBLE_HEIGHT
-        /* Save memory
-		int BUBBLE_STATUS_GRAPHICS_SIZE = BubbleResources.BUBBLE_STATUS_GRAPHICS_SIZE;
-		*/
-        val BUBBLE_UNION_UP = BubbleResources.BUBBLE_UNION_UP
-        val BUBBLE_UNION_LEFT = BubbleResources.BUBBLE_UNION_LEFT
-        val BUBBLE_UNION_RIGHT = BubbleResources.BUBBLE_UNION_RIGHT
-        val BUBBLE_UNION_DOWN = BubbleResources.BUBBLE_UNION_DOWN
         val BUBBLE_UNION_NONE = BubbleResources.BUBBLE_UNION_NONE
         val BUBBLE_MOVE_UP = BubbleResources.BUBBLE_MOVE_UP
         val BUBBLE_MOVE_LEFT = BubbleResources.BUBBLE_MOVE_LEFT
@@ -211,10 +194,6 @@ class Board
         val BUBBLE_MOVE_NONE = BubbleResources.BUBBLE_MOVE_NONE
         val BUBBLE_GRAPHICS_BITMAP = BubbleResources.BUBBLE_GRAPHICS_BITMAP
         val BUBBLE_MOVE_GRAPHICS_BITMAP = BubbleResources.BUBBLE_MOVE_GRAPHICS_BITMAP
-        /* Save memory
-		Bitmap[] BUBBLE_UNION_GRAPHICS_BITMAP = BubbleResources.BUBBLE_UNION_GRAPHICS_BITMAP;
-		Bitmap[] BUBBLE_STATUS_GRAPHICS_BITMAP = BubbleResources.BUBBLE_STATUS_GRAPHICS_BITMAP;
-		*/
 
         val EXPLOSION_GRAPHICS_SIZE = ExplosionResources.EXPLOSION_GRAPHICS_SIZE
         val EXPLOSION_GRAPHICS_BITMAP = ExplosionResources.EXPLOSION_GRAPHICS_BITMAP
@@ -237,7 +216,7 @@ class Board
 
         var boardFullBubbles = true
         var boardFullThings = true
-        var hayMovimiento = false
+        var isSomethingMoving = false
         for (i in 0 until MAX_WIDTH) {
             for (j in 0 until MAX_HEIGHT) {
                 val cell = cells[i][j] ?: continue
@@ -270,49 +249,22 @@ class Board
 
                         moveAndUpdateBubblePosition(cells, bubble, thing, i, j, BUBBLE_MOVE_UP, false)
                         // indicamos que hay movimiento de bubbles
-                        hayMovimiento = true
+                        isSomethingMoving = true
                         // Marcamos bubble como que se move
                         bubble.move = BUBBLE_MOVE_UP
 
-                        /* amarinji: deshabilito la logica de movimientos laterales automaticos de las bubbles, ya que hace cosas raras y tiene bugs que no se como solucionar
-		            // Miramos esto solo si la bubble no se est moviendo o se esta moviendo en la direction adecuada
-		            } else if ( ( bubble.move == BUBBLE_MOVE_NONE || bubble.move == BUBBLE_MOVE_LEFT ) && canBubbleMoveLeft( cells, bubble, i, j ) ) {
-
-		            	moveAndUpdateBubblePosition( cells, bubble, thing, i, j, BUBBLE_MOVE_LEFT, false );
-		            	// indicamos que hay movimiento de bubbles
-		            	hayMovimiento = true;
-	            		// Marcamos bubble como que se move
-	            		bubble.move = BUBBLE_MOVE_LEFT;
-
-		            // Miramos esto solo si la bubble no se est moviendo o se esta moviendo en la direction adecuada
-		            } else if ( ( bubble.move == BUBBLE_MOVE_NONE || bubble.move == BUBBLE_MOVE_RIGHT ) && canBubbleMoveRight( cells, bubble, i, j ) ) {
-				        // Ojo! por aqu hay un bug; no te deja mover la bubble hacia una posicin donde la bubble puede caer a la derecha
-		            	moveAndUpdateBubblePosition( cells, bubble, thing, i, j, BUBBLE_MOVE_RIGHT, true );
-		            	// indicamos que hay movimiento de bubbles
-		            	hayMovimiento = true;
-	            		// Marcamos bubble como que se move
-	            		bubble.move = BUBBLE_MOVE_RIGHT;
-*/
-
                     } else {
-                        // Centramos la bubble en su cell si no lo est
+                        // Centramos la bubble en su cell si no lo esta
                         val bubbleCellPosY = OFFSET_Y + j * BUBBLE_HEIGHT
                         if (bubble.drawY != bubbleCellPosY || bubble.drawX != bubbleCellPosX) {
                             centraBubbleEnPosicion(bubble, bubbleCellPosX, bubbleCellPosY)
                             // indicamos que hay movimiento de bubbles
-                            hayMovimiento = true
+                            isSomethingMoving = true
                         } else {
                             // Marcamos bubble como que no se move
                             bubble.move = BUBBLE_MOVE_NONE
                         }
                     }
-
-                    /* comento lo de los fondos
-		            // Fondo bubble
-		            if ( bubble.status < BUBBLE_STATUS_GRAPHICS_SIZE ) {
-		            	canvas.drawBitmap(BUBBLE_STATUS_GRAPHICS_BITMAP[bubble.status], bubble.drawX, bubble.drawY, null);
-		            }
-		            */
 
                     if (thing != null && (thing.status == THING_STATUS_BUBBLE || thing.status == THING_STATUS_MOVIDO)) {
                         var bitmap: Bitmap? = null
@@ -333,19 +285,10 @@ class Board
                             if (moveThingBetweenBubbles(thing)) {
                                 // Si el thing est ubicado reseteamos statuss union de las bubbles que intervienen
                                 thing.status = THING_STATUS_BUBBLE
-                                if (bubble.union == BUBBLE_UNION_UP) {
-                                    cells[i][j + 1]?.bubble!!.union = BUBBLE_UNION_NONE
-                                } else if (bubble.union == BUBBLE_UNION_DOWN) {
-                                    cells[i][j - 1]?.bubble!!.union = BUBBLE_UNION_NONE
-                                } else if (bubble.union == BUBBLE_UNION_RIGHT) {
-                                    cells[i + 1][j]?.bubble!!.union = BUBBLE_UNION_NONE
-                                } else if (bubble.union == BUBBLE_UNION_LEFT) {
-                                    cells[i - 1][j]?.bubble!!.union = BUBBLE_UNION_NONE
-                                }
                                 bubble.union = BUBBLE_UNION_NONE
                             }
                             // indicamos que hay movimiento de bubbles
-                            hayMovimiento = true
+                            isSomethingMoving = true
 
                         } else {
                             // Sincronizamos posiciones de thing y bubble
@@ -355,46 +298,33 @@ class Board
                             if (thing.drawY != bubble.drawY) {
                                 thing.drawY = bubble.drawY
                             }
-
                         }
 
                         // Animate thing
                         canvas.drawBitmap(bitmap!!, thing.drawX.toFloat(), thing.drawY.toFloat(), null)
                     }
 
-                    var bitmap: Bitmap? = null
+                    var bitmap: Bitmap?
                     // Caso bubble en movimiento
                     if (bubble.move != BUBBLE_MOVE_NONE) {
                         bitmap = BUBBLE_MOVE_GRAPHICS_BITMAP[bubble.graphicIndex]
 
-                        // Caso bubble quieta
+                    // Caso bubble quieta
                     } else {
-                        /* Save memory
-                		int union = bubble.union;
-                		// Caso bubble unida
-                		if ( union != BUBBLE_UNION_NONE ) {
-                			bitmap = BUBBLE_UNION_GRAPHICS_BITMAP[union];
-	            		// Caso bubble quieta y sin unir
-	            		} else {
-	            			bitmap = BUBBLE_GRAPHICS_BITMAP[bubble.graphicIndex];
-	            		}
-	            		*/
                         bitmap = BUBBLE_GRAPHICS_BITMAP[bubble.graphicIndex]
                     }
 
                     // Animate bubble
-                    canvas.drawBitmap(bitmap!!, bubble.drawX.toFloat(), bubble.drawY.toFloat(), null)
+                    canvas.drawBitmap(bitmap, bubble.drawX.toFloat(), bubble.drawY.toFloat(), null)
                 }
 
                 val explosion = cell.explosion
                 if (explosion != null) {
-
                     // cambiamos el indice de animacin
                     explosion.graphicIndex++
 
                     // Caso bubble ha acabado de exploder
                     if (explosion.graphicIndex >= EXPLOSION_GRAPHICS_SIZE) {
-
                         cell.explosion = null
 
                         if (thing != null && thing.status == THING_STATUS_EXPLODE) {
@@ -402,61 +332,8 @@ class Board
                             cell.thing = null
 
                         }
-                        /* amarinji: comento explosion en cadena de bubbles vacias
-	                	// Caso bubble removeda
-	                	else {
 
-		                	// Miramos si hay explosion en cadena de bubbles sin things
-				            if ( i >= 1 && thing == null
-				            		&& cells[i-1][j].bubble != null && cells[i-1][j].thing == null ) {
-
-				            	removeBubble( cells[i-1][j] );
-				            	hayMovimiento = true;
-
-				            }
-				            if ( i < (MAX_WIDTH-1) && thing == null
-				            		&& cells[i+1][j].bubble != null && cells[i+1][j].thing == null ) {
-
-				            	removeBubble( cells[i+1][j] );
-				            	hayMovimiento = true;
-
-				            }
-				            if ( j >= 1 && thing == null
-				            		&& cells[i][j-1].bubble != null && cells[i][j-1].thing == null ) {
-
-				            	removeBubble( cells[i][j-1] );
-				            	hayMovimiento = true;
-
-				            }
-				            if ( j < (MAX_WIDTH-1) && thing == null
-				            		&& cells[i][j+1].bubble != null && cells[i][j+1].thing == null ) {
-
-				            	removeBubble( cells[i][j+1] );
-				            	hayMovimiento = true;
-
-				            }
-
-	                	} */
-
-                        /* amarinji: comento caso  de una bubble vacia afecta al status de las de alrededor
-	                	// Caso la explosion de una bubble vacia afecta al status de las de alrededor
-	                	else {
-				            if ( i > 0 ) {
-				            	updateStatusBubble( cells[i-1][j] );
-				            }
-				            if ( i < (MAX_WIDTH-1) ) {
-				            	updateStatusBubble( cells[i+1][j] );
-				            }
-				            if ( j > 0 ) {
-				            	updateStatusBubble( cells[i][j-1] );
-				            }
-				            if ( j < (MAX_WIDTH-1) ) {
-				            	updateStatusBubble( cells[i][j+1] );
-				            }
-	                	}
-	            		*/
-
-                        // Caso animating la bubble explodendo
+                    // Animating exploding bubble
                     } else {
 
                         // Animate explosion
@@ -482,14 +359,9 @@ class Board
                         }
 
                         // indicamos que hay movimiento en el board
-                        hayMovimiento = true
-
+                        isSomethingMoving = true
                     }
-
                 }
-
-                // ahora no hace falta que el board est stable, solo que las bubbles no se muevan
-                //if ( boardStable ) {
 
                 /**
                  * Logica matcheado horizontal de things
@@ -542,7 +414,7 @@ class Board
                                 }
                             }
                             // Marcamos como que hay movimiento
-                            hayMovimiento = true
+                            isSomethingMoving = true
                             // Updatemos meters de jugadores
                             this.character1.updateMeter(thingType, numThings)
                         }
@@ -600,21 +472,17 @@ class Board
                                 }
                             }
                             // Marcamos como que hay movimiento
-                            hayMovimiento = true
+                            isSomethingMoving = true
                             // Updatemos meters de jugadores
                             this.character1.updateMeter(thingType, numThings)
                         }
                     }
                 }
-
-                //}
-
             }
-
         }
 
         // Control de movimientos en el board
-        if (hayMovimiento) {
+        if (isSomethingMoving) {
             this.boardStable = false
         } else {
             // Solo updatemos a true el flag una vez para no falsear boardStableTime
@@ -670,21 +538,11 @@ class Board
         canvas.drawText(" = " + things_explodes[PEINE_OBJECT_TYPE], offset_x_dislike_counter.toFloat(), offset_y_dislike_counter.toFloat(), ColiPopResources.paint)
     }
 
-    fun updateStatusBubble(cell: Cell?) {
-        if (cell == null || cell.bubble == null) {
-            return
-        }
-        cell.bubble!!.status++
-        if (cell.bubble!!.status > BubbleResources.BUBBLE_STATUS_ROJO) {
-            removeBubble(cell)
-        }
-    }
-
     fun updateBubbleAnimation(bubble: Bubble, thing: Thing?) {
         if (bubble.move == BubbleResources.BUBBLE_MOVE_NONE) {
             // Todas las bubbles que estn quietas utilizan el mismo indice
             bubble.graphicIndex = BubbleResources.BUBBLE_ANIMATION_SEQUENCE[this.bubbleCommonAnimationIndex]
-            if (bubble.graphicIndex >= BubbleResources.BUBBLE_GRAPHICS_SIZE) {
+            if (bubble.graphicIndex >= BubbleResources.BUBBLE_GRAPHICS_BITMAP.size) {
                 bubble.graphicIndex = 0
             }
         } else {
@@ -695,7 +553,7 @@ class Board
                 bubble.animationIndex = 0
             }
             bubble.graphicIndex = BubbleResources.BUBBLE_MOVE_ANIMATION_SEQUENCE[this.bubbleCommonAnimationIndex]
-            if (bubble.graphicIndex >= BubbleResources.BUBBLE_MOVE_GRAPHICS_SIZE) {
+            if (bubble.graphicIndex >= BubbleResources.BUBBLE_MOVE_GRAPHICS_BITMAP.size) {
                 bubble.graphicIndex = 0
             }
         }
@@ -724,11 +582,7 @@ class Board
             return false
         }
         val upCell = cells[i][j - 1]
-        return if (upCell == null || upCell.bubble == null && upCell.explosion == null) {
-            true
-        } else {
-            false
-        }
+        return (upCell == null || upCell.bubble == null && upCell.explosion == null)
     }
 
     fun canBubbleMoveDown(cells: Array<Array<Cell>>, bubble: Bubble?, i: Int, j: Int): Boolean {
@@ -741,11 +595,7 @@ class Board
             return false
         }
         val downCell = cells[i][j + 1]
-        return if (downCell == null || downCell.bubble == null && downCell.explosion == null) {
-            true
-        } else {
-            false
-        }
+        return (downCell.bubble == null && downCell.explosion == null)
     }
 
     fun canBubbleMoveRight(cells: Array<Array<Cell>>, bubble: Bubble?, i: Int, j: Int): Boolean {
@@ -759,20 +609,14 @@ class Board
             return false
         }
         val rightCell = cells[i + 1][j]
-        if (rightCell == null || rightCell.bubble == null && rightCell.explosion == null) {
+        if (rightCell.bubble == null && rightCell.explosion == null) {
             // Miramos que hacia arriba a la derecha haya un hueco donde meterse
             if (j == 0) {
                 // No puede haber hueco ya que esta arriba del todo
                 return false
             }
             val rightUpCell = cells[i + 1][j - 1]
-            return if (rightUpCell == null || rightUpCell.bubble == null && rightUpCell.explosion == null) {
-                // OK !!!
-                true
-            } else {
-                // No hay hueco arriba a la derecha
-                false
-            }
+            return (rightUpCell.bubble == null && rightUpCell.explosion == null)
         } else {
             // No hay sitio a la derecha
             return false
@@ -790,20 +634,14 @@ class Board
             return false
         }
         val leftCell = cells[i - 1][j]
-        if (leftCell == null || leftCell.bubble == null && leftCell.explosion == null) {
+        if (leftCell.bubble == null && leftCell.explosion == null) {
             // Miramos que hacia arriba a la izquierda haya un hueco donde meterse
             if (j == 0) {
                 // No puede haber hueco ya que esta arriba del todo
                 return false
             }
             val leftUpCell = cells[i - 1][j - 1]
-            return if (leftUpCell == null || leftUpCell.bubble == null && leftUpCell.explosion == null) {
-                // OK !!!
-                true
-            } else {
-                // No hay hueco arriba a la izquierda
-                false
-            }
+            return (leftUpCell.bubble == null && leftUpCell.explosion == null)
         } else {
             return false
         }
@@ -977,8 +815,6 @@ class Board
 
         // Recalculatemos posicin en board
         val newCellPos = calculatePosBubbleInBoard(bubble)
-                ?: // Error calculo posicion
-                return
 
         val newCell = cells[newCellPos.i][newCellPos.j]
         if (newCell?.bubble != null) {
@@ -1103,7 +939,7 @@ class Board
         // Aadimos thing a los animated independentmente y lo quitamos de la cell
         var thingAdded = false
         for (i in 0 until MAX_THINGS_ANIMATED) {
-            if (things_animated!![i] == null) {
+            if (things_animated[i] == null) {
                 things_animated[i] = thing
                 thingAdded = true
                 break
@@ -1142,21 +978,6 @@ class Board
         // Quitamos el thing de la cell origin y lo ponemos en la cell destiny
         origin.thing = null
         destiny.thing = thing
-
-        // Updatemos status de movimiento de las bubbles
-        if (deltaX == 0 && deltaY > 0) {
-            origin.bubble!!.union = BubbleResources.BUBBLE_UNION_DOWN
-            destiny.bubble!!.union = BubbleResources.BUBBLE_UNION_UP
-        } else if (deltaX == 0 && deltaY < 0) {
-            origin.bubble!!.union = BubbleResources.BUBBLE_UNION_UP
-            destiny.bubble!!.union = BubbleResources.BUBBLE_UNION_DOWN
-        } else if (deltaY == 0 && deltaX > 0) {
-            origin.bubble!!.union = BubbleResources.BUBBLE_UNION_LEFT
-            destiny.bubble!!.union = BubbleResources.BUBBLE_UNION_RIGHT
-        } else if (deltaY == 0 && deltaX < 0) {
-            origin.bubble!!.union = BubbleResources.BUBBLE_UNION_RIGHT
-            destiny.bubble!!.union = BubbleResources.BUBBLE_UNION_LEFT
-        }
 
         // Tambien controla la velocidad del turno de la CPU
         this.boardStable = false
@@ -1203,7 +1024,7 @@ class Board
             return
         }
 
-        val bubble = origin.bubble ?: return
+        origin.bubble ?: return
 
         val thingDestiny = destiny.thing
         if (thingDestiny != null) {
@@ -1255,7 +1076,7 @@ class Board
         // Aadimos thing a los animated independentmente
         var thingAdded = false
         for (i in 0 until MAX_THINGS_ANIMATED) {
-            if (things_animated!![i] == null) {
+            if (things_animated[i] == null) {
                 things_animated[i] = thing
                 thingAdded = true
                 break
@@ -1281,7 +1102,7 @@ class Board
         // Aadimos thing a los animated independentmente
         var thingAdded = false
         for (i in 0 until MAX_THINGS_ANIMATED) {
-            if (things_animated!![i] == null) {
+            if (things_animated[i] == null) {
                 things_animated[i] = thing
                 thingAdded = true
                 break
@@ -1296,7 +1117,7 @@ class Board
     fun animateThingsIndependents(canvas: Canvas?) {
         // Animating los things independents
         val things_animated = this.things_animated
-        if (things_animated == null || things_animated.size == 0) {
+        if (things_animated.size == 0) {
             return
         }
 
@@ -1542,26 +1363,6 @@ class Board
         return null
     }
 
-    fun isFinPartida(p1: Character, p2: Character): Boolean {
-        val like = things_explodes[ThingResources.CARAMELO_OBJECT_TYPE] + things_explodes[ThingResources.PIRULETA_OBJECT_TYPE]
-        val dislike = things_explodes[ThingResources.RASPA_OBJECT_TYPE] + things_explodes[ThingResources.PEINE_OBJECT_TYPE]
-
-        //Log.d(TAG,"Like = " + like + ", Dislike = " + dislike);
-
-        // De momento no se gana nunca
-        /*if ((like - dislike) > 20 ) {
-			p1.setWinner(true);
-			return true;
-		} else*/
-        if (like - dislike < -20) {
-            p2.isWinner = true
-            return true
-        } else {
-            return false
-        }
-
-    }
-
     fun destroy() {
         BubbleResources.destroy()
         EfectoResources.destroy()
@@ -1570,9 +1371,6 @@ class Board
     }
 
     companion object {
-
-        private val TAG = "ColiPop"
-
         private val DEFAULT_SURFACE_WIDTH = 800
         private val DEFAULT_SURFACE_HEIGHT = 480
 

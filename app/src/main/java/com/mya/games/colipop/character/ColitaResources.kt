@@ -75,30 +75,20 @@ object ColitaResources {
         options.inPurgeable = true
 
         CARA_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.coli_cara, options))
-
         OJOS_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.coli_ojos_01, options), BitmapFactory.decodeResource(resources, R.drawable.coli_ojos_02, options), BitmapFactory.decodeResource(resources, R.drawable.coli_ojos_03, options))
-
         BOCA_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.coli_boca_01, options), BitmapFactory.decodeResource(resources, R.drawable.coli_boca_02, options), BitmapFactory.decodeResource(resources, R.drawable.coli_boca_11, options), BitmapFactory.decodeResource(resources, R.drawable.coli_boca_12, options), BitmapFactory.decodeResource(resources, R.drawable.coli_boca_13, options), BitmapFactory.decodeResource(resources, R.drawable.coli_boca_14, options))
-
         METER_FONDO_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.meter_fondo, options))
 
         // Dialogos y fecha de meter en baja calidad
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
         DIALOGO_CORTO_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.dialogo_corto_01, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_corto_02, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_corto_03, options))
-
         DIALOGO_MEDIO_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.dialogo_medio_01, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_medio_02, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_medio_03, options))
-
         DIALOGO_MEDIO2_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.dialogo_medio2_01, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_medio2_02, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_medio2_03, options))
-
         DIALOGO_LARGO_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.dialogo_largo_01, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_largo_02, options), BitmapFactory.decodeResource(resources, R.drawable.dialogo_largo_03, options))
-
         METER_FLECHA1_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_01, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_02, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_03, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_04, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_05, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_06, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_07, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_08, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha1_09, options))
-
         METER_FLECHA2_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_01, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_02, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_03, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_04, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_05, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_06, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_07, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_08, options), BitmapFactory.decodeResource(resources, R.drawable.meter_flecha2_09, options))
-
         METER_FLECHA_GRAPHICS_BITMAP = arrayOf(METER_FLECHA1_GRAPHICS_BITMAP[0], METER_FLECHA2_GRAPHICS_BITMAP[0])
-
         LEVEL_UP_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.level_up_01, options), BitmapFactory.decodeResource(resources, R.drawable.level_up_02, options))
     }
 
@@ -130,25 +120,19 @@ object ColitaResources {
 
         var i = 0
         for (bitmap in CARA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                CARA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            CARA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in OJOS_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                OJOS_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            OJOS_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in BOCA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                BOCA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            BOCA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
@@ -156,41 +140,31 @@ object ColitaResources {
 
         i = 0
         for (bitmap in METER_FONDO_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                METER_FONDO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            }
+            METER_FONDO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
             i++
         }
 
         i = 0
         for (bitmap in METER_FLECHA_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            }
+            METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
             i++
         }
 
         i = 0
         for (bitmap in METER_FLECHA1_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                METER_FLECHA1_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            }
+            METER_FLECHA1_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
             i++
         }
 
         i = 0
         for (bitmap in METER_FLECHA2_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                METER_FLECHA2_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            }
+            METER_FLECHA2_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
             i++
         }
 
         i = 0
         for (bitmap in LEVEL_UP_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                LEVEL_UP_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            }
+            LEVEL_UP_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
             i++
         }
 
@@ -209,49 +183,41 @@ object ColitaResources {
 
         i = 0
         for (bitmap in DIALOGO_CORTO_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                DIALOGO_CORTO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_corto_width, dialogo_height, true)
-            }
+            DIALOGO_CORTO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_corto_width, dialogo_height, true)
             i++
         }
 
         i = 0
         for (bitmap in DIALOGO_MEDIO_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                DIALOGO_MEDIO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_medio_width, dialogo_height, true)
-            }
+            DIALOGO_MEDIO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_medio_width, dialogo_height, true)
             i++
         }
 
         i = 0
         for (bitmap in DIALOGO_MEDIO2_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                DIALOGO_MEDIO2_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_medio2_width, dialogo_height, true)
-            }
+            DIALOGO_MEDIO2_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_medio2_width, dialogo_height, true)
             i++
         }
 
         i = 0
         for (bitmap in DIALOGO_LARGO_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                DIALOGO_LARGO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_largo_width, dialogo_height, true)
-            }
+            DIALOGO_LARGO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_largo_width, dialogo_height, true)
             i++
         }
     }
 
     fun destroy() {
-        ResourceUtils.recicleBitmaps(CARA_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(OJOS_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(BOCA_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(METER_FONDO_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(DIALOGO_CORTO_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(DIALOGO_MEDIO_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(DIALOGO_MEDIO2_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(DIALOGO_LARGO_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(METER_FLECHA1_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(METER_FLECHA2_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(METER_FLECHA_GRAPHICS_BITMAP)
-        ResourceUtils.recicleBitmaps(LEVEL_UP_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(CARA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(OJOS_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(BOCA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(METER_FONDO_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(DIALOGO_CORTO_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(DIALOGO_MEDIO_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(DIALOGO_MEDIO2_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(DIALOGO_LARGO_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(METER_FLECHA1_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(METER_FLECHA2_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(METER_FLECHA_GRAPHICS_BITMAP)
+        ResourceUtils.recycleBitmaps(LEVEL_UP_GRAPHICS_BITMAP)
     }
 }

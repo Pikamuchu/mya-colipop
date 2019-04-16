@@ -47,17 +47,17 @@ object ExplosionResources {
     }
 
     fun resizeGraphics(refactorIndex: Float) {
-        var refactorIndex = refactorIndex
+        var normRefactorIndex = refactorIndex
 
         // Prevencin de cosas raras
-        if (refactorIndex == 0f) {
-            refactorIndex = 1f
+        if (normRefactorIndex == 0f) {
+            normRefactorIndex = 1f
         }
 
         // Cogemos el valor por debajo
-        val width = java.lang.Float.valueOf(DEFAULT_EXPLOSION_WIDTH * refactorIndex).toInt()
-        val height = java.lang.Float.valueOf(DEFAULT_EXPLOSION_HEIGHT * refactorIndex).toInt()
-        val pixel_move = java.lang.Float.valueOf(DEFAULT_EXPLOSION_PIXEL_MOVE * refactorIndex).toInt()
+        val width = java.lang.Float.valueOf(DEFAULT_EXPLOSION_WIDTH * normRefactorIndex).toInt()
+        val height = java.lang.Float.valueOf(DEFAULT_EXPLOSION_HEIGHT * normRefactorIndex).toInt()
+        val pixel_move = java.lang.Float.valueOf(DEFAULT_EXPLOSION_PIXEL_MOVE * normRefactorIndex).toInt()
 
         EXPLOSION_WIDTH = width
         EXPLOSION_HEIGHT = height
@@ -65,17 +65,13 @@ object ExplosionResources {
 
         var i = 0
         for (bitmap in EXPLOSION_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                EXPLOSION_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            EXPLOSION_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
     }
 
     fun destroy() {
-        ResourceUtils.recicleBitmaps(EXPLOSION_GRAPHICS_BITMAP)
-        //EXPLOSION_GRAPHICS_BITMAP=null;
+        ResourceUtils.recycleBitmaps(EXPLOSION_GRAPHICS_BITMAP)
     }
-
 }

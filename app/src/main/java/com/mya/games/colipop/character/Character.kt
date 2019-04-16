@@ -9,6 +9,9 @@ import com.mya.games.colipop.board.ThingResources
 import java.util.Random
 
 abstract class Character(resources: Resources, posicion: Int) {
+
+    private val TAG = "ColiPop"
+
     // Posicion del character
     var posicion = 0
     // Offsets del character
@@ -135,9 +138,6 @@ abstract class Character(resources: Resources, posicion: Int) {
         doTalking(this.levelUpTalkingText, textNum)
     }
 
-    /**
-     * @param thingType
-     */
     fun updateMeter(thingType: Int, numThings: Int) {
         var index = 0
         var baseIndex = 1
@@ -184,11 +184,6 @@ abstract class Character(resources: Resources, posicion: Int) {
             }
         }
 
-        /*
-		if ( this.mMeterIndex < gameoverMeterIndex ) {
-			this.gameover = true;
-		}
-		*/
         if (meterIndex >= 20) {
             currentLevel += 1
             meterIndex = 0
@@ -196,9 +191,9 @@ abstract class Character(resources: Resources, posicion: Int) {
             // Cambiamos el fondo del board
             ColiPopResources.changeLevelBackground(resources!!, currentLevel)
         }
+
         // Updateamos status del meter
         updateMeterStatus(meterIndex * 9)
-
     }
 
     open fun initCharacter() {
@@ -220,9 +215,6 @@ abstract class Character(resources: Resources, posicion: Int) {
     abstract fun destroy()
 
     companion object {
-
-        private val TAG = "ColiPop"
-
         val POSICION_LEFT = 0
         val POSICION_RIGHT = 1
         val STATUS_NORMAL = 0
@@ -237,5 +229,4 @@ abstract class Character(resources: Resources, posicion: Int) {
         private val DEFAULT_POSICION_RIGHT_OFFSET_Y = 60
         protected var random = Random()
     }
-
 }

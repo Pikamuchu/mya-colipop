@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.mya.games.colipop"
-        minSdkVersion 3
+        minSdkVersion 4
         targetSdkVersion 27
     }
 
