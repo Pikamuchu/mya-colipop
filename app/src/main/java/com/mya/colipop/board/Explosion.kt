@@ -1,4 +1,4 @@
-package com.mya.games.colipop.board
+package com.mya.colipop.board
 
 class Explosion {
     var graphicIndex = 0

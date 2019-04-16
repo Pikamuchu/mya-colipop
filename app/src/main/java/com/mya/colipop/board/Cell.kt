@@ -1,4 +1,4 @@
-package com.mya.games.colipop.board
+package com.mya.colipop.board
 
 class Cell(posX: Int, posY: Int) {
     // Board cell position

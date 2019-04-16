@@ -1,10 +1,10 @@
-package com.mya.games.colipop.character
+package com.mya.colipop.character
 
 import android.content.res.Resources
 import android.graphics.Canvas
 
-import com.mya.games.colipop.ColiPopResources
-import com.mya.games.colipop.board.ThingResources
+import com.mya.colipop.ColiPopResources
+import com.mya.colipop.board.ThingResources
 
 import java.util.Random
 

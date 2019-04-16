@@ -1,4 +1,4 @@
-package com.mya.games.colipop.board
+package com.mya.colipop.board
 
 class Bubble {
     var animationIndex = 0

@@ -1,21 +1,16 @@
-package com.mya.games.colipop.board
+package com.mya.colipop.board
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.MotionEvent
 
-import com.mya.games.colipop.ColiPopResources
-import com.mya.games.colipop.IATouchEvent
-import com.mya.games.colipop.character.Character
+import com.mya.colipop.ColiPopResources
+import com.mya.colipop.character.Character
 
 import java.util.Random
 
-class Board
-/**
- * Constructors
- */
-(resources: Resources, private var character1: Character) {
+class Board (resources: Resources, private var character1: Character) {
 
     private val TAG = "ColiPop"
 
@@ -31,8 +26,8 @@ class Board
     private var boardStable = false
     private var boardStableTime: Long = 0
     private var lastInitialBubbleTime: Long = 0
-    var isBoardFullBubbles = false
-    var isBoardFullThings = false
+    private var boardFullBubbles = false
+    private var boardFullThings = false
 
     private var things_animated: Array<Thing?> = arrayOfNulls(MAX_THINGS_ANIMATED)
 
@@ -42,9 +37,6 @@ class Board
 
     private var lastLevel = 0
 
-    // Localizing external variables
-    // No se ha encontrado cell inicial probamos otra vez desde el 0
-    // No se ha encontrado cell inicial ?!!??
     val initialCellXPos: Int
         get() {
             val cells = this.cells
@@ -67,6 +59,12 @@ class Board
             }
             return -1
         }
+
+    val isBoardFullBubbles: Boolean
+        get() = this.boardFullBubbles
+
+    val isBoardFullThings: Boolean
+        get() = this.boardFullThings
 
     init {
         this.resources = resources
@@ -493,15 +491,14 @@ class Board
         }
 
         // Board full de bubbles
-        this.isBoardFullThings = boardFullThings
-        this.isBoardFullBubbles = boardFullBubbles
+        this.boardFullThings = boardFullThings
+        this.boardFullBubbles = boardFullBubbles
 
         /**
          * Animacin de otros things
          */
 
         animateThingsIndependents(canvas)
-
 
         /**
          * Dibujamos counters
@@ -1211,10 +1208,7 @@ class Board
 
         } else if (type == EfectoResources.EFECTO_PLAYER_TOUCH_OBJECT_TYPE) {
             bitmap = EfectoResources.EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP[thing.graphicIndex]
-            /* save memory
-		} else if ( type == EfectoResources.EFECTO_CPU_TOUCH_OBJECT_TYPE ) {
-			bitmap = EfectoResources.EFECTO_CPU_TOUCH_GRAPHICS_BITMAP[ thing.graphicIndex ];
-		*/
+
         } else if (type == EfectoResources.EFECTO_PLAYER_MOVE_LEFT_OBJECT_TYPE) {
             bitmap = EfectoResources.EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP[thing.graphicIndex]
 
@@ -1234,7 +1228,7 @@ class Board
         canvas!!.drawBitmap(bitmap!!, thing.drawX.toFloat(), thing.drawY.toFloat(), null)
     }
 
-    fun moveThingBetweenBubbles(thing: Thing?): Boolean {
+    private fun moveThingBetweenBubbles(thing: Thing?): Boolean {
         if (thing == null) {
             return false
         }
@@ -1282,63 +1276,7 @@ class Board
             }
         }
 
-        return if (finX && finY) {
-            true
-        } else {
-            false
-        }
-    }
-
-    fun calculateNextMovement(character: Character): Array<IATouchEvent?>? {
-        // Board no stable
-        if (!boardStable) {
-            return null
-        }
-
-        // Consideramos un retardo mnimo a partir de que el board se estabilice
-        val retardo = System.currentTimeMillis() - boardStableTime
-        if (retardo < 1000) {
-            return null
-        }
-
-        //Log.d(TAG, "calculateNextMovement: retardo is " + retardo + " ms");
-
-        // Localizing external variables
-        val cells = this.cells
-        val BUBBLE_WIDTH = BubbleResources.BUBBLE_WIDTH
-        val BUBBLE_HEIGHT = BubbleResources.BUBBLE_HEIGHT
-        val MAX_WIDTH = Board.MAX_WIDTH
-        val MAX_HEIGHT = Board.MAX_HEIGHT
-        val random = Board.random
-
-        // Contador de seguridad para evitar bucles infinitos
-        var maxIterations = MAX_WIDTH * MAX_HEIGHT
-        while (maxIterations > 0) {
-            // Updatemos numero iteraciones;
-            maxIterations--
-
-            // Calculatemos movimiento movimiento aleatorio
-            val cell = cells[random.nextInt(MAX_WIDTH - 1)][random.nextInt(MAX_HEIGHT - 1)]
-            if (cell == null || cell.bubble == null) {
-                // Movimiento invalido
-                continue
-            }
-
-            // Caso la cell tiene un thing
-            if (cell.thing != null) {
-                // Bubble con thing
-                continue
-            }
-
-            val events = arrayOfNulls<IATouchEvent>(2)
-
-            events[0] = IATouchEvent(MotionEvent.ACTION_DOWN, cell.bubble!!.drawX + BUBBLE_WIDTH / 2, cell.bubble!!.drawY + BUBBLE_HEIGHT / 2)
-            events[1] = IATouchEvent(MotionEvent.ACTION_UP, cell.bubble!!.drawX + BUBBLE_WIDTH / 2, cell.bubble!!.drawY + BUBBLE_HEIGHT / 2)
-
-            return events
-        }
-
-        return null
+        return finX && finY
     }
 
     fun destroy() {

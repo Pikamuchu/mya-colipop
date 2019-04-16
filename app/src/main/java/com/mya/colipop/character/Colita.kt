@@ -1,12 +1,12 @@
-package com.mya.games.colipop.character
+package com.mya.colipop.character
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
 
-import com.mya.games.colipop.ColiPopResources
-import com.mya.games.colipop.R
+import com.mya.colipop.ColiPopResources
+import com.mya.colipop.R
 
 class Colita(resources: Resources, posicion: Int) : Character(resources, posicion) {
 

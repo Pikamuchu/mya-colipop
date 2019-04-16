@@ -1,11 +1,11 @@
-package com.mya.games.colipop.character
+package com.mya.colipop.character
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
-import com.mya.games.colipop.R
-import com.mya.games.colipop.ResourceUtils
+import com.mya.colipop.R
+import com.mya.colipop.ResourceUtils
 
 object ColitaResources {
 
