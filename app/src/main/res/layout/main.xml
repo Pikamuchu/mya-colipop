@@ -3,7 +3,7 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
-	<com.mya.games.colipop.ColiPopView
+	<com.mya.colipop.ColiPopView
 		android:id="@+id/ColiPopView"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent" />

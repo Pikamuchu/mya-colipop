@@ -1,4 +1,4 @@
-package com.mya.games.colipop
+package com.mya.colipop
 
 import android.graphics.Bitmap
 
@@ -12,5 +12,4 @@ object ResourceUtils {
             bitmap.recycle()
         }
     }
-
 }

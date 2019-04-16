@@ -880,10 +880,13 @@ class Board
 
         //Log.d(TAG, "getCellInCoordinates: x=" + x + ", y=" + y + ", normX=" + normX + ", normY=" + normY );
 
-        return if (normX < Board.MAX_WIDTH && normX >= 0 && normY < Board.MAX_HEIGHT && normY >= 0) {
-            cells[normX][normY]
-        } else null
+        return getCellInPos(normX, normY)
+    }
 
+    fun getCellInPos(posX: Int, posY: Int): Cell? {
+        return if (posX < Board.MAX_WIDTH && posX >= 0 && posY < Board.MAX_HEIGHT && posY >= 0) {
+            cells[posX][posY]
+        } else null
     }
 
     fun explodeBubble(cell: Cell?) {
@@ -955,40 +958,15 @@ class Board
         boardStable = false
     }
 
-    fun moveThingBetweenBubbles(origin: Cell?, destiny: Cell?) {
-        if (origin == null || destiny == null) {
-            return
-        }
-
-        val deltaX = origin.posX - destiny.posX
-        val deltaY = origin.posY - destiny.posY
-        if (deltaX > 1 || deltaX < -1 || deltaY > 1 || deltaY < -1) {
-            return
-        }
-
-        val thing = origin.thing ?: return
-
-        val bubbleDestiny = destiny.bubble ?: return
-
-        thing.targetX = bubbleDestiny.drawX
-        thing.targetY = bubbleDestiny.drawY
-
-        thing.status = ThingResources.THING_STATUS_MOVIDO
-
-        // Quitamos el thing de la cell origin y lo ponemos en la cell destiny
-        origin.thing = null
-        destiny.thing = thing
-
-        // Tambien controla la velocidad del turno de la CPU
-        this.boardStable = false
-    }
-
     fun touchBubble(cell: Cell?, directionX: Int, directionY: Int) {
         if (cell == null) {
             return
         }
 
-        val bubble = cell.bubble ?: return
+        val bubble = cell.bubble
+        if (bubble == null || bubble.move != BubbleResources.BUBBLE_MOVE_NONE) {
+            return
+        }
 
         // Limitamos maximo de movimiento
         var movimientoX = 0

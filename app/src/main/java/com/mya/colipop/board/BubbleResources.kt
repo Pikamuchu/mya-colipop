@@ -36,6 +36,7 @@ object BubbleResources {
     var BUBBLE_MOVE_DOWN = 2
     var BUBBLE_MOVE_LEFT = 3
     var BUBBLE_MOVE_RIGHT = 4
+    var BUBBLE_MOVE_TILT = 4
 
     // Bubble graphics
     var BUBBLE_GRAPHICS_SIZE = 4

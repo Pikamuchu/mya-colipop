@@ -1,4 +1,4 @@
-package com.mya.games.colipop
+package com.mya.colipop
 
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -49,13 +49,13 @@ object ColiPopResources {
 
         // Reescalado de fondos
         if (this.titleBG != null) {
-            this.titleBG = Bitmap.createScaledBitmap(titleBG!!, width, height, true)
+            this.titleBG = Bitmap.createScaledBitmap(titleBG, width, height, true)
         }
         if (this.backgroundImage != null) {
-            this.backgroundImage = Bitmap.createScaledBitmap(backgroundImage!!, width, height, true)
+            this.backgroundImage = Bitmap.createScaledBitmap(backgroundImage, width, height, true)
         }
         if (this.boardImage != null) {
-            this.boardImage = Bitmap.createScaledBitmap(boardImage!!, width, height, true)
+            this.boardImage = Bitmap.createScaledBitmap(boardImage, width, height, true)
         }
 
         var refactorIndex = width.toFloat()

@@ -1,4 +1,4 @@
-package com.mya.games.colipop
+package com.mya.colipop
 
 import android.app.Activity
 import android.os.Bundle
@@ -12,25 +12,16 @@ class ColiPop : Activity(), View.OnClickListener {
 
     private val TAG = "ColiPop"
 
-    /**
-     * A handle to the thread that's actually running the animation.
-     */
+     // A handle to the thread that's actually running the animation.
     private lateinit var coliPopThread: ColiPopThread
-
-    /**
-     * A handle to the View in which the game is running.
-     */
+     // A handle to the View in which the game is running.
     private lateinit var coliPopView: ColiPopView
-
     // the play start button
     private lateinit var button: Button
-
     // used to hit retry
     private lateinit var buttonRetry: Button
-
     // the window for instructions and such
     private lateinit var textView: TextView
-
     // game window timer
     private lateinit var timerView: TextView
 
@@ -95,7 +86,7 @@ class ColiPop : Activity(), View.OnClickListener {
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY)
 
         } else {
-            Log.d(TAG,"unknown click " + v.id)
+            Log.d(TAG, "unknown click " + v.id)
         }
     }
 
@@ -119,16 +110,5 @@ class ColiPop : Activity(), View.OnClickListener {
         }
 
         return false
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coliPopView.destroy()
-        System.gc()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        System.gc()
     }
 }

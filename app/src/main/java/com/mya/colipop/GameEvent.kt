@@ -1,4 +1,4 @@
-package com.mya.games.colipop
+package com.mya.colipop
 
 import android.view.KeyEvent
 
@@ -12,7 +12,7 @@ open class GameEvent {
     var type: Byte = 0
 
     init {
-        time = System.currentTimeMillis()
+        this.time = System.currentTimeMillis()
     }
 
     companion object {
@@ -45,7 +45,6 @@ internal class KeyGameEvent (var keyCode: Int, var up: Boolean, var msg: KeyEven
  * A GameEvent subclass for touch based user input.
  */
 internal class TouchGameEvent : GameEvent {
-    var player: Int = 0
     var motionEvent: Int = 0
     var x: Int = 0
     var y: Int = 0
@@ -58,20 +57,5 @@ internal class TouchGameEvent : GameEvent {
         this.motionEvent = motionEvent
         this.x = x
         this.y = y
-        this.player = PLAYER_1.toInt()
-    }
-
-    constructor(player: Int, motionEvent: Int, x: Int, y: Int) {
-        this.type = GameEvent.TOUCH_EVENT
-        this.motionEvent = motionEvent
-        this.x = x
-        this.y = y
-        this.player = player
-    }
-
-    companion object {
-        val PLAYER_CPU: Byte = 0
-        val PLAYER_1: Byte = 1
-        val PLAYER_2: Byte = 2
     }
 }

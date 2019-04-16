@@ -7,7 +7,7 @@ android {
     buildToolsVersion "28.0.3"
 
     defaultConfig {
-        applicationId "com.mya.games.colipop"
+        applicationId "com.mya.colipop"
         minSdkVersion 4
         targetSdkVersion 27
     }

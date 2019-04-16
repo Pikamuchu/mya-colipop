@@ -1,5 +1,6 @@
-package com.mya.games.colipop
+package com.mya.colipop
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
 import android.os.Message
@@ -10,7 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 
-class ColiPopView (context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback {
+class ColiPopView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback {
 
     private val TAG = "ColiPop"
 
@@ -22,43 +23,43 @@ class ColiPopView (context: Context, attrs: AttributeSet) : SurfaceView(context,
 
     init {
         // register our interest in hearing about changes to our surface
-        val holder = holder
-        holder.addCallback(this)
+        this.holder.addCallback(this)
 
         // create thread only; it's started in surfaceCreated()
         // except if used in the layout editor.
-        if (isInEditMode == false) {
-            thread = ColiPopThread(holder, context, object : Handler() {
+        if (this.isInEditMode == false) {
+            this.thread = ColiPopThread(this.holder, context,
+                @SuppressLint("HandlerLeak")
+                object : Handler() {
+                    override fun handleMessage(m: Message) {
+                        timerView.text = m.data.getString("text")
 
-                override fun handleMessage(m: Message) {
+                        if (m.data.getString("STATE_GAME_END") != null) {
+                            //buttonRestart.setVisibility(View.VISIBLE);
+                            buttonRetry.visibility = View.VISIBLE
 
-                    timerView.text = m.data.getString("text")
+                            timerView.visibility = View.INVISIBLE
 
-                    if (m.data.getString("STATE_GAME_END") != null) {
-                        //buttonRestart.setVisibility(View.VISIBLE);
-                        buttonRetry.visibility = View.VISIBLE
+                            textView.visibility = View.VISIBLE
 
-                        timerView.visibility = View.INVISIBLE
+                            if (m.data.getString("PLAYER_WIN") != null) {
+                                textView.setText(R.string.winText)
+                            } else if (m.data.getString("CPU_WIN") != null) {
+                                textView.setText(R.string.loseText)
+                            } else {
+                                textView.setText(R.string.gameOverText)
+                            }
 
-                        textView.visibility = View.VISIBLE
+                            timerView.text = "0:00"
+                            textView.height = 20
 
-                        if (m.data.getString("PLAYER_WIN") != null) {
-                            textView.setText(R.string.winText)
-                        } else if (m.data.getString("CPU_WIN") != null) {
-                            textView.setText(R.string.loseText)
-                        } else {
-                            textView.setText(R.string.gameOverText)
                         }
-
-                        timerView.text = "0:00"
-                        textView.height = 20
-
                     }
-                }//end handle msg
-            })
+                }
+            )
         }
 
-        isFocusable = true // make sure we get key events
+        this.isFocusable = true // make sure we get key events
 
         //Log.d(TAG, "@@@ done creating view!");
     }
@@ -81,7 +82,7 @@ class ColiPopView (context: Context, attrs: AttributeSet) : SurfaceView(context,
     override fun surfaceCreated(arg0: SurfaceHolder) {
         // Si el thread esta finalizado creamos uno nuevo
         if (this.thread.state == Thread.State.TERMINATED) {
-            this.thread = ColiPopThread.newColiPopThread(thread)
+            this.thread = ColiPopThread.newColiPopThread(this.thread)
             //Log.d(TAG, "surfaceCreated: New thread created!");
         }
         // start the thread here so that we don't busy-wait in run()
@@ -101,12 +102,6 @@ class ColiPopView (context: Context, attrs: AttributeSet) : SurfaceView(context,
                 //Log.d(TAG, "surfaceDestroyed: Thread killed!");
             } catch (e: InterruptedException) {
             }
-
         }
     }
-
-    fun destroy() {
-        thread.destroy()
-    }
 }
-
