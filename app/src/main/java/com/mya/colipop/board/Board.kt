@@ -60,8 +60,8 @@ class Board (resources: Resources, private var character1: Character) {
             return -1
         }
 
-    val isBoardFullBubbles: Boolean
-        get() = this.boardFullBubbles
+    val isBoardInitialized: Boolean
+        get() = this.boardInitialized
 
     val isBoardFullThings: Boolean
         get() = this.boardFullThings

@@ -48,8 +48,8 @@ class ColiPopThread : Thread {
     // Board game
     private lateinit var board: Board
     // Temp vars to store the last cell touch MotionEvents
-    private lateinit var eventActionDown: TouchGameEvent
-    private lateinit var eventActionMoveAnterior: TouchGameEvent
+    private var eventActionDown: TouchGameEvent? = null
+    private var eventActionMoveAnterior: TouchGameEvent? = null
 
     /*
      * Application control flags
@@ -307,7 +307,7 @@ class ColiPopThread : Thread {
         } else if (event.motionEvent == MotionEvent.ACTION_MOVE) {
             //Log.d(TAG, "Motion Move en position: x=" + event.x + ", y=" +  event.y );
             board.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE)
-            val cellOrigin = board.getCellInCoordinates(this.eventActionMoveAnterior.x, eventActionMoveAnterior.y)
+            val cellOrigin = board.getCellInCoordinates(this.eventActionMoveAnterior!!.x, this.eventActionMoveAnterior!!.y)
             val cellDestiny = board.getCellInCoordinates(event.x, event.y)
             ColiPopActions.updateTouchBoard(cellOrigin, cellDestiny, board, true, false)
             ColiPopActions.tiltOtherCells(board, cellDestiny)
@@ -317,7 +317,7 @@ class ColiPopThread : Thread {
 
         } else if (event.motionEvent == MotionEvent.ACTION_UP) {
             //Log.d(TAG, "Motion Up en position: x=" + event.x + ", y=" +  event.y );
-            val cellOrigin = board.getCellInCoordinates(eventActionDown.x, eventActionDown.y)
+            val cellOrigin = board.getCellInCoordinates(this.eventActionDown!!.x, this.eventActionDown!!.y)
             val cellDestiny = board.getCellInCoordinates(event.x, event.y)
             ColiPopActions.updateTouchBoard(cellOrigin, cellDestiny, board, false, true)
             ColiPopActions.tiltOtherCells(board, cellDestiny)
@@ -391,7 +391,9 @@ class ColiPopThread : Thread {
                 // And reset the key gameState so we don't think a button is pressed when it isn't
                 this.keyContext = null
                 // Game Initialization
-                this.board.initBoard()
+                if (this.previousState == STATE_PLAY) {
+                    this.board.initBoard()
+                }
             }
         }
     }
@@ -431,9 +433,23 @@ class ColiPopThread : Thread {
      */
     fun pause() {
         synchronized(this.surfaceHolder) {
-            if (this.gameState == STATE_RUNNING)
-                setGameState(STATE_PAUSE)
-            this.timerTask?.cancel()
+            if (this.gameState == STATE_RUNNING) {
+                this.setGameState(STATE_PAUSE)
+                this.timerTask?.cancel()
+                this.timerTask = null
+            }
+        }
+    }
+
+    /**
+     * Continues the physics update & animation.
+     */
+    fun restore() {
+        synchronized(this.surfaceHolder) {
+            if (this.previousState == STATE_RUNNING) {
+                this.setGameState(this.previousState)
+                this.doTimerTasks()
+            }
         }
     }
 

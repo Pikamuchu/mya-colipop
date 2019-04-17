@@ -71,6 +71,8 @@ class ColiPopView(context: Context, attrs: AttributeSet) : SurfaceView(context, 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         if (!hasWindowFocus) {
             this.thread.pause()
+        } else {
+            this.thread.restore()
         }
     }
 

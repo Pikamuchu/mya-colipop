@@ -19,7 +19,7 @@
 	integrate it with the rest of the system.  -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.mya.colipop"
-	android:versionCode="5" android:versionName="1.1.1">
+	android:versionCode="6" android:versionName="1.1.1">
 	<application android:icon="@drawable/icon"
 		android:label="@string/app_name"
 		android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
