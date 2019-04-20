@@ -7,16 +7,16 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MotionEvent
 import android.view.SurfaceHolder
-
-import com.mya.colipop.character.Colita
-import com.mya.colipop.character.Character
-import com.mya.colipop.board.EfectoResources
 import com.mya.colipop.board.Board
-
-import java.util.Timer
-import java.util.TimerTask
+import com.mya.colipop.board.EfectoResources
+import com.mya.colipop.character.Character
+import com.mya.colipop.character.Colita
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
+/**
+ * Manages colipop thread logic.
+ */
 class ColiPopThread : Thread {
 
     private val TAG = "ColiPop"
@@ -103,7 +103,7 @@ class ColiPopThread : Thread {
 
         ColiPopResources.initializeGraphics(resources)
 
-        this.character1 = Colita(resources, Character.POSICION_LEFT)
+        this.character1 = Colita(resources, Character.POSITION_LEFT)
 
         this.board = Board(resources, this.character1)
 
@@ -223,7 +223,7 @@ class ColiPopThread : Thread {
     }
 
     override fun run() {
-        // while running do stuff in this loop...bzzz!
+        // while running do stuff in this loop...
         while (run) {
             val frameInitTime = System.currentTimeMillis()
 
@@ -232,7 +232,7 @@ class ColiPopThread : Thread {
             var canvas: Canvas? = null
             try {
                 canvas = surfaceHolder.lockCanvas(null)
-                synchronized (surfaceHolder) {
+                synchronized(surfaceHolder) {
                     if (canvas != null) {
                         doDraw(canvas)
                     }
@@ -343,7 +343,7 @@ class ColiPopThread : Thread {
     }
 
     /**
-     * returns the current int value of game gameState as defined by gameState
+     * Returns the current int value of game gameState as defined by gameState
      * tracking constants
      *
      * @return
@@ -359,32 +359,19 @@ class ColiPopThread : Thread {
      * failure gameState, in the victory gameState, etc.
      *
      * @param mode one of the STATE_* constants
-     * @see .setGameState
      */
     fun setGameState(mode: Int) {
         synchronized(this.surfaceHolder) {
-            setGameState(mode, null)
-        }
-    }
-
-    /**
-     * Sets gameState based on input, optionally also passing in a text message.
-     *
-     * @param state
-     * @param message
-     */
-    fun setGameState(state: Int, message: CharSequence?) {
-        synchronized(this.surfaceHolder) {
             // change gameState if needed
-            if (this.gameState != state) {
+            if (this.gameState != mode) {
                 this.previousState = this.gameState
-                this.gameState = state
+                this.gameState = mode
             }
 
-            if (state == STATE_PLAY) {
+            if (mode == STATE_PLAY) {
                 // Nothing to do ?
 
-            } else if (state == STATE_RUNNING) {
+            } else if (mode == STATE_RUNNING) {
                 // When we enter the running gameState we should clear any old
                 // events in the queue
                 this.eventQueue.clear()
@@ -505,11 +492,11 @@ class ColiPopThread : Thread {
 
     companion object {
         // State-tracking constants.
-        val STATE_START = -1
-        val STATE_PLAY = 0
-        val STATE_GAME_END = 1
-        val STATE_PAUSE = 2
-        val STATE_RUNNING = 3
+        const val STATE_START = -1
+        const val STATE_PLAY = 0
+        const val STATE_GAME_END = 1
+        const val STATE_PAUSE = 2
+        const val STATE_RUNNING = 3
 
         /**
          * Creates a ColiPopThread clone

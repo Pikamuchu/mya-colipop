@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 
+/**
+ * Manages colipop resources.
+ */
 object ColiPopResources {
 
     private val TAG = "ColiPop"
@@ -43,6 +46,9 @@ object ColiPopResources {
         this.boardImage = BitmapFactory.decodeResource(resources, R.drawable.tablero, options)
     }
 
+    /**
+     * Perform graphic resize to adapt to the device screen.
+     */
     fun resizeGraphics(width: Int, height: Int) {
         SURFACE_WIDTH = width
         SURFACE_HEIGHT = height
@@ -74,6 +80,9 @@ object ColiPopResources {
         this.paintText.color = Color.BLACK
     }
 
+    /**
+     * Perform background change logic.
+     */
     fun changeLevelBackground(resources: Resources, level: Int) {
         val imageToRecicle = this.backgroundImage
 
@@ -106,6 +115,9 @@ object ColiPopResources {
         imageToRecicle?.recycle()
     }
 
+    /**
+     * Perform graphic recycle.
+     */
     fun destroy() {
         this.titleBG?.recycle()
         this.backgroundImage?.recycle()

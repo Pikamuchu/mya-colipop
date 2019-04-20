@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory
 import com.mya.colipop.R
 import com.mya.colipop.ResourceUtils
 
+/**
+ * Explosion object resources.
+ */
 object ExplosionResources {
 
     private val TAG = "ColiPop"
@@ -29,7 +32,6 @@ object ExplosionResources {
 
         // Explosiones en baja calidad
         val options = BitmapFactory.Options()
-        options.inPurgeable = true
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
         EXPLOSION_GRAPHICS_SIZE = 4
@@ -46,15 +48,15 @@ object ExplosionResources {
 
     }
 
+    /**
+     * Perform graphic resize to adapt to the device screen.
+     */
     fun resizeGraphics(refactorIndex: Float) {
         var normRefactorIndex = refactorIndex
-
-        // Prevencin de cosas raras
         if (normRefactorIndex == 0f) {
             normRefactorIndex = 1f
         }
 
-        // Cogemos el valor por debajo
         val width = java.lang.Float.valueOf(DEFAULT_EXPLOSION_WIDTH * normRefactorIndex).toInt()
         val height = java.lang.Float.valueOf(DEFAULT_EXPLOSION_HEIGHT * normRefactorIndex).toInt()
         val pixel_move = java.lang.Float.valueOf(DEFAULT_EXPLOSION_PIXEL_MOVE * normRefactorIndex).toInt()
@@ -71,6 +73,9 @@ object ExplosionResources {
 
     }
 
+    /**
+     * Perform graphic recycle.
+     */
     fun destroy() {
         ResourceUtils.recycleBitmaps(EXPLOSION_GRAPHICS_BITMAP)
     }

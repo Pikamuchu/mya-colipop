@@ -8,7 +8,7 @@ import android.graphics.Matrix
 import com.mya.colipop.ColiPopResources
 import com.mya.colipop.R
 
-class Colita(resources: Resources, posicion: Int) : Character(resources, posicion) {
+class Colita(resources: Resources, position: Int) : Character(resources, position) {
 
     private val TAG = "ColiPop"
 
@@ -178,14 +178,14 @@ class Colita(resources: Resources, posicion: Int) : Character(resources, posicio
         } else {
             bitmapIndex = index - 90
         }
-        bitmapIndex = bitmapIndex / 9
+        bitmapIndex /= 9
         if (bitmapIndex >= ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP.size) {
             bitmapIndex = 0
         }
-        val flecha_bitmaps = arrayOf(ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP[bitmapIndex], ColitaResources.METER_FLECHA2_GRAPHICS_BITMAP[bitmapIndex])
+        val flechaBitmaps = arrayOf(ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP[bitmapIndex], ColitaResources.METER_FLECHA2_GRAPHICS_BITMAP[bitmapIndex])
         // Rotating Bitmap
         var i = 0
-        for (bitmap in flecha_bitmaps) {
+        for (bitmap in flechaBitmaps) {
             // El meter es cuadrado !!
             ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, mtx, true)
             i++

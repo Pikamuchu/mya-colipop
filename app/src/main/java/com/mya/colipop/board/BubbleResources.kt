@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory
 import com.mya.colipop.R
 import com.mya.colipop.ResourceUtils
 
+/**
+ * Bubble object resources.
+ */
 object BubbleResources {
 
     private val TAG = "ColiPop"
@@ -23,20 +26,13 @@ object BubbleResources {
     var BUBBLE_HEIGHT_MEDIOS = BUBBLE_HEIGHT / 2
     var BUBBLE_PIXEL_MOVE = DEFAULT_BUBBLE_PIXEL_MOVE
 
-    // Status de union between bubbles
-    var BUBBLE_UNION_NONE = 0
-    var BUBBLE_UNION_UP = 1
-    var BUBBLE_UNION_DOWN = 2
-    var BUBBLE_UNION_LEFT = 3
-    var BUBBLE_UNION_RIGHT = 4
-
     // Status de movimiento
     var BUBBLE_MOVE_NONE = 0
     var BUBBLE_MOVE_UP = 1
     var BUBBLE_MOVE_DOWN = 2
     var BUBBLE_MOVE_LEFT = 3
     var BUBBLE_MOVE_RIGHT = 4
-    var BUBBLE_MOVE_TILT = 4
+    var BUBBLE_MOVE_TILT = 5
 
     // Bubble graphics
     var BUBBLE_GRAPHICS_SIZE = 4
@@ -48,20 +44,9 @@ object BubbleResources {
     lateinit var BUBBLE_MOVE_GRAPHICS_BITMAP: Array<Bitmap>
     var BUBBLE_MOVE_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3)
 
-    /* Save memory
-	// Bubble status graphics
-	public static int BUBBLE_STATUS_GRAPHICS_SIZE = 5;
-	public static Bitmap[] BUBBLE_STATUS_GRAPHICS_BITMAP;
-
-	// Bubble union graphics
-	public static int BUBBLE_UNION_GRAPHICS_SIZE = 5;
-	public static Bitmap[] BUBBLE_UNION_GRAPHICS_BITMAP;
-	*/
-
     fun initializeGraphics(resources: Resources) {
-        // Bubbles en baja calidad
+        // Low quality bubbles
         val options = BitmapFactory.Options()
-        options.inPurgeable = true
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
         BUBBLE_GRAPHICS_SIZE = 4
@@ -77,45 +62,26 @@ object BubbleResources {
                 BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_02, options),
                 BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_03, options),
                 BitmapFactory.decodeResource(resources, R.drawable.burbuja_move_04, options))
-
-        /* Save memory
-    	BUBBLE_STATUS_GRAPHICS_SIZE = 4;
-    	BUBBLE_STATUS_GRAPHICS_BITMAP = new Bitmap[BUBBLE_STATUS_GRAPHICS_SIZE];
-
-    	BUBBLE_STATUS_GRAPHICS_BITMAP[0] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_fondo_turquesa);
-    	BUBBLE_STATUS_GRAPHICS_BITMAP[1] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_fondo_verde);
-    	BUBBLE_STATUS_GRAPHICS_BITMAP[2] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_fondo_amarillo);
-    	BUBBLE_STATUS_GRAPHICS_BITMAP[3] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_fondo_rojo);
-
-    	BUBBLE_UNION_GRAPHICS_SIZE = 5;
-    	BUBBLE_UNION_GRAPHICS_BITMAP = new Bitmap[BUBBLE_UNION_GRAPHICS_SIZE];
-
-    	BUBBLE_UNION_GRAPHICS_BITMAP[0] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_01);
-    	BUBBLE_UNION_GRAPHICS_BITMAP[1] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_union_up);
-    	BUBBLE_UNION_GRAPHICS_BITMAP[2] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_union_down);
-    	BUBBLE_UNION_GRAPHICS_BITMAP[3] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_union_right);
-    	BUBBLE_UNION_GRAPHICS_BITMAP[4] = BitmapFactory.decodeResource(resources, R.drawable.burbuja_union_left);
-    	*/
-
     }
 
+    /**
+     * Perform graphic resize to adapt to the device screen.
+     */
     fun resizeGraphics(refactorIndex: Float) {
-        var refactorIndex = refactorIndex
-        // Prevencion de cosas raras
-        if (refactorIndex == 0f) {
-            refactorIndex = 1f
+        var normRefactorIndex = refactorIndex
+        if (normRefactorIndex == 0f) {
+            normRefactorIndex = 1f
         }
 
-        // Cogemos el valor por debajo
-        val width = java.lang.Float.valueOf(DEFAULT_BUBBLE_WIDTH * refactorIndex).toInt()
-        val height = java.lang.Float.valueOf(DEFAULT_BUBBLE_HEIGHT * refactorIndex).toInt()
-        val pixel_move = java.lang.Float.valueOf(DEFAULT_BUBBLE_PIXEL_MOVE * refactorIndex).toInt()
+        val width = java.lang.Float.valueOf(DEFAULT_BUBBLE_WIDTH * normRefactorIndex).toInt()
+        val height = java.lang.Float.valueOf(DEFAULT_BUBBLE_HEIGHT * normRefactorIndex).toInt()
+        val pixelMove = java.lang.Float.valueOf(DEFAULT_BUBBLE_PIXEL_MOVE * normRefactorIndex).toInt()
 
         BUBBLE_WIDTH = width
         BUBBLE_HEIGHT = height
         BUBBLE_WIDTH_MEDIOS = width / 2
         BUBBLE_HEIGHT_MEDIOS = height / 2
-        BUBBLE_PIXEL_MOVE = pixel_move
+        BUBBLE_PIXEL_MOVE = pixelMove
 
         var i = 0
         for (bitmap in BUBBLE_GRAPHICS_BITMAP) {

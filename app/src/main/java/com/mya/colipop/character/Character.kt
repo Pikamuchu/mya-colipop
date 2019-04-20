@@ -2,18 +2,18 @@ package com.mya.colipop.character
 
 import android.content.res.Resources
 import android.graphics.Canvas
-
 import com.mya.colipop.ColiPopResources
 import com.mya.colipop.board.ThingResources
+import java.util.*
 
-import java.util.Random
-
-abstract class Character(resources: Resources, posicion: Int) {
+abstract class Character(resources: Resources, position: Int) {
 
     private val TAG = "ColiPop"
 
-    // Posicion del character
-    var posicion = 0
+    protected var resources: Resources? = null
+
+    // Position del character
+    var position = 0
     // Offsets del character
     var offsetX = 0
     var offsetY = 0
@@ -33,26 +33,20 @@ abstract class Character(resources: Resources, posicion: Int) {
     // Propiedades characters
     var isGameover = false
     var isWinner = false
-    var mainThingType: Int = 0
     var status = 0
     var talkingText = ""
     lateinit var normalTalkingText: Array<String>
     lateinit var happyTalkingText: Array<String>
     lateinit var unhappyTalkingText: Array<String>
     lateinit var levelUpTalkingText: Array<String>
-    // Resources
-    protected var resources: Resources? = null
 
     init {
         this.resources = resources
-        this.posicion = posicion
+        this.position = position
     }
 
     /**
-     * Calculate offsets en funcion de la posicion del character y los tamaos indicados
-     *
-     * @param surfaceWidth
-     * @param surfaceHeight
+     * Perform offsets calculation for the device surface sizes
      */
     protected fun calculatePositionOffsets(surfaceWidth: Int, surfaceHeight: Int) {
 
@@ -66,17 +60,16 @@ abstract class Character(resources: Resources, posicion: Int) {
 
         var refactorIndexHeight = surfaceHeight.toFloat()
         refactorIndexHeight /= DEFAULT_SURFACE_HEIGHT.toFloat()
-        // Prevencin de cosas raras
         if (refactorIndexHeight == 0f) {
             refactorIndexHeight = 1f
         }
 
-        if (this.posicion == POSICION_LEFT) {
-            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSICION_LEFT_OFFSET_X * refactorIndexWidth).toInt()
-            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSICION_LEFT_OFFSET_Y * refactorIndexHeight).toInt()
+        if (this.position == POSITION_LEFT) {
+            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSITION_LEFT_OFFSET_X * refactorIndexWidth).toInt()
+            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSITION_LEFT_OFFSET_Y * refactorIndexHeight).toInt()
         } else {
-            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSICION_RIGHT_OFFSET_X * refactorIndexWidth).toInt()
-            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSICION_RIGHT_OFFSET_Y * refactorIndexHeight).toInt()
+            this.offsetX = java.lang.Float.valueOf(DEFAULT_POSITION_RIGHT_OFFSET_X * refactorIndexWidth).toInt()
+            this.offsetY = java.lang.Float.valueOf(DEFAULT_POSITION_RIGHT_OFFSET_Y * refactorIndexHeight).toInt()
         }
 
         this.meterOffsetX = offsetX
@@ -96,14 +89,14 @@ abstract class Character(resources: Resources, posicion: Int) {
         this.status = STATUS_TALKING
     }
 
-    protected fun doTalking(text: String) {
+    private fun doTalking(text: String) {
         this.talkingText = text
         this.animationIndex = 0
         this.status = STATUS_TALKING
     }
 
-    protected fun doTalking(text: Array<String>?) {
-        if (text == null || text.size == 0) {
+    private fun doTalking(text: Array<String>?) {
+        if (text == null || text.isEmpty()) {
             return
         }
         // Random talking
@@ -111,8 +104,8 @@ abstract class Character(resources: Resources, posicion: Int) {
         doTalking(text[textNum])
     }
 
-    protected fun doTalking(text: Array<String>?, textNum: Int) {
-        if (text == null || text.size == 0) {
+    private fun doTalking(text: Array<String>?, textNum: Int) {
+        if (text == null || text.isEmpty()) {
             return
         }
         // textNum is 1 based index
@@ -126,15 +119,15 @@ abstract class Character(resources: Resources, posicion: Int) {
         doTalking(this.normalTalkingText)
     }
 
-    fun doHappyTalking(textNum: Int) {
+    private fun doHappyTalking(textNum: Int) {
         doTalking(this.happyTalkingText, textNum)
     }
 
-    fun doUnhappyTalking(textNum: Int) {
+    private fun doUnhappyTalking(textNum: Int) {
         doTalking(this.unhappyTalkingText, textNum)
     }
 
-    fun doLevelUpTalking(textNum: Int) {
+    private fun doLevelUpTalking(textNum: Int) {
         doTalking(this.levelUpTalkingText, textNum)
     }
 
@@ -148,39 +141,35 @@ abstract class Character(resources: Resources, posicion: Int) {
         if (levelIndex < 1) {
             levelIndex = 1
         }
-        if (thingType == ThingResources.PIRULETA_OBJECT_TYPE) {
-            index = levelIndex
-        } else if (thingType == ThingResources.CARAMELO_OBJECT_TYPE) {
-            index = levelIndex
-        } else if (thingType == ThingResources.PEINE_OBJECT_TYPE) {
-            index = -baseIndex
-        } else if (thingType == ThingResources.RASPA_OBJECT_TYPE) {
-            index = -baseIndex
+
+        // calculating meter index
+        when (thingType) {
+            ThingResources.PIRULETA_OBJECT_TYPE -> index = levelIndex
+            ThingResources.CARAMELO_OBJECT_TYPE -> index = levelIndex
+            ThingResources.PEINE_OBJECT_TYPE -> index = -baseIndex
+            ThingResources.RASPA_OBJECT_TYPE -> index = -baseIndex
         }
-        // Updatemos contador global
+
+        // Updating global counter
         this.meterIndex += index
         if (this.meterIndex < 0) {
             this.meterIndex = 0
         }
+
         // Character talking
         if (index > 0) {
             // Nice object
-            val meterIndex = this.meterIndex
-            if (meterIndex == 10) {
-                doLevelUpTalking(1)
-            } else if (meterIndex == 15) {
-                doLevelUpTalking(2)
-            } else if (meterIndex >= 20) {
-                doLevelUpTalking(3)
-            } else {
-                doHappyTalking(index)
+            when {
+                this.meterIndex == 10 -> doLevelUpTalking(1)
+                this.meterIndex == 15 -> doLevelUpTalking(2)
+                this.meterIndex >= 20 -> doLevelUpTalking(3)
+                else -> doHappyTalking(index)
             }
         } else {
             // Ugly object
-            if (thingType == ThingResources.RASPA_OBJECT_TYPE) {
-                doUnhappyTalking(1)
-            } else if (thingType == ThingResources.PEINE_OBJECT_TYPE) {
-                doUnhappyTalking(2)
+            when (thingType) {
+                ThingResources.RASPA_OBJECT_TYPE -> doUnhappyTalking(1)
+                ThingResources.PEINE_OBJECT_TYPE -> doUnhappyTalking(2)
             }
         }
 
@@ -215,18 +204,18 @@ abstract class Character(resources: Resources, posicion: Int) {
     abstract fun destroy()
 
     companion object {
-        val POSICION_LEFT = 0
-        val POSICION_RIGHT = 1
-        val STATUS_NORMAL = 0
-        val STATUS_HAPPY = 1
-        val STATUS_UNHAPPY = 2
-        val STATUS_TALKING = 3
-        private val DEFAULT_SURFACE_WIDTH = 800
-        private val DEFAULT_SURFACE_HEIGHT = 480
-        private val DEFAULT_POSICION_LEFT_OFFSET_X = 10
-        private val DEFAULT_POSICION_LEFT_OFFSET_Y = 60
-        private val DEFAULT_POSICION_RIGHT_OFFSET_X = 625
-        private val DEFAULT_POSICION_RIGHT_OFFSET_Y = 60
+        const val POSITION_LEFT = 0
+        const val POSITION_RIGHT = 1
+        const val STATUS_NORMAL = 0
+        const val STATUS_HAPPY = 1
+        const val STATUS_UNHAPPY = 2
+        const val STATUS_TALKING = 3
+        private const val DEFAULT_SURFACE_WIDTH = 800
+        private const val DEFAULT_SURFACE_HEIGHT = 480
+        private const val DEFAULT_POSITION_LEFT_OFFSET_X = 10
+        private const val DEFAULT_POSITION_LEFT_OFFSET_Y = 60
+        private const val DEFAULT_POSITION_RIGHT_OFFSET_X = 625
+        private const val DEFAULT_POSITION_RIGHT_OFFSET_Y = 60
         protected var random = Random()
     }
 }

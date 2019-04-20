@@ -35,7 +35,7 @@ internal class TimerGameEvent : GameEvent() {
  * A GameEvent subclass for key based user input. Values are those used by
  * the standard onKey
  */
-internal class KeyGameEvent (var keyCode: Int, var up: Boolean, var msg: KeyEvent) : GameEvent() {
+internal class KeyGameEvent(var keyCode: Int, var up: Boolean, var msg: KeyEvent) : GameEvent() {
     init {
         this.type = GameEvent.KEY_EVENT
     }

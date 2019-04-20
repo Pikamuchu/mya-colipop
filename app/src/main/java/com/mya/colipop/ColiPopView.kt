@@ -11,6 +11,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 
+/**
+ * Manages colipop view logic.
+ */
 class ColiPopView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback {
 
     private val TAG = "ColiPop"
@@ -29,33 +32,33 @@ class ColiPopView(context: Context, attrs: AttributeSet) : SurfaceView(context, 
         // except if used in the layout editor.
         if (this.isInEditMode == false) {
             this.thread = ColiPopThread(this.holder, context,
-                @SuppressLint("HandlerLeak")
-                object : Handler() {
-                    override fun handleMessage(m: Message) {
-                        timerView.text = m.data.getString("text")
+                    @SuppressLint("HandlerLeak")
+                    object : Handler() {
+                        override fun handleMessage(m: Message) {
+                            timerView.text = m.data.getString("text")
 
-                        if (m.data.getString("STATE_GAME_END") != null) {
-                            //buttonRestart.setVisibility(View.VISIBLE);
-                            buttonRetry.visibility = View.VISIBLE
+                            if (m.data.getString("STATE_GAME_END") != null) {
+                                //buttonRestart.setVisibility(View.VISIBLE);
+                                buttonRetry.visibility = View.VISIBLE
 
-                            timerView.visibility = View.INVISIBLE
+                                timerView.visibility = View.INVISIBLE
 
-                            textView.visibility = View.VISIBLE
+                                textView.visibility = View.VISIBLE
 
-                            if (m.data.getString("PLAYER_WIN") != null) {
-                                textView.setText(R.string.winText)
-                            } else if (m.data.getString("CPU_WIN") != null) {
-                                textView.setText(R.string.loseText)
-                            } else {
-                                textView.setText(R.string.gameOverText)
+                                if (m.data.getString("PLAYER_WIN") != null) {
+                                    textView.setText(R.string.winText)
+                                } else if (m.data.getString("CPU_WIN") != null) {
+                                    textView.setText(R.string.loseText)
+                                } else {
+                                    textView.setText(R.string.gameOverText)
+                                }
+
+                                timerView.text = "0:00"
+                                textView.height = 20
+
                             }
-
-                            timerView.text = "0:00"
-                            textView.height = 20
-
                         }
                     }
-                }
             )
         }
 

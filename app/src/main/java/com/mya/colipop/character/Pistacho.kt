@@ -8,7 +8,9 @@ import android.graphics.Matrix
 import com.mya.colipop.ColiPopResources
 import com.mya.colipop.R
 
-class Pistacho(resources: Resources, posicion: Int) : Character(resources, posicion) {
+class Pistacho(resources: Resources, position: Int) : Character(resources, position) {
+
+    private val TAG = "ColiPop"
 
     init {
         ColitaResources.initializeGraphics(resources)
@@ -48,56 +50,51 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
             this.status = Character.STATUS_NORMAL
         }
 
-        // Localizing variables
-        val animationIndex = this.animationIndex
-        var offsetX = this.offsetX
-        var offsetY = this.offsetY
-
         // Animate Cara
-        var graphicIndex = ColitaResources.CARA_ANIMATION_SEQUENCE[animationIndex]
+        var graphicIndex = ColitaResources.CARA_ANIMATION_SEQUENCE[this.animationIndex]
         if (graphicIndex >= ColitaResources.CARA_GRAPHICS_BITMAP.size) {
             graphicIndex = 0
         }
-        canvas.drawBitmap(ColitaResources.CARA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+        canvas.drawBitmap(ColitaResources.CARA_GRAPHICS_BITMAP[graphicIndex], this.offsetX.toFloat(), this.offsetY.toFloat(), null)
 
         // Animate Ojos
-        graphicIndex = ColitaResources.OJOS_ANIMATION_SEQUENCE[animationIndex]
+        graphicIndex = ColitaResources.OJOS_ANIMATION_SEQUENCE[this.animationIndex]
         if (graphicIndex >= ColitaResources.OJOS_GRAPHICS_BITMAP.size) {
             graphicIndex = 0
         }
-        canvas.drawBitmap(ColitaResources.OJOS_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+        canvas.drawBitmap(ColitaResources.OJOS_GRAPHICS_BITMAP[graphicIndex], this.offsetX.toFloat(), this.offsetY.toFloat(), null)
 
         // Animate Boca
         val status = this.status
         if (status == Character.STATUS_NORMAL) {
-            graphicIndex = ColitaResources.BOCA_NORMAL_ANIMATION_SEQUENCE[animationIndex]
+            graphicIndex = ColitaResources.BOCA_NORMAL_ANIMATION_SEQUENCE[this.animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
-            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], this.offsetX.toFloat(), this.offsetY.toFloat(), null)
         } else if (status == Character.STATUS_HAPPY) {
-            graphicIndex = ColitaResources.BOCA_HAPPY_ANIMATION_SEQUENCE[animationIndex]
+            graphicIndex = ColitaResources.BOCA_HAPPY_ANIMATION_SEQUENCE[this.animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
-            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], this.offsetX.toFloat(), this.offsetY.toFloat(), null)
         } else if (status == Character.STATUS_UNHAPPY) {
-            graphicIndex = ColitaResources.BOCA_UNHAPPY_ANIMATION_SEQUENCE[animationIndex]
+            graphicIndex = ColitaResources.BOCA_UNHAPPY_ANIMATION_SEQUENCE[this.animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
-            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], this.offsetX.toFloat(), this.offsetY.toFloat(), null)
         } else if (status == Character.STATUS_TALKING) {
-            graphicIndex = ColitaResources.BOCA_TALKING_ANIMATION_SEQUENCE[animationIndex]
+            graphicIndex = ColitaResources.BOCA_TALKING_ANIMATION_SEQUENCE[this.animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
-            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+            canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], this.offsetX.toFloat(), this.offsetY.toFloat(), null)
         }
 
         // Animation texto
         if (status == Character.STATUS_TALKING) {
-            graphicIndex = ColitaResources.DIALOGO_ANIMATION_SEQUENCE[animationIndex]
+            graphicIndex = ColitaResources.DIALOGO_ANIMATION_SEQUENCE[this.animationIndex]
             if (graphicIndex >= ColitaResources.DIALOGO_CORTO_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
@@ -116,11 +113,9 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
         }
 
         // Animate Meter
-        offsetY = this.meterOffsetY
-        offsetX = this.meterOffsetX
 
         // De momento el fondo es una imagen fija
-        canvas.drawBitmap(ColitaResources.METER_FONDO_GRAPHICS_BITMAP[0], offsetX.toFloat(), offsetY.toFloat(), null)
+        canvas.drawBitmap(ColitaResources.METER_FONDO_GRAPHICS_BITMAP[0], this.meterOffsetX.toFloat(), this.meterOffsetY.toFloat(), null)
 
         // Animacin de cambio de nivel
         if (this.isShowLevelUpText) {
@@ -135,21 +130,18 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
             if (graphicIndex >= ColitaResources.LEVEL_UP_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
-            canvas.drawBitmap(ColitaResources.LEVEL_UP_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+            canvas.drawBitmap(ColitaResources.LEVEL_UP_GRAPHICS_BITMAP[graphicIndex], this.meterOffsetX.toFloat(), this.meterOffsetY.toFloat(), null)
         }
 
-        // Flecha
-        graphicIndex = ColitaResources.METER_FLECHA_ANIMATION_SEQUENCE[animationIndex]
+        // Meter arrow
+        graphicIndex = ColitaResources.METER_FLECHA_ANIMATION_SEQUENCE[this.animationIndex]
         if (graphicIndex >= ColitaResources.METER_FLECHA_GRAPHICS_BITMAP.size) {
             graphicIndex = 0
         }
-        canvas.drawBitmap(ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
+        canvas.drawBitmap(ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[graphicIndex], this.meterOffsetX.toFloat(), this.meterOffsetY.toFloat(), null)
 
         // Level value
-        offsetY = this.levelOffsetY
-        offsetX = this.levelOffsetX
-
-        canvas.drawText(" = " + (this.currentLevel + 1), offsetX.toFloat(), offsetY.toFloat(), ColiPopResources.paint)
+        canvas.drawText(" = " + (this.currentLevel + 1), this.levelOffsetX.toFloat(), this.levelOffsetY.toFloat(), ColiPopResources.paint)
     }
 
     override fun updateMeterStatus(index: Int) {
@@ -162,21 +154,21 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
         } else {
             mtx.postRotate(180f)
         }
-        // Calculatendo bitmap index
-        var bitmapIndex = 0
+        // Calculating bitmap index
+        var bitmapIndex: Int
         if (index < 90) {
             bitmapIndex = index
         } else {
             bitmapIndex = index - 90
         }
-        bitmapIndex = bitmapIndex / 9
+        bitmapIndex /= 9
         if (bitmapIndex >= ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP.size) {
             bitmapIndex = 0
         }
-        val flecha_bitmaps = arrayOf(ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP[bitmapIndex], ColitaResources.METER_FLECHA2_GRAPHICS_BITMAP[bitmapIndex])
+        val flechaBitmaps = arrayOf(ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP[bitmapIndex], ColitaResources.METER_FLECHA2_GRAPHICS_BITMAP[bitmapIndex])
         // Rotating Bitmap
         var i = 0
-        for (bitmap in flecha_bitmaps) {
+        for (bitmap in flechaBitmaps) {
             if (bitmap != null) {
                 // El meter es cuadrado !!
                 ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, mtx, true)
@@ -187,10 +179,5 @@ class Pistacho(resources: Resources, posicion: Int) : Character(resources, posic
 
     override fun destroy() {
         PistachoResources.destroy()
-    }
-
-    companion object {
-
-        private val TAG = "ColiPop"
     }
 }

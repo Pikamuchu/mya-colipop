@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory
 import com.mya.colipop.R
 import com.mya.colipop.ResourceUtils
 
+/**
+ * Thing object resources.
+ */
 object ThingResources {
 
     private val TAG = "ColiPop"
@@ -38,8 +41,6 @@ object ThingResources {
 
     var THING_ANIMATION_SEQUENCE = intArrayOf(0)
 
-    var THING_GRANDE_ANIMATION_SEQUENCE = intArrayOf(0)
-
     var THING_REMOVED_GRAPHICS_SIZE = 4
     var THING_REMOVED_ANIMATION_SEQUENCE = intArrayOf(0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 0, 1, 1, 2, 2, 3, 3, 0, 0, 1, 1, 2, 2, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3)
 
@@ -66,7 +67,7 @@ object ThingResources {
 
 
     fun initializeGraphics(resources: Resources) {
-        // Si se anyaden mas bitmaps hay que subir esto
+        // Increase Si se anyaden mas bitmaps hay que subir esto
         THING_GRAPHICS_SIZE = 1
         CARAMELO_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.caramelo_01))
         PIRULETA_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.piruleta_01))
@@ -78,6 +79,9 @@ object ThingResources {
         PEINE_GRANDE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.peine_grande_01))
     }
 
+    /**
+     * Perform graphic resize to adapt to the device screen.
+     */
     fun resizeGraphics(refactorIndex: Float) {
         var normRefactorIndex = refactorIndex
 
@@ -155,6 +159,9 @@ object ThingResources {
         }
     }
 
+    /**
+     * Perform graphic recycle.
+     */
     fun destroy() {
         ResourceUtils.recycleBitmaps(CARAMELO_GRAPHICS_BITMAP)
         ResourceUtils.recycleBitmaps(CARAMELO_GRANDE_GRAPHICS_BITMAP)

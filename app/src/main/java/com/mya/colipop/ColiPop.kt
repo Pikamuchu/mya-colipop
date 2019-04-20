@@ -8,13 +8,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 
+/**
+ * Manages colipop activity events.
+ */
 class ColiPop : Activity(), View.OnClickListener {
 
     private val TAG = "ColiPop"
 
-     // A handle to the thread that's actually running the animation.
+    // A handle to the thread that's actually running the animation.
     private lateinit var coliPopThread: ColiPopThread
-     // A handle to the View in which the game is running.
+    // A handle to the View in which the game is running.
     private lateinit var coliPopView: ColiPopView
     // the play start button
     private lateinit var button: Button
@@ -69,14 +72,14 @@ class ColiPop : Activity(), View.OnClickListener {
             this.textView.setText(R.string.helpText)
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY)
 
-        // we have entered game play, now we about to start running
+            // we have entered game play, now we about to start running
         } else if (this.coliPopThread.getGameState() == ColiPopThread.STATE_PLAY) {
             this.button.visibility = View.INVISIBLE
             this.textView.visibility = View.INVISIBLE
             this.timerView.visibility = View.VISIBLE
             this.coliPopThread.setGameState(ColiPopThread.STATE_RUNNING)
 
-        // this is a retry button
+            // this is a retry button
         } else if (this.buttonRetry == v) {
             this.buttonRetry.visibility = View.INVISIBLE
             this.button.text = "PLAY!"

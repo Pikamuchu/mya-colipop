@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory
 import com.mya.colipop.R
 import com.mya.colipop.ResourceUtils
 
+/**
+ * Efecto object resources.
+ */
 object EfectoResources {
 
     private val TAG = "ColiPop"
@@ -28,10 +31,7 @@ object EfectoResources {
     lateinit var EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP: Array<Bitmap>
 
     var EFECTO_PLAYER_TOUCH_OBJECT_TYPE = 100
-    var EFECTO_CPU_TOUCH_OBJECT_TYPE = 101
     var EFECTO_BLOQUEO_OBJECT_TYPE = 102
-    var EFECTO_CPU_MOVE_RIGHT_OBJECT_TYPE = 103
-    var EFECTO_CPU_MOVE_LEFT_OBJECT_TYPE = 104
     var EFECTO_PLAYER_MOVE_RIGHT_OBJECT_TYPE = 105
     var EFECTO_PLAYER_MOVE_LEFT_OBJECT_TYPE = 106
     var EFECTO_TOUCH_MOVE_OBJECT_TYPE = 107
@@ -40,7 +40,6 @@ object EfectoResources {
 
     fun initializeGraphics(resources: Resources) {
         val options = BitmapFactory.Options()
-        options.inPurgeable = true
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
         EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.efecto_player_touch_burbuja_01, options), BitmapFactory.decodeResource(resources, R.drawable.efecto_player_touch_burbuja_02, options), BitmapFactory.decodeResource(resources, R.drawable.efecto_player_touch_burbuja_03, options), BitmapFactory.decodeResource(resources, R.drawable.efecto_player_touch_burbuja_04, options))
@@ -51,15 +50,15 @@ object EfectoResources {
         EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.efecto_touch_move_01, options), BitmapFactory.decodeResource(resources, R.drawable.efecto_touch_move_02, options), BitmapFactory.decodeResource(resources, R.drawable.efecto_touch_move_03, options), BitmapFactory.decodeResource(resources, R.drawable.efecto_touch_move_04, options))
     }
 
+    /**
+     * Perform graphic resize to adapt to the device screen.
+     */
     fun resizeGraphics(refactorIndex: Float) {
         var normRefactorIndex = refactorIndex
-
-        // Prevencin de cosas raras
         if (normRefactorIndex == 0f) {
             normRefactorIndex = 1f
         }
 
-        // Cogemos el valor por debajo
         val width = java.lang.Float.valueOf(DEFAULT_EFECTO_WIDTH * normRefactorIndex).toInt()
         val height = java.lang.Float.valueOf(DEFAULT_EFECTO_HEIGHT * normRefactorIndex).toInt()
         val pixel_move = java.lang.Float.valueOf(DEFAULT_EFECTO_PIXEL_MOVE * normRefactorIndex).toInt()
@@ -88,21 +87,20 @@ object EfectoResources {
 
         i = 0
         for (bitmap in EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
 
         i = 0
         for (bitmap in EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP) {
-            if (bitmap != null) {
-                EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            }
+            EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
             i++
         }
     }
 
+    /**
+     * Perform graphic recycle.
+     */
     fun destroy() {
         ResourceUtils.recycleBitmaps(EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP)
         ResourceUtils.recycleBitmaps(EFECTO_BLOQUEO_GRAPHICS_BITMAP)
