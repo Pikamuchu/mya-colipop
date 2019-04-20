@@ -272,7 +272,7 @@ class Board(resources: Resources, private var character1: Character) {
                     explosion.graphicIndex++
 
                     // Caso bubble ha acabado de exploder
-                    if (explosion.graphicIndex >= ExplosionResources.EXPLOSION_GRAPHICS_SIZE) {
+                    if (explosion.graphicIndex >= ExplosionResources.EXPLOSION_GRAPHICS_BITMAP.size) {
                         cell.explosion = null
 
                         if (thing != null && thing.status == ThingResources.THING_STATUS_EXPLODE) {

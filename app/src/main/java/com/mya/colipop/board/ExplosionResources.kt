@@ -25,7 +25,6 @@ object ExplosionResources {
     var EXPLOSION_PIXEL_MOVE = DEFAULT_EXPLOSION_PIXEL_MOVE
 
     // Explosion graphics & animation properties
-    var EXPLOSION_GRAPHICS_SIZE = 4
     lateinit var EXPLOSION_GRAPHICS_BITMAP: Array<Bitmap>
 
     fun initializeGraphics(resources: Resources) {
@@ -34,7 +33,6 @@ object ExplosionResources {
         val options = BitmapFactory.Options()
         options.inPreferredConfig = Bitmap.Config.ARGB_4444
 
-        EXPLOSION_GRAPHICS_SIZE = 4
         EXPLOSION_GRAPHICS_BITMAP = arrayOf(
                 BitmapFactory.decodeResource(resources, R.drawable.explosion_01, options),
                 BitmapFactory.decodeResource(resources, R.drawable.explosion_02, options),
@@ -65,12 +63,9 @@ object ExplosionResources {
         EXPLOSION_HEIGHT = height
         EXPLOSION_PIXEL_MOVE = pixel_move
 
-        var i = 0
-        for (bitmap in EXPLOSION_GRAPHICS_BITMAP) {
-            EXPLOSION_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in EXPLOSION_GRAPHICS_BITMAP.withIndex()) {
+            EXPLOSION_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
-
     }
 
     /**

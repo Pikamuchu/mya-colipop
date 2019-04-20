@@ -61,40 +61,30 @@ object EfectoResources {
 
         val width = java.lang.Float.valueOf(DEFAULT_EFECTO_WIDTH * normRefactorIndex).toInt()
         val height = java.lang.Float.valueOf(DEFAULT_EFECTO_HEIGHT * normRefactorIndex).toInt()
-        val pixel_move = java.lang.Float.valueOf(DEFAULT_EFECTO_PIXEL_MOVE * normRefactorIndex).toInt()
+        val pixelMove = java.lang.Float.valueOf(DEFAULT_EFECTO_PIXEL_MOVE * normRefactorIndex).toInt()
 
         EFECTO_WIDTH = width
         EFECTO_HEIGHT = height
-        EFECTO_PIXEL_MOVE = pixel_move
+        EFECTO_PIXEL_MOVE = pixelMove
 
-        var i = 0
-        for (bitmap in EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP) {
-            EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP.withIndex()) {
+            EFECTO_PLAYER_TOUCH_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in EFECTO_BLOQUEO_GRAPHICS_BITMAP) {
-            EFECTO_BLOQUEO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in EFECTO_BLOQUEO_GRAPHICS_BITMAP.withIndex()) {
+            EFECTO_BLOQUEO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP) {
-            EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP.withIndex()) {
+            EFECTO_PLAYER_MOVE_LEFT_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP) {
-            EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP.withIndex()) {
+            EFECTO_PLAYER_MOVE_RIGHT_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP) {
-            EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP.withIndex()) {
+            EFECTO_TOUCH_MOVE_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
     }
 

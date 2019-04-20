@@ -7,32 +7,35 @@ import android.graphics.BitmapFactory
 import com.mya.colipop.R
 import com.mya.colipop.ResourceUtils
 
+/**
+ * Colita character object resources.
+ */
 object ColitaResources {
 
     private val TAG = "ColiPop"
 
     // Colita baseline sizes
-    private val DEFAULT_SURFACE_WIDTH = 800
-    private val DEFAULT_SURFACE_HEIGHT = 480
-    private val DEFAULT_WIDTH = 150
-    private val DEFAULT_HEIGHT = 125
-    private val DEFAULT_PIXEL_MOVE = 0
+    private const val DEFAULT_SURFACE_WIDTH = 800
+    private const val DEFAULT_SURFACE_HEIGHT = 480
+    private const val DEFAULT_WIDTH = 150
+    private const val DEFAULT_HEIGHT = 125
+    private const val DEFAULT_PIXEL_MOVE = 0
     // Dialogo baseline Sizes
-    private val DEFAULT_DIALOGO_CORTO_WIDTH = 150
-    private val DEFAULT_DIALOGO_MEDIO_WIDTH = 300
-    private val DEFAULT_DIALOGO_MEDIO2_WIDTH = 450
-    private val DEFAULT_DIALOGO_LARGO_WIDTH = 600
-    private val DEFAULT_DIALOGO_HEIGHT = 75
+    private const val DEFAULT_DIALOGO_CORTO_WIDTH = 150
+    private const val DEFAULT_DIALOGO_MEDIO_WIDTH = 300
+    private const val DEFAULT_DIALOGO_MEDIO2_WIDTH = 450
+    private const val DEFAULT_DIALOGO_LARGO_WIDTH = 600
+    private const val DEFAULT_DIALOGO_HEIGHT = 75
     // Colita sizes
-    var WIDTH = DEFAULT_WIDTH
-    var HEIGHT = DEFAULT_HEIGHT
-    var PIXEL_MOVE = DEFAULT_PIXEL_MOVE
+    private var WIDTH = DEFAULT_WIDTH
+    private var HEIGHT = DEFAULT_HEIGHT
+    private var PIXEL_MOVE = DEFAULT_PIXEL_MOVE
     // Dialogo Sizes
-    var DIALOGO_CORTO_WIDTH = DEFAULT_DIALOGO_CORTO_WIDTH
-    var DIALOGO_MEDIO_WIDTH = DEFAULT_DIALOGO_MEDIO_WIDTH
-    var DIALOGO_MEDIO2_WIDTH = DEFAULT_DIALOGO_MEDIO2_WIDTH
-    var DIALOGO_LARGO_WIDTH = DEFAULT_DIALOGO_LARGO_WIDTH
-    var DIALOGO_HEIGHT = DEFAULT_DIALOGO_HEIGHT
+    private var DIALOGO_CORTO_WIDTH = DEFAULT_DIALOGO_CORTO_WIDTH
+    private var DIALOGO_MEDIO_WIDTH = DEFAULT_DIALOGO_MEDIO_WIDTH
+    private var DIALOGO_MEDIO2_WIDTH = DEFAULT_DIALOGO_MEDIO2_WIDTH
+    private var DIALOGO_LARGO_WIDTH = DEFAULT_DIALOGO_LARGO_WIDTH
+    private var DIALOGO_HEIGHT = DEFAULT_DIALOGO_HEIGHT
 
     // Texto Lengths
     var TEXTO_CORTO = 10
@@ -70,9 +73,11 @@ object ColitaResources {
     lateinit var LEVEL_UP_GRAPHICS_BITMAP: Array<Bitmap>
     var LEVEL_UP_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1)
 
+    /**
+     * Perform graphic initialization.
+     */
     fun initializeGraphics(resources: Resources) {
         val options = BitmapFactory.Options()
-        options.inPurgeable = true
 
         CARA_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.coli_cara, options))
         OJOS_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.coli_ojos_01, options), BitmapFactory.decodeResource(resources, R.drawable.coli_ojos_02, options), BitmapFactory.decodeResource(resources, R.drawable.coli_ojos_03, options))
@@ -92,6 +97,9 @@ object ColitaResources {
         LEVEL_UP_GRAPHICS_BITMAP = arrayOf(BitmapFactory.decodeResource(resources, R.drawable.level_up_01, options), BitmapFactory.decodeResource(resources, R.drawable.level_up_02, options))
     }
 
+    /**
+     * Perform graphic resize to adapt to the device screen.
+     */
     fun resizeGraphics(surfaceWidth: Int, surfaceHeight: Int) {
         //Log.d(TAG, "Surface resize: width = " + surfaceWidth + ", height = " + surfaceHeight);
 
@@ -118,94 +126,73 @@ object ColitaResources {
         HEIGHT = height
         PIXEL_MOVE = pixel_move
 
-        var i = 0
-        for (bitmap in CARA_GRAPHICS_BITMAP) {
-            CARA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in CARA_GRAPHICS_BITMAP.withIndex()) {
+            CARA_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in OJOS_GRAPHICS_BITMAP) {
-            OJOS_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in OJOS_GRAPHICS_BITMAP.withIndex()) {
+            OJOS_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in BOCA_GRAPHICS_BITMAP) {
-            BOCA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in BOCA_GRAPHICS_BITMAP.withIndex()) {
+            BOCA_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
         // El meter es cuadrado !!
 
-        i = 0
-        for (bitmap in METER_FONDO_GRAPHICS_BITMAP) {
-            METER_FONDO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            i++
+        for ((index, bitmap) in METER_FONDO_GRAPHICS_BITMAP.withIndex()) {
+            METER_FONDO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, width, true)
         }
 
-        i = 0
-        for (bitmap in METER_FLECHA_GRAPHICS_BITMAP) {
-            METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            i++
+        for ((index, bitmap) in METER_FLECHA_GRAPHICS_BITMAP.withIndex()) {
+            METER_FLECHA_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, width, true)
         }
 
-        i = 0
-        for (bitmap in METER_FLECHA1_GRAPHICS_BITMAP) {
-            METER_FLECHA1_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            i++
+        for ((index, bitmap) in METER_FLECHA1_GRAPHICS_BITMAP.withIndex()) {
+            METER_FLECHA1_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, width, true)
         }
 
-        i = 0
-        for (bitmap in METER_FLECHA2_GRAPHICS_BITMAP) {
-            METER_FLECHA2_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            i++
+        for ((index, bitmap) in METER_FLECHA2_GRAPHICS_BITMAP.withIndex()) {
+            METER_FLECHA2_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, width, true)
         }
 
-        i = 0
-        for (bitmap in LEVEL_UP_GRAPHICS_BITMAP) {
-            LEVEL_UP_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, width, true)
-            i++
+        for ((index, bitmap) in LEVEL_UP_GRAPHICS_BITMAP.withIndex()) {
+            LEVEL_UP_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, width, true)
         }
 
         // Cogemos el valor por debajo
-        val dialogo_corto_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_CORTO_WIDTH * refactorIndex).toInt()
-        val dialogo_medio_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO_WIDTH * refactorIndex).toInt()
-        val dialogo_medio2_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO2_WIDTH * refactorIndex).toInt()
-        val dialogo_largo_width = java.lang.Float.valueOf(DEFAULT_DIALOGO_LARGO_WIDTH * refactorIndex).toInt()
-        val dialogo_height = java.lang.Float.valueOf(DEFAULT_DIALOGO_HEIGHT * refactorIndexHeight).toInt()
+        val dialogoCortoWidth = java.lang.Float.valueOf(DEFAULT_DIALOGO_CORTO_WIDTH * refactorIndex).toInt()
+        val dialogoMedioWidth = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO_WIDTH * refactorIndex).toInt()
+        val dialogoMedio2Width = java.lang.Float.valueOf(DEFAULT_DIALOGO_MEDIO2_WIDTH * refactorIndex).toInt()
+        val dialogoLargoWidth = java.lang.Float.valueOf(DEFAULT_DIALOGO_LARGO_WIDTH * refactorIndex).toInt()
+        val dialogoHeight = java.lang.Float.valueOf(DEFAULT_DIALOGO_HEIGHT * refactorIndexHeight).toInt()
 
-        DIALOGO_CORTO_WIDTH = dialogo_corto_width
-        DIALOGO_MEDIO_WIDTH = dialogo_medio_width
-        DIALOGO_MEDIO2_WIDTH = dialogo_medio2_width
-        DIALOGO_LARGO_WIDTH = dialogo_largo_width
-        DIALOGO_HEIGHT = dialogo_height
+        DIALOGO_CORTO_WIDTH = dialogoCortoWidth
+        DIALOGO_MEDIO_WIDTH = dialogoMedioWidth
+        DIALOGO_MEDIO2_WIDTH = dialogoMedio2Width
+        DIALOGO_LARGO_WIDTH = dialogoLargoWidth
+        DIALOGO_HEIGHT = dialogoHeight
 
-        i = 0
-        for (bitmap in DIALOGO_CORTO_GRAPHICS_BITMAP) {
-            DIALOGO_CORTO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_corto_width, dialogo_height, true)
-            i++
+        for ((index, bitmap) in DIALOGO_CORTO_GRAPHICS_BITMAP.withIndex()) {
+            DIALOGO_CORTO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, dialogoCortoWidth, dialogoHeight, true)
         }
 
-        i = 0
-        for (bitmap in DIALOGO_MEDIO_GRAPHICS_BITMAP) {
-            DIALOGO_MEDIO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_medio_width, dialogo_height, true)
-            i++
+        for ((index, bitmap) in DIALOGO_MEDIO_GRAPHICS_BITMAP.withIndex()) {
+            DIALOGO_MEDIO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, dialogoMedioWidth, dialogoHeight, true)
         }
 
-        i = 0
-        for (bitmap in DIALOGO_MEDIO2_GRAPHICS_BITMAP) {
-            DIALOGO_MEDIO2_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_medio2_width, dialogo_height, true)
-            i++
+        for ((index, bitmap) in DIALOGO_MEDIO2_GRAPHICS_BITMAP.withIndex()) {
+            DIALOGO_MEDIO2_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, dialogoMedio2Width, dialogoHeight, true)
         }
 
-        i = 0
-        for (bitmap in DIALOGO_LARGO_GRAPHICS_BITMAP) {
-            DIALOGO_LARGO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, dialogo_largo_width, dialogo_height, true)
-            i++
+        for ((index, bitmap) in DIALOGO_LARGO_GRAPHICS_BITMAP.withIndex()) {
+            DIALOGO_LARGO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, dialogoLargoWidth, dialogoHeight, true)
         }
     }
 
+    /**
+     * Perform graphic recycle.
+     */
     fun destroy() {
         ResourceUtils.recycleBitmaps(CARA_GRAPHICS_BITMAP)
         ResourceUtils.recycleBitmaps(OJOS_GRAPHICS_BITMAP)

@@ -30,6 +30,9 @@ object ColiPopResources {
     var paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var paintText = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    /**
+     * Perform graphic initialization.
+     */
     fun initializeGraphics(resources: Resources) {
         // Fondo en baja calidad
         val options = BitmapFactory.Options()

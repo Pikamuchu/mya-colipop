@@ -84,8 +84,6 @@ object ThingResources {
      */
     fun resizeGraphics(refactorIndex: Float) {
         var normRefactorIndex = refactorIndex
-
-        // Prevencin de cosas raras
         if (normRefactorIndex == 0f) {
             normRefactorIndex = 1f
         }
@@ -101,28 +99,20 @@ object ThingResources {
         THING_HEIGHT_MEDIO = height / 2
         THING_PIXEL_MOVE = pixel_move
 
-        var i = 0
-        for (bitmap in CARAMELO_GRAPHICS_BITMAP) {
-            CARAMELO_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in CARAMELO_GRAPHICS_BITMAP.withIndex()) {
+            CARAMELO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in PIRULETA_GRAPHICS_BITMAP) {
-            PIRULETA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in PIRULETA_GRAPHICS_BITMAP.withIndex()) {
+            PIRULETA_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in RASPA_GRAPHICS_BITMAP) {
-            RASPA_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in RASPA_GRAPHICS_BITMAP.withIndex()) {
+            RASPA_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in PEINE_GRAPHICS_BITMAP) {
-            PEINE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in PEINE_GRAPHICS_BITMAP.withIndex()) {
+            PEINE_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
         // Cogemos el valor por debajo
@@ -134,28 +124,20 @@ object ThingResources {
         THING_GRANDE_HEIGHT = height
         THING_GRANDE_PIXEL_MOVE = pixel_move
 
-        i = 0
-        for (bitmap in CARAMELO_GRANDE_GRAPHICS_BITMAP) {
-            CARAMELO_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in CARAMELO_GRANDE_GRAPHICS_BITMAP.withIndex()) {
+            CARAMELO_GRANDE_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in PIRULETA_GRANDE_GRAPHICS_BITMAP) {
-            PIRULETA_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in PIRULETA_GRANDE_GRAPHICS_BITMAP.withIndex()) {
+            PIRULETA_GRANDE_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in RASPA_GRANDE_GRAPHICS_BITMAP) {
-            RASPA_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in RASPA_GRANDE_GRAPHICS_BITMAP.withIndex()) {
+            RASPA_GRANDE_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        i = 0
-        for (bitmap in PEINE_GRANDE_GRAPHICS_BITMAP) {
-            PEINE_GRANDE_GRAPHICS_BITMAP[i] = Bitmap.createScaledBitmap(bitmap, width, height, true)
-            i++
+        for ((index, bitmap) in PEINE_GRANDE_GRAPHICS_BITMAP.withIndex()) {
+            PEINE_GRANDE_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
     }
 

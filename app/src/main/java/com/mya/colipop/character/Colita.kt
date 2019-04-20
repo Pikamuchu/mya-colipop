@@ -172,7 +172,7 @@ class Colita(resources: Resources, position: Int) : Character(resources, positio
             mtx.postRotate(180f)
         }
         // Calculatendo bitmap index
-        var bitmapIndex = 0
+        var bitmapIndex: Int
         if (index < 90) {
             bitmapIndex = index
         } else {
@@ -184,11 +184,8 @@ class Colita(resources: Resources, position: Int) : Character(resources, positio
         }
         val flechaBitmaps = arrayOf(ColitaResources.METER_FLECHA1_GRAPHICS_BITMAP[bitmapIndex], ColitaResources.METER_FLECHA2_GRAPHICS_BITMAP[bitmapIndex])
         // Rotating Bitmap
-        var i = 0
-        for (bitmap in flechaBitmaps) {
-            // El meter es cuadrado !!
+        for ((i, bitmap) in flechaBitmaps.withIndex()) {
             ColitaResources.METER_FLECHA_GRAPHICS_BITMAP[i] = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, mtx, true)
-            i++
         }
     }
 
