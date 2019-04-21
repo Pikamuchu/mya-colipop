@@ -310,8 +310,8 @@ class ColiPopThread : Thread {
             val cellOrigin = board.getCellInCoordinates(this.eventActionMoveAnterior!!.x, this.eventActionMoveAnterior!!.y)
             val cellDestiny = board.getCellInCoordinates(event.x, event.y)
             ColiPopActions.updateTouchBoard(cellOrigin, cellDestiny, board, true, false)
-            ColiPopActions.tiltOtherCells(board, cellDestiny)
-            if (cellOrigin == null || cellDestiny == null || cellOrigin.posX != cellDestiny.posX || cellOrigin.posY != cellDestiny.posY) {
+            if (cellOrigin != null && cellDestiny != null && (cellOrigin.posX != cellDestiny.posX || cellOrigin.posY != cellDestiny.posY)) {
+                ColiPopActions.tiltOtherCells(board, cellDestiny)
                 this.eventActionMoveAnterior = event
             }
 

@@ -71,7 +71,9 @@ object ColiPopActions {
                 //Log.d(TAG, "No se ha encontrado movimiento valido. No hacemos nada.");
                 return
             }
-        } else if (cellOrigin.thing != null && cellOrigin.bubble?.move != BubbleResources.BUBBLE_MOVE_NONE) {
+        } else if (cellOrigin.thing != null
+                && (cellOrigin.bubble?.move == BubbleResources.BUBBLE_MOVE_LEFT
+                        || cellOrigin.bubble?.move == BubbleResources.BUBBLE_MOVE_RIGHT)) {
             return
         }
 
