@@ -83,6 +83,9 @@ abstract class Character(resources: Resources, position: Int) {
 
     }
 
+    /**
+     * Perform character talk animation.
+     */
     fun doTalking(text: Int) {
         this.talkingText = resources!!.getString(text)
         this.animationIndex = 0
@@ -115,6 +118,9 @@ abstract class Character(resources: Resources, position: Int) {
         doTalking(text[textNum - 1])
     }
 
+    /**
+     * Perform character normal talk.
+     */
     fun doNormalTalking() {
         doTalking(this.normalTalkingText)
     }
@@ -131,6 +137,9 @@ abstract class Character(resources: Resources, position: Int) {
         doTalking(this.levelUpTalkingText, textNum)
     }
 
+    /**
+     * Perform character meter logic.
+     */
     fun updateMeter(thingType: Int, numThings: Int) {
         var index = 0
         var baseIndex = 1
@@ -185,6 +194,9 @@ abstract class Character(resources: Resources, position: Int) {
         updateMeterStatus(meterIndex * 9)
     }
 
+    /**
+     * Perform character initialization.
+     */
     open fun initCharacter() {
         this.meterIndex = 0
         this.currentLevel = 0
@@ -195,12 +207,24 @@ abstract class Character(resources: Resources, position: Int) {
         this.status = 0
     }
 
+    /**
+     * Perform graphics resize.
+     */
     abstract fun resizeGraphics(surfaceWidth: Int, surfaceHeight: Int)
 
+    /**
+     * Perform character animation.
+     */
     abstract fun doCharacterAnimation(canvas: Canvas)
 
+    /**
+     * Perform meter change status logic.
+     */
     abstract fun updateMeterStatus(index: Int)
 
+    /**
+     * Perform character recycle.
+     */
     abstract fun destroy()
 
     companion object {

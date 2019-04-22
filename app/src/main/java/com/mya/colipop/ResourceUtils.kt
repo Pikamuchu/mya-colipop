@@ -7,6 +7,9 @@ import android.graphics.Bitmap
  */
 object ResourceUtils {
 
+    /**
+     * Performs bitmap resource recycle.
+     */
     fun recycleBitmaps(bitmaps: Array<Bitmap>?) {
         if (bitmaps == null) {
             return

@@ -65,7 +65,9 @@ object ThingResources {
     var RASPA_OBJECT_TYPE = 10
     var PEINE_OBJECT_TYPE = 11
 
-
+    /**
+     * Perform graphic resources initialization.
+     */
     fun initializeGraphics(resources: Resources) {
         // Increase Si se anyaden mas bitmaps hay que subir esto
         THING_GRAPHICS_SIZE = 1

@@ -42,6 +42,9 @@ object BubbleResources {
     lateinit var BUBBLE_MOVE_GRAPHICS_BITMAP: Array<Bitmap>
     var BUBBLE_MOVE_ANIMATION_SEQUENCE = intArrayOf(0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3)
 
+    /**
+     * Perform graphic resources initialization.
+     */
     fun initializeGraphics(resources: Resources) {
         // Low quality bubbles
         val options = BitmapFactory.Options()
@@ -88,6 +91,9 @@ object BubbleResources {
         }
     }
 
+    /**
+     * Perform graphic recycle.
+     */
     fun destroy() {
         ResourceUtils.recycleBitmaps(BUBBLE_GRAPHICS_BITMAP)
         ResourceUtils.recycleBitmaps(BUBBLE_MOVE_GRAPHICS_BITMAP)

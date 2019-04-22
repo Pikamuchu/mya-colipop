@@ -27,6 +27,9 @@ object ExplosionResources {
     // Explosion graphics & animation properties
     lateinit var EXPLOSION_GRAPHICS_BITMAP: Array<Bitmap>
 
+    /**
+     * Perform graphic resources initialization.
+     */
     fun initializeGraphics(resources: Resources) {
 
         // Explosiones en baja calidad

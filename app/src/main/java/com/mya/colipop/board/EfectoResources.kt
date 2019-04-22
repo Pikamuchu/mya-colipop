@@ -38,6 +38,9 @@ object EfectoResources {
 
     var EFECTO_FIJO_ANIMATION_SEQUENCE = intArrayOf(0, 1, 2, 3)
 
+    /**
+     * Perform graphic resources initialization.
+     */
     fun initializeGraphics(resources: Resources) {
         val options = BitmapFactory.Options()
         options.inPreferredConfig = Bitmap.Config.ARGB_4444

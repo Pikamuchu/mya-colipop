@@ -84,6 +84,9 @@ class Board(resources: Resources, private var character1: Character) {
         //initBoard();
     }
 
+    /**
+     * Perform board initialization.
+     */
     fun initBoard() {
         this.cells = Array(Board.MAX_WIDTH) { arrayOfNulls<Cell?>(Board.MAX_HEIGHT) }
 
@@ -144,12 +147,18 @@ class Board(resources: Resources, private var character1: Character) {
         //Log.d(TAG, "Board inicializado");
     }
 
+    /**
+     * Get the cell at indicated board position.
+     */
     fun getCell(i: Int, j: Int): Cell? {
         return if (i < 0 || i >= Board.MAX_WIDTH || j < 0 || j >= Board.MAX_HEIGHT) {
             null
         } else cells[i][j]
     }
 
+    /**
+     * Perform board animation.
+     */
     fun doBoardAnimation(canvas: Canvas?) {
         if (canvas == null || !boardInitialized) {
             return
@@ -162,6 +171,8 @@ class Board(resources: Resources, private var character1: Character) {
         }
 
         val cells = this.cells
+
+        val bubblesToExplodeList: MutableList<Cell> = mutableListOf()
 
         var boardFullBubbles = true
         var boardFullThings = true
@@ -327,9 +338,9 @@ class Board(resources: Resources, private var character1: Character) {
                         if (cellRight2 != null && cellRight2.bubble != null && cellRight2.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
                                 && cellRight2.thing != null && cellRight2.thing!!.type == thingType && cellRight2.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
                             // Explodemos bubbles
-                            explodeBubble(cell)
-                            explodeBubble(cellRight1)
-                            explodeBubble(cellRight2)
+                            bubblesToExplodeList += cell
+                            bubblesToExplodeList += cellRight1
+                            bubblesToExplodeList += cellRight2
                             // variable para contabilizar things explodes
                             var numThings = 3
                             // ignoramos las cells de la derecha para evitar efecto raro
@@ -340,7 +351,7 @@ class Board(resources: Resources, private var character1: Character) {
                                 val cellRight = cells[k][j]
                                 if (cellRight != null && cellRight.bubble != null && cellRight.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
                                         && cellRight.thing != null && cellRight.thing!!.type == thingType && cellRight.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
-                                    explodeBubble(cellRight)
+                                    bubblesToExplodeList += cellRight
                                     numThings++
                                     // ignoramos las cells de la derecha para evitar efecto raro
                                     cellRight.ignore = true
@@ -354,7 +365,7 @@ class Board(resources: Resources, private var character1: Character) {
                                 val cellLeft = cells[k][j]
                                 if (cellLeft != null && cellLeft.bubble != null && cellLeft.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
                                         && cellLeft.thing != null && cellLeft.thing!!.type == thingType && cellLeft.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
-                                    explodeBubble(cellLeft)
+                                    bubblesToExplodeList += cellLeft
                                     numThings++
                                 } else {
                                     // En el momento en que no encontremos una bubble a exploder salimos del for
@@ -385,9 +396,9 @@ class Board(resources: Resources, private var character1: Character) {
                         if (cellDown2 != null && cellDown2.bubble != null && cellDown2.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
                                 && cellDown2.thing != null && cellDown2.thing!!.type == thingType && cellDown2.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
                             // Explodemos bubbles
-                            explodeBubble(cell)
-                            explodeBubble(cellDown1)
-                            explodeBubble(cellDown2)
+                            bubblesToExplodeList += cell
+                            bubblesToExplodeList += cellDown1
+                            bubblesToExplodeList += cellDown2
                             // variable para contabilizar things explodes
                             var numThings = 3
                             // ignoramos las cells de abajo para evitar efectos raros
@@ -398,7 +409,7 @@ class Board(resources: Resources, private var character1: Character) {
                                 val cellDown = cells[i][k]
                                 if (cellDown != null && cellDown.bubble != null && cellDown.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
                                         && cellDown.thing != null && cellDown.thing!!.type == thingType && cellDown.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
-                                    explodeBubble(cellDown)
+                                    bubblesToExplodeList += cellDown
                                     numThings++
                                     // ignoramos las cells de abajo para evitar efectos raros
                                     cellDown.ignore = true
@@ -412,7 +423,7 @@ class Board(resources: Resources, private var character1: Character) {
                                 val cellDown = cells[i][k]
                                 if (cellDown != null && cellDown.bubble != null && cellDown.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
                                         && cellDown.thing != null && cellDown.thing!!.type == thingType && cellDown.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
-                                    explodeBubble(cellDown)
+                                    bubblesToExplodeList += cellDown
                                     numThings++
                                 } else {
                                     // En el momento en que no encontremos una bubble a exploder salimos del for
@@ -427,6 +438,10 @@ class Board(resources: Resources, private var character1: Character) {
                     }
                 }
             }
+        }
+
+        for (bubbleToExplode in bubblesToExplodeList) {
+            explodeBubble(bubbleToExplode)
         }
 
         // Control de movimientos en el board
@@ -649,6 +664,9 @@ class Board(resources: Resources, private var character1: Character) {
         }
     }
 
+    /**
+     * Adds a new bubble to the board.
+     */
     fun addInitialBubble() {
         if (!boardInitialized) {
             return
@@ -814,6 +832,9 @@ class Board(resources: Resources, private var character1: Character) {
         return CellPosition(xPos, yPos)
     }
 
+    /**
+     * Get the cell at screen coordinates.
+     */
     fun getCellInCoordinates(x: Int, y: Int): Cell? {
         if (!boardInitialized) {
             return null
@@ -827,6 +848,9 @@ class Board(resources: Resources, private var character1: Character) {
         return getCellInPos(normX, normY)
     }
 
+    /**
+     * Get cell at board normalized position.
+     */
     fun getCellInPos(posX: Int, posY: Int): Cell? {
         return if (posX < Board.MAX_WIDTH && posX >= 0 && posY < Board.MAX_HEIGHT && posY >= 0) {
             cells[posX][posY]
