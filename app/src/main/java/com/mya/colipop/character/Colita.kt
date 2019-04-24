@@ -8,6 +8,9 @@ import android.graphics.Matrix
 import com.mya.colipop.ColiPopResources
 import com.mya.colipop.R
 
+/**
+ * Colita character implementation.
+ */
 class Colita(resources: Resources, position: Int) : Character(resources, position) {
 
     private val TAG = "ColiPop"

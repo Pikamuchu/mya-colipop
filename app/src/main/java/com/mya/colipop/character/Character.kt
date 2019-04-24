@@ -6,6 +6,9 @@ import com.mya.colipop.ColiPopResources
 import com.mya.colipop.board.ThingResources
 import java.util.*
 
+/**
+ * Character base class.
+ */
 abstract class Character(resources: Resources, position: Int) {
 
     private val TAG = "ColiPop"

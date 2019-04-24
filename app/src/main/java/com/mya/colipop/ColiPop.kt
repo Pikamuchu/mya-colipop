@@ -38,19 +38,19 @@ class ColiPop : Activity(), View.OnClickListener {
 
         setContentView(R.layout.main)
 
-        this.coliPopView = findViewById<View>(R.id.ColiPopView) as ColiPopView
+        this.coliPopView = this.findViewById(R.id.ColiPopView)
         this.coliPopThread = this.coliPopView.thread
 
         // look up the happy shiny button
-        this.button = findViewById<View>(R.id.Button01) as Button
+        this.button = this.findViewById(R.id.Button01)
         this.button.setOnClickListener(this)
 
-        this.buttonRetry = findViewById<View>(R.id.Button02) as Button
+        this.buttonRetry = this.findViewById(R.id.Button02)
         this.buttonRetry.setOnClickListener(this)
 
         // set up handles for instruction text and game timer text
-        this.textView = findViewById<View>(R.id.text) as TextView
-        this.timerView = findViewById<View>(R.id.timer) as TextView
+        this.textView = this.findViewById(R.id.text)
+        this.timerView = this.findViewById(R.id.timer)
 
         this.coliPopView.timerView = this.timerView
 
@@ -62,9 +62,9 @@ class ColiPop : Activity(), View.OnClickListener {
     /**
      * Handles component interaction
      *
-     * @param v The object which has been clicked
+     * @param view The object which has been clicked
      */
-    override fun onClick(v: View) {
+    override fun onClick(view: View) {
         // this is the first screen
         if (this.coliPopThread.getGameState() == ColiPopThread.STATE_START) {
             this.button.setText(R.string.play)
@@ -80,16 +80,16 @@ class ColiPop : Activity(), View.OnClickListener {
             this.coliPopThread.setGameState(ColiPopThread.STATE_RUNNING)
 
             // this is a retry button
-        } else if (this.buttonRetry == v) {
+        } else if (this.buttonRetry == view) {
             this.buttonRetry.visibility = View.INVISIBLE
-            this.button.text = "PLAY!"
+            this.button.setText(R.string.play)
             this.button.visibility = View.VISIBLE
             this.textView.setText(R.string.helpText)
             this.textView.visibility = View.VISIBLE
             this.coliPopThread.setGameState(ColiPopThread.STATE_PLAY)
 
         } else {
-            Log.d(TAG, "unknown click " + v.id)
+            Log.d(TAG, "unknown click " + view.id)
         }
     }
 

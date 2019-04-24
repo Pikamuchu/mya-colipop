@@ -1,5 +1,8 @@
 package com.mya.colipop.board
 
+/**
+ * Cell data object.
+ */
 class Cell(posX: Int, posY: Int) {
     // Board cell position
     var posX = 0

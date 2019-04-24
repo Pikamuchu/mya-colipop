@@ -67,19 +67,19 @@ class Board(resources: Resources, private var character1: Character) {
 
         BubbleResources.initializeGraphics(resources)
 
-        //Log.d(TAG, "Graficos Bubbles inicializados");
+        //Log.d(TAG, "Graphics Bubbles inicializados");
 
         ExplosionResources.initializeGraphics(resources)
 
-        //Log.d(TAG, "Graficos Explosiones inicializados");
+        //Log.d(TAG, "Graphics Explosiones inicializados");
 
         ThingResources.initializeGraphics(resources)
 
-        //Log.d(TAG, "Graficos Things inicializados");
+        //Log.d(TAG, "Graphics Things inicializados");
 
         EfectoResources.initializeGraphics(resources)
 
-        //Log.d(TAG, "Graficos Efectos inicializados");
+        //Log.d(TAG, "Graphics Efectos inicializados");
 
         //initBoard();
     }
@@ -113,15 +113,13 @@ class Board(resources: Resources, private var character1: Character) {
 
                     // Comprobamos que el thing no pete nada
                     if (i >= 2 && cell.thing != null
-                            && cells[i - 1][j]?.thing != null && cells[i - 1][j]?.thing?.type == cell.thing?.type
-                            && cells[i - 2][j]?.thing != null && cells[i - 2][j]?.thing?.type == cell.thing?.type) {
-
+                            && cells[i - 1][j]?.thing?.type == cell.thing?.type
+                            && cells[i - 2][j]?.thing?.type == cell.thing?.type) {
                         cell.thing = null
                     }
                     if (j >= 2 && cell.thing != null
-                            && cells[i][j - 1]?.thing != null && cells[i][j - 1]?.thing?.type == cell.thing?.type
-                            && cells[i][j - 2]?.thing != null && cells[i][j - 2]?.thing?.type == cell.thing?.type) {
-
+                            && cells[i][j - 1]?.thing?.type == cell.thing?.type
+                            && cells[i][j - 2]?.thing?.type == cell.thing?.type) {
                         cell.thing = null
                     }
                 }
@@ -217,7 +215,7 @@ class Board(resources: Resources, private var character1: Character) {
                         // Centramos la bubble en su cell si no lo esta
                         val bubbleCellPosY = Board.OFFSET_Y + j * BubbleResources.BUBBLE_HEIGHT
                         if (bubble.drawY != bubbleCellPosY || bubble.drawX != bubbleCellPosX) {
-                            centraBubbleINPOSITION(bubble, bubbleCellPosX, bubbleCellPosY)
+                            centerBubbleInPosition(bubble, bubbleCellPosX, bubbleCellPosY)
                             // indicamos que hay movimiento de bubbles
                             isSomethingMoving = true
                         } else {
@@ -335,12 +333,12 @@ class Board(resources: Resources, private var character1: Character) {
                     // Miramos si la bubble de la derecha tiene el mismo thing
                     val thingType = thing.type
                     val cellRight1 = cells[i + 1][j]
-                    if (cellRight1 != null && cellRight1.bubble != null && cellRight1.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                            && cellRight1.thing != null && cellRight1.thing?.type == thingType && cellRight1.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                    if (cellRight1?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                            && cellRight1.thing?.type == thingType && cellRight1.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                         // Miramos si la bubble de mas a la derecha tiene el mismo thing
                         val cellRight2 = cells[i + 2][j]
-                        if (cellRight2 != null && cellRight2.bubble != null && cellRight2.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                                && cellRight2.thing != null && cellRight2.thing?.type == thingType && cellRight2.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                        if (cellRight2?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                && cellRight2.thing?.type == thingType && cellRight2.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                             // Explodemos bubbles
                             bubblesToExplodeList += cell
                             bubblesToExplodeList += cellRight1
@@ -353,8 +351,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Si hay mas bubbles con el mismo thing las explodemos tambien
                             for (k in i + 3 until Board.MAX_WIDTH) {
                                 val cellRight = cells[k][j]
-                                if (cellRight != null && cellRight.bubble != null && cellRight.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellRight.thing != null && cellRight.thing?.type == thingType && cellRight.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellRight?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellRight.thing?.type == thingType && cellRight.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellRight
                                     numThings++
                                     // ignoramos las cells de la derecha para evitar efecto raro
@@ -367,8 +365,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Miramos tambien a la izquierda por si acaso
                             for (k in i - 1 downTo 0) {
                                 val cellLeft = cells[k][j]
-                                if (cellLeft != null && cellLeft.bubble != null && cellLeft.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellLeft.thing != null && cellLeft.thing?.type == thingType && cellLeft.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellLeft?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellLeft.thing?.type == thingType && cellLeft.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellLeft
                                     numThings++
                                 } else {
@@ -393,12 +391,12 @@ class Board(resources: Resources, private var character1: Character) {
                     // Miramos si la bubble de la arriba tiene el mismo thing
                     val thingType = thing.type
                     val cellDown1 = cells[i][j + 1]
-                    if (cellDown1 != null && cellDown1.bubble != null && cellDown1.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                            && cellDown1.thing != null && cellDown1.thing?.type == thingType && cellDown1.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                    if (cellDown1?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                            && cellDown1.thing?.type == thingType && cellDown1.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                         // Miramos si la bubble de mas a la arriba tiene el mismo thing
                         val cellDown2 = cells[i][j + 2]
-                        if (cellDown2 != null && cellDown2.bubble != null && cellDown2.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                                && cellDown2.thing != null && cellDown2.thing?.type == thingType && cellDown2.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                        if (cellDown2?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                && cellDown2.thing?.type == thingType && cellDown2.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                             // Explodemos bubbles
                             bubblesToExplodeList += cell
                             bubblesToExplodeList += cellDown1
@@ -411,8 +409,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Si hay mas bubbles con el mismo thing las explodemos tambien
                             for (k in j + 3 until Board.MAX_HEIGHT) {
                                 val cellDown = cells[i][k]
-                                if (cellDown != null && cellDown.bubble != null && cellDown.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellDown.thing != null && cellDown.thing?.type == thingType && cellDown.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellDown?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellDown.thing?.type == thingType && cellDown.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellDown
                                     numThings++
                                     // ignoramos las cells de abajo para evitar efectos raros
@@ -425,8 +423,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Miramos tambien abajo por si acaso
                             for (k in j - 1 downTo 0) {
                                 val cellDown = cells[i][k]
-                                if (cellDown != null && cellDown.bubble != null && cellDown.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellDown.thing != null && cellDown.thing?.type == thingType && cellDown.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellDown?.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellDown.thing?.type == thingType && cellDown.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellDown
                                     numThings++
                                 } else {
@@ -467,7 +465,7 @@ class Board(resources: Resources, private var character1: Character) {
          * Animacin de otros things
          */
 
-        animateThingsIndependents(canvas)
+        animateIndependentThings(canvas)
 
         /**
          * Dibujamos counters
@@ -613,7 +611,7 @@ class Board(resources: Resources, private var character1: Character) {
         }
     }
 
-    private fun centraBubbleINPOSITION(bubble: Bubble?, x: Int, y: Int) {
+    private fun centerBubbleInPosition(bubble: Bubble?, x: Int, y: Int) {
         if (bubble == null) {
             return
         }
@@ -857,7 +855,7 @@ class Board(resources: Resources, private var character1: Character) {
      * Get cell at board normalized position.
      */
     fun getCellInPos(posX: Int, posY: Int): Cell? {
-        return if (posX < MAX_WIDTH && posX >= 0 && posY < MAX_HEIGHT && posY >= 0) {
+        return if (posX in 0..(MAX_WIDTH - 1) && posY < MAX_HEIGHT && posY >= 0) {
             cells[posX][posY]
         } else null
     }
@@ -896,6 +894,9 @@ class Board(resources: Resources, private var character1: Character) {
         cell.bubble = null
     }
 
+    /**
+     * Remove bubble from cell.
+     */
     fun removeBubble(cell: Cell?) {
         if (cell == null || cell.bubble == null) {
             return
@@ -930,6 +931,9 @@ class Board(resources: Resources, private var character1: Character) {
         boardStable = false
     }
 
+    /**
+     * Perform bubble touch animation on cell.
+     */
     fun touchBubble(cell: Cell?, directionX: Int, directionY: Int) {
         if (cell == null) {
             return
@@ -963,6 +967,9 @@ class Board(resources: Resources, private var character1: Character) {
         thing.drawY -= movimientoY
     }
 
+    /**
+     * Perform bubble movement from origin cell to destiny cell.
+     */
     fun moveBubbleBetweenCells(origin: Cell?, destiny: Cell?) {
         if (origin == null || destiny == null) {
             return
@@ -1010,6 +1017,9 @@ class Board(resources: Resources, private var character1: Character) {
         boardStable = false
     }
 
+    /**
+     * Perform bubble movement from origin cell to destiny cell.
+     */
     fun addEfectoBubble(bubble: Bubble?, efectoFijoType: Int) {
         if (bubble == null) {
             return
@@ -1023,30 +1033,27 @@ class Board(resources: Resources, private var character1: Character) {
         thing.type = efectoFijoType
         thing.status = ThingResources.THING_STATUS_EFECTO_FIJO
 
-        // Localizing external variables
-        val things_animated = this.thingsAnimated
-
         // Aadimos thing a los animated independentmente
         var thingAdded = false
         for (i in 0 until Board.MAX_THINGS_ANIMATED) {
-            if (things_animated[i] == null) {
-                things_animated[i] = thing
+            if (this.thingsAnimated[i] == null) {
+                this.thingsAnimated[i] = thing
                 thingAdded = true
                 break
             }
         }
         // Si no encontramos posicin libre, lo metemos en una posicin aleatoria
         if (!thingAdded) {
-            things_animated[random.nextInt(Board.MAX_THINGS_ANIMATED - 1)] = thing
+            this.thingsAnimated[random.nextInt(Board.MAX_THINGS_ANIMATED - 1)] = thing
         }
     }
 
-    fun addEfectoTouch(drawX: Int, drawY: Int, efectoFijoType: Int) {
+    fun addTouchEffect(drawX: Int, drawY: Int, effectType: Int) {
         val thing = Thing()
 
         thing.drawX = drawX - ThingResources.THING_WIDTH_MEDIO
         thing.drawY = drawY - ThingResources.THING_HEIGHT_MEDIO
-        thing.type = efectoFijoType
+        thing.type = effectType
         thing.status = ThingResources.THING_STATUS_EFECTO_FIJO
 
         // Localizing external variables
@@ -1067,30 +1074,24 @@ class Board(resources: Resources, private var character1: Character) {
         }
     }
 
-    fun animateThingsIndependents(canvas: Canvas) {
-        // Animating los things independents
-        val things_animated = this.thingsAnimated
-        if (things_animated.size == 0) {
+    private fun animateIndependentThings(canvas: Canvas) {
+        val thingsAnimated = this.thingsAnimated
+        if (thingsAnimated.isEmpty()) {
             return
         }
 
-        //Localizing extenal variables
-        val THING_STATUS_REMOVED = ThingResources.THING_STATUS_REMOVED
-        val THING_STATUS_EFECTO_FIJO = ThingResources.THING_STATUS_EFECTO_FIJO
-
         for (i in 0 until Board.MAX_THINGS_ANIMATED) {
-            val thing = things_animated[i] ?: continue
-// De momento animating solo los things removeds
-            if (thing.status == THING_STATUS_REMOVED) {
+            val thing = thingsAnimated[i] ?: continue
+            if (thing.status == ThingResources.THING_STATUS_REMOVED) {
                 animateThingRemoved(canvas, i, thing)
 
-            } else if (thing.status == THING_STATUS_EFECTO_FIJO) {
-                animateThingEfectoFijo(canvas, i, thing)
+            } else if (thing.status == ThingResources.THING_STATUS_EFECTO_FIJO) {
+                animateFixedThingEffect(canvas, i, thing)
             }
         }
     }
 
-    fun animateThingRemoved(canvas: Canvas, i: Int, thing: Thing) {
+    private fun animateThingRemoved(canvas: Canvas, i: Int, thing: Thing) {
         thing.animationIndex++
         // Hacemos loop
         if (thing.animationIndex >= ThingResources.THING_REMOVED_ANIMATION_SEQUENCE.size) {
@@ -1167,9 +1168,8 @@ class Board(resources: Resources, private var character1: Character) {
         }
     }
 
-    private fun animateThingEfectoFijo(canvas: Canvas, i: Int, thing: Thing) {
+    private fun animateFixedThingEffect(canvas: Canvas, i: Int, thing: Thing) {
         thing.animationIndex++
-        // Sin loop, lo quitamos
         if (thing.animationIndex >= EfectoResources.EFECTO_FIJO_ANIMATION_SEQUENCE.size) {
             thingsAnimated[i] = null
             return
@@ -1336,19 +1336,19 @@ class Board(resources: Resources, private var character1: Character) {
 
             BubbleResources.resizeGraphics(refactorIndex)
 
-            //Log.d(TAG, "Graficos Bubbles resizados");
+            //Log.d(TAG, "Graphics Bubbles resized");
 
             ExplosionResources.resizeGraphics(refactorIndex)
 
-            //Log.d(TAG, "Graficos Explosiones resizados");
+            //Log.d(TAG, "Graphics Explosions resized");
 
             ThingResources.resizeGraphics(refactorIndex)
 
-            //Log.d(TAG, "Graficos Things resizados");
+            //Log.d(TAG, "Graphics Things resized");
 
             EfectoResources.resizeGraphics(refactorIndex)
 
-            //Log.d(TAG, "Graficos Efectos resizados");
+            //Log.d(TAG, "Graphics Efectos resized");
 
             // Stablecemos offsets para centrar el board en la pantalla
             var offsetWidth = surfaceWidth.toFloat()
@@ -1367,17 +1367,14 @@ class Board(resources: Resources, private var character1: Character) {
         }
 
         protected fun calculateCountersOffsets(surfaceWidth: Int, surfaceHeight: Int) {
-            // Calculatemos el refactor indexes
             var refactorIndexWidth = surfaceWidth.toFloat()
             refactorIndexWidth /= DEFAULT_SURFACE_WIDTH.toFloat()
-            // Prevencin de cosas raras
             if (refactorIndexWidth == 0f) {
                 refactorIndexWidth = 1f
             }
 
             var refactorIndexHeight = surfaceHeight.toFloat()
             refactorIndexHeight /= DEFAULT_SURFACE_HEIGHT.toFloat()
-            // Prevencin de cosas raras
             if (refactorIndexHeight == 0f) {
                 refactorIndexHeight = 1f
             }

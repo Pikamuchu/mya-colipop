@@ -45,7 +45,7 @@ object ColiPopActions {
             var isOtherCell = false
             // Miramos cell de arriba
             var otherCell = board.getCell(cellOrigin.posX, cellOrigin.posY - 1)
-            if (otherCell != null && otherCell.bubble != null && otherCell.bubble?.move == BubbleResources.BUBBLE_MOVE_UP) {
+            if (otherCell?.bubble?.move == BubbleResources.BUBBLE_MOVE_UP) {
                 //Log.d(TAG, "Cell con bubble en movimiento encontrada arriba.");
                 isOtherCell = true
                 cellOrigin = otherCell
@@ -53,7 +53,7 @@ object ColiPopActions {
             }
             // Miramos cell de la derecha
             otherCell = board.getCell(cellOrigin.posX + 1, cellOrigin.posY)
-            if (!isOtherCell && otherCell != null && otherCell.bubble != null && otherCell.bubble?.move == BubbleResources.BUBBLE_MOVE_RIGHT) {
+            if (!isOtherCell && otherCell?.bubble?.move == BubbleResources.BUBBLE_MOVE_RIGHT) {
                 //Log.d(TAG, "Cell con bubble en movimiento encontrada a la derecha.");
                 isOtherCell = true
                 cellOrigin = otherCell
@@ -61,7 +61,7 @@ object ColiPopActions {
             }
             // Miramos cell de la izquierda
             otherCell = board.getCell(cellOrigin.posX - 1, cellOrigin.posY)
-            if (!isOtherCell && otherCell != null && otherCell.bubble != null && otherCell.bubble?.move == BubbleResources.BUBBLE_MOVE_LEFT) {
+            if (!isOtherCell && otherCell?.bubble?.move == BubbleResources.BUBBLE_MOVE_LEFT) {
                 //Log.d(TAG, "Cell con bubble en movimiento encontrada a la izquierda.");
                 isOtherCell = true
                 cellOrigin = otherCell

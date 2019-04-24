@@ -1,5 +1,8 @@
 package com.mya.colipop.board
 
+/**
+ * Thing data object.
+ */
 class Thing {
     var animationIndex = 0
     var graphicIndex = 0

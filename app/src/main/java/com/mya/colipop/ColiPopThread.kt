@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import com.mya.colipop.board.Board
@@ -285,12 +286,10 @@ class ColiPopThread : Thread {
     private fun updateGameState() {
         // Process any game events and apply them
         while (true) {
-            val event = eventQueue.poll() ?: break
-
+            val event = this.eventQueue.poll() as? TouchGameEvent ?: break
             // Log.d(TAG,"UpdateGameState: event.type=" + event.type );
-
             if (event.type == GameEvent.TOUCH_EVENT) {
-                updateTouch(event as TouchGameEvent)
+                updateTouch(event)
             }
         }
     }
@@ -310,7 +309,7 @@ class ColiPopThread : Thread {
 
         } else if (event.motionEvent == MotionEvent.ACTION_MOVE) {
             //Log.d(TAG, "Motion Move en position: x=" + event.x + ", y=" +  event.y );
-            board.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE)
+            board.addTouchEffect(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE)
             val eventAnterior = this.eventActionMoveAnterior
             val cellOrigin = if (eventAnterior != null) board.getCellInCoordinates(eventAnterior.x, eventAnterior.y) else null
             val cellDestiny = board.getCellInCoordinates(event.x, event.y)
@@ -463,7 +462,7 @@ class ColiPopThread : Thread {
                 this.timerValue = "$minutes:0$seconds"
             }
         } catch (e1: Exception) {
-            //Log.e(TAG, "doCountDown threw " + e1.toString());
+            Log.e(TAG, "doTimeCount threw $e1")
         }
 
         val msg = this.handler.obtainMessage()

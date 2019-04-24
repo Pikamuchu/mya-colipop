@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
@@ -106,6 +107,7 @@ class ColiPopView(context: Context, attrs: AttributeSet) : SurfaceView(context, 
                 retry = false
                 //Log.d(TAG, "surfaceDestroyed: Thread killed!");
             } catch (e: InterruptedException) {
+                Log.e(TAG, "surfaceDestroyed threw $e")
             }
         }
     }
