@@ -12,7 +12,7 @@
 	<string name="timer">0:00</string>
 	<string name="help_explodeEmptyBubbles">Touch empty bubbles to explode them!!</string>
 	<string name="help_moveAnyBubble">You can move any bubble to the right or left!!</string>
-	<string name="help.matchFilledBubbles">Match filled bubbles to pop them away!!</string>
+	<string name="help_matchFilledBubbles">Match filled bubbles to pop them away!!</string>
 	<string name="colita_talking_hello">Hello!! I\'m Colita!!</string>
 	<string name="colita_talking_levelUp">LEVEL UP!!</string>
 	<string-array name="colita_talking_happy">
@@ -41,7 +41,7 @@
 		<item>Poppy was my boyfriend, it did not work ...</item>
 		<item>I am a vegan dog</item>
 		<item>Water is wet, I do not like the shower</item>
-		<item>My humans are poor, they live in rented</item>
+		<item>Wow! Wow!</item>
 		<item>I like to run through the grass of the park</item>
 		<item>Pistacho is really a mystery</item>
     </string-array>	
