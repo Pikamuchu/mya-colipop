@@ -57,7 +57,7 @@ object ColiPopActions {
                 //Log.d(TAG, "Cell con bubble en movimiento encontrada a la derecha.");
                 isOtherCell = true
                 cellOrigin = otherCell
-                cellDestiny = board.getCell(cellDestiny!!.posX + 1, cellDestiny.posY)
+                cellDestiny = if (cellDestiny != null) board.getCell(cellDestiny.posX + 1, cellDestiny.posY) else null
             }
             // Miramos cell de la izquierda
             otherCell = board.getCell(cellOrigin.posX - 1, cellOrigin.posY)
@@ -65,7 +65,7 @@ object ColiPopActions {
                 //Log.d(TAG, "Cell con bubble en movimiento encontrada a la izquierda.");
                 isOtherCell = true
                 cellOrigin = otherCell
-                cellDestiny = board.getCell(cellDestiny!!.posX - 1, cellDestiny.posY)
+                cellDestiny = if (cellDestiny != null) board.getCell(cellDestiny.posX - 1, cellDestiny.posY) else null
             }
             if (!isOtherCell || cellDestiny == null) {
                 //Log.d(TAG, "No se ha encontrado movimiento valido. No hacemos nada.");

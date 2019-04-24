@@ -87,7 +87,7 @@ abstract class Character(resources: Resources, position: Int) {
      * Perform character talk animation.
      */
     fun doTalking(text: Int) {
-        this.talkingText = resources!!.getString(text)
+        this.talkingText = resources?.getString(text) ?: ""
         this.animationIndex = 0
         this.status = STATUS_TALKING
     }
@@ -187,7 +187,7 @@ abstract class Character(resources: Resources, position: Int) {
             meterIndex = 0
             isShowLevelUpText = true
             // Cambiamos el fondo del board
-            ColiPopResources.changeLevelBackground(resources!!, currentLevel)
+            ColiPopResources.changeLevelBackground(resources, currentLevel)
         }
 
         // Updateamos status del meter

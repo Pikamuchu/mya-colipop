@@ -38,8 +38,8 @@ class Colita(resources: Resources, position: Int) : Character(resources, positio
 
         updateMeterStatus(0)
 
-        this.talkingText = resources!!.getString(R.string.colita_talking_hello)
-        this.status = Character.STATUS_TALKING
+        this.talkingText = resources?.getString(R.string.colita_talking_hello) ?: ""
+        this.status = STATUS_TALKING
     }
 
     override fun resizeGraphics(surfaceWidth: Int, surfaceHeight: Int) {
@@ -54,7 +54,7 @@ class Colita(resources: Resources, position: Int) : Character(resources, positio
         // Hacemos loop
         if (this.animationIndex >= ColitaResources.CARA_ANIMATION_SEQUENCE.size) {
             this.animationIndex = 0
-            this.status = Character.STATUS_NORMAL
+            this.status = STATUS_NORMAL
         }
 
         // Localizing variables
@@ -78,25 +78,25 @@ class Colita(resources: Resources, position: Int) : Character(resources, positio
 
         // Animate Boca
         val status = this.status
-        if (status == Character.STATUS_NORMAL) {
+        if (status == STATUS_NORMAL) {
             graphicIndex = ColitaResources.BOCA_NORMAL_ANIMATION_SEQUENCE[animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
             canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
-        } else if (status == Character.STATUS_HAPPY) {
+        } else if (status == STATUS_HAPPY) {
             graphicIndex = ColitaResources.BOCA_HAPPY_ANIMATION_SEQUENCE[animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
             canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
-        } else if (status == Character.STATUS_UNHAPPY) {
+        } else if (status == STATUS_UNHAPPY) {
             graphicIndex = ColitaResources.BOCA_UNHAPPY_ANIMATION_SEQUENCE[animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
             }
             canvas.drawBitmap(ColitaResources.BOCA_GRAPHICS_BITMAP[graphicIndex], offsetX.toFloat(), offsetY.toFloat(), null)
-        } else if (status == Character.STATUS_TALKING) {
+        } else if (status == STATUS_TALKING) {
             graphicIndex = ColitaResources.BOCA_TALKING_ANIMATION_SEQUENCE[animationIndex]
             if (graphicIndex >= ColitaResources.BOCA_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0
@@ -105,7 +105,7 @@ class Colita(resources: Resources, position: Int) : Character(resources, positio
         }
 
         // Animation texto
-        if (status == Character.STATUS_TALKING) {
+        if (status == STATUS_TALKING) {
             graphicIndex = ColitaResources.DIALOGO_ANIMATION_SEQUENCE[animationIndex]
             if (graphicIndex >= ColitaResources.DIALOGO_CORTO_GRAPHICS_BITMAP.size) {
                 graphicIndex = 0

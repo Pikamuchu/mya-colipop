@@ -86,34 +86,31 @@ object ColiPopResources {
     /**
      * Perform background change logic.
      */
-    fun changeLevelBackground(resources: Resources, level: Int) {
+    fun changeLevelBackground(resources: Resources?, level: Int) {
+        if (resources == null) {
+            return
+        }
+
         val imageToRecicle = this.backgroundImage
 
         // Fondos de boards de juego
         var normLevel = (level + 1) % 10
         var levelBackgroundImage: Bitmap? = null
-        if (normLevel == 1) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01)
-        } else if (normLevel == 2) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_02)
-        } else if (normLevel == 3) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_03)
-        } else if (normLevel == 4) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_04)
-        } else if (normLevel == 5) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_05)
-        } else if (normLevel == 6) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_06)
-        } else if (normLevel == 7) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_07)
-        } else if (normLevel == 8) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_08)
-        } else if (normLevel == 9) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_09)
-        } else if (normLevel == 0) {
-            levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_10)
+        when (normLevel) {
+            1 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_01)
+            2 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_02)
+            3 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_03)
+            4 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_04)
+            5 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_05)
+            6 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_06)
+            7 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_07)
+            8 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_08)
+            9 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_09)
+            0 -> levelBackgroundImage = BitmapFactory.decodeResource(resources, R.drawable.background_10)
         }
-        this.backgroundImage = Bitmap.createScaledBitmap(levelBackgroundImage!!, SURFACE_WIDTH, SURFACE_HEIGHT, true)
+        if (levelBackgroundImage != null) {
+            this.backgroundImage = Bitmap.createScaledBitmap(levelBackgroundImage, SURFACE_WIDTH, SURFACE_HEIGHT, true)
+        }
 
         imageToRecicle?.recycle()
     }

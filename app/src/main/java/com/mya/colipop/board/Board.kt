@@ -113,14 +113,14 @@ class Board(resources: Resources, private var character1: Character) {
 
                     // Comprobamos que el thing no pete nada
                     if (i >= 2 && cell.thing != null
-                            && cells[i - 1][j]!!.thing != null && cells[i - 1][j]!!.thing!!.type == cell.thing!!.type
-                            && cells[i - 2][j]!!.thing != null && cells[i - 2][j]!!.thing!!.type == cell.thing!!.type) {
+                            && cells[i - 1][j]?.thing != null && cells[i - 1][j]?.thing?.type == cell.thing?.type
+                            && cells[i - 2][j]?.thing != null && cells[i - 2][j]?.thing?.type == cell.thing?.type) {
 
                         cell.thing = null
                     }
                     if (j >= 2 && cell.thing != null
-                            && cells[i][j - 1]!!.thing != null && cells[i][j - 1]!!.thing!!.type == cell.thing!!.type
-                            && cells[i][j - 2]!!.thing != null && cells[i][j - 2]!!.thing!!.type == cell.thing!!.type) {
+                            && cells[i][j - 1]?.thing != null && cells[i][j - 1]?.thing?.type == cell.thing?.type
+                            && cells[i][j - 2]?.thing != null && cells[i][j - 2]?.thing?.type == cell.thing?.type) {
 
                         cell.thing = null
                     }
@@ -260,7 +260,9 @@ class Board(resources: Resources, private var character1: Character) {
                         }
 
                         // Animate thing
-                        canvas.drawBitmap(bitmap!!, thing.drawX.toFloat(), thing.drawY.toFloat(), null)
+                        if (bitmap != null) {
+                            canvas.drawBitmap(bitmap, thing.drawX.toFloat(), thing.drawY.toFloat(), null)
+                        }
                     }
 
                     var bitmap: Bitmap?
@@ -314,7 +316,9 @@ class Board(resources: Resources, private var character1: Character) {
                                 bitmap = ThingResources.PEINE_GRANDE_GRAPHICS_BITMAP[0]
                             }
 
-                            canvas.drawBitmap(bitmap!!, explosion.drawX.toFloat(), explosion.drawY.toFloat(), null)
+                            if (bitmap != null) {
+                                canvas.drawBitmap(bitmap, explosion.drawX.toFloat(), explosion.drawY.toFloat(), null)
+                            }
                         }
 
                         // indicamos que hay movimiento en el board
@@ -331,12 +335,12 @@ class Board(resources: Resources, private var character1: Character) {
                     // Miramos si la bubble de la derecha tiene el mismo thing
                     val thingType = thing.type
                     val cellRight1 = cells[i + 1][j]
-                    if (cellRight1 != null && cellRight1.bubble != null && cellRight1.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                            && cellRight1.thing != null && cellRight1.thing!!.type == thingType && cellRight1.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                    if (cellRight1 != null && cellRight1.bubble != null && cellRight1.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                            && cellRight1.thing != null && cellRight1.thing?.type == thingType && cellRight1.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                         // Miramos si la bubble de mas a la derecha tiene el mismo thing
                         val cellRight2 = cells[i + 2][j]
-                        if (cellRight2 != null && cellRight2.bubble != null && cellRight2.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                                && cellRight2.thing != null && cellRight2.thing!!.type == thingType && cellRight2.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                        if (cellRight2 != null && cellRight2.bubble != null && cellRight2.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                && cellRight2.thing != null && cellRight2.thing?.type == thingType && cellRight2.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                             // Explodemos bubbles
                             bubblesToExplodeList += cell
                             bubblesToExplodeList += cellRight1
@@ -349,8 +353,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Si hay mas bubbles con el mismo thing las explodemos tambien
                             for (k in i + 3 until Board.MAX_WIDTH) {
                                 val cellRight = cells[k][j]
-                                if (cellRight != null && cellRight.bubble != null && cellRight.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellRight.thing != null && cellRight.thing!!.type == thingType && cellRight.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellRight != null && cellRight.bubble != null && cellRight.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellRight.thing != null && cellRight.thing?.type == thingType && cellRight.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellRight
                                     numThings++
                                     // ignoramos las cells de la derecha para evitar efecto raro
@@ -363,8 +367,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Miramos tambien a la izquierda por si acaso
                             for (k in i - 1 downTo 0) {
                                 val cellLeft = cells[k][j]
-                                if (cellLeft != null && cellLeft.bubble != null && cellLeft.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellLeft.thing != null && cellLeft.thing!!.type == thingType && cellLeft.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellLeft != null && cellLeft.bubble != null && cellLeft.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellLeft.thing != null && cellLeft.thing?.type == thingType && cellLeft.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellLeft
                                     numThings++
                                 } else {
@@ -389,12 +393,12 @@ class Board(resources: Resources, private var character1: Character) {
                     // Miramos si la bubble de la arriba tiene el mismo thing
                     val thingType = thing.type
                     val cellDown1 = cells[i][j + 1]
-                    if (cellDown1 != null && cellDown1.bubble != null && cellDown1.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                            && cellDown1.thing != null && cellDown1.thing!!.type == thingType && cellDown1.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                    if (cellDown1 != null && cellDown1.bubble != null && cellDown1.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                            && cellDown1.thing != null && cellDown1.thing?.type == thingType && cellDown1.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                         // Miramos si la bubble de mas a la arriba tiene el mismo thing
                         val cellDown2 = cells[i][j + 2]
-                        if (cellDown2 != null && cellDown2.bubble != null && cellDown2.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                                && cellDown2.thing != null && cellDown2.thing!!.type == thingType && cellDown2.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                        if (cellDown2 != null && cellDown2.bubble != null && cellDown2.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                && cellDown2.thing != null && cellDown2.thing?.type == thingType && cellDown2.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                             // Explodemos bubbles
                             bubblesToExplodeList += cell
                             bubblesToExplodeList += cellDown1
@@ -407,8 +411,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Si hay mas bubbles con el mismo thing las explodemos tambien
                             for (k in j + 3 until Board.MAX_HEIGHT) {
                                 val cellDown = cells[i][k]
-                                if (cellDown != null && cellDown.bubble != null && cellDown.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellDown.thing != null && cellDown.thing!!.type == thingType && cellDown.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellDown != null && cellDown.bubble != null && cellDown.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellDown.thing != null && cellDown.thing?.type == thingType && cellDown.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellDown
                                     numThings++
                                     // ignoramos las cells de abajo para evitar efectos raros
@@ -421,8 +425,8 @@ class Board(resources: Resources, private var character1: Character) {
                             // Miramos tambien abajo por si acaso
                             for (k in j - 1 downTo 0) {
                                 val cellDown = cells[i][k]
-                                if (cellDown != null && cellDown.bubble != null && cellDown.bubble!!.move == BubbleResources.BUBBLE_MOVE_NONE
-                                        && cellDown.thing != null && cellDown.thing!!.type == thingType && cellDown.thing!!.status == ThingResources.THING_STATUS_BUBBLE) {
+                                if (cellDown != null && cellDown.bubble != null && cellDown.bubble?.move == BubbleResources.BUBBLE_MOVE_NONE
+                                        && cellDown.thing != null && cellDown.thing?.type == thingType && cellDown.thing?.status == ThingResources.THING_STATUS_BUBBLE) {
                                     bubblesToExplodeList += cellDown
                                     numThings++
                                 } else {
@@ -674,7 +678,7 @@ class Board(resources: Resources, private var character1: Character) {
 
         val level = this.character1.currentLevel
         if (level != lastLevel) {
-            timeBetweenBubbles -= java.lang.Double.valueOf(0.2 * timeBetweenBubbles)!!.toLong()
+            timeBetweenBubbles -= java.lang.Double.valueOf(0.2 * timeBetweenBubbles).toLong()
             lastLevel = level
         }
 
@@ -704,7 +708,7 @@ class Board(resources: Resources, private var character1: Character) {
     }
 
     private fun addRandomObject(cell: Cell?) {
-        if (cell == null || cell.bubble == null) {
+        if (cell?.bubble == null) {
             return
         }
 
@@ -753,14 +757,15 @@ class Board(resources: Resources, private var character1: Character) {
         }
 
         val bubble = cell.bubble
+        if (bubble != null) {
+            thing.drawX = bubble.drawX
+            thing.drawY = bubble.drawY
 
-        thing.drawX = bubble!!.drawX
-        thing.drawY = bubble.drawY
+            // Randomizamos indices animacin
+            thing.animationIndex = random.nextInt(ThingResources.THING_ANIMATION_SEQUENCE.size)
 
-        // Randomizamos indices animacin
-        thing.animationIndex = random.nextInt(ThingResources.THING_ANIMATION_SEQUENCE.size)
-
-        cell.thing = thing
+            cell.thing = thing
+        }
     }
 
     private fun moveAndUpdateBubblePosition(cells: Array<Array<Cell?>>, bubble: Bubble, thing: Thing?, i: Int, j: Int, direction: Int, ignoreNewCell: Boolean) {
@@ -818,15 +823,15 @@ class Board(resources: Resources, private var character1: Character) {
         if (xPos < 0) {
             xPos = 0
         }
-        if (xPos >= Board.MAX_WIDTH) {
-            xPos = Board.MAX_WIDTH - 1
+        if (xPos >= MAX_WIDTH) {
+            xPos = MAX_WIDTH - 1
         }
 
         if (yPos < 0) {
             yPos = 0
         }
-        if (yPos >= Board.MAX_HEIGHT) {
-            yPos = Board.MAX_HEIGHT - 1
+        if (yPos >= MAX_HEIGHT) {
+            yPos = MAX_HEIGHT - 1
         }
 
         return CellPosition(xPos, yPos)
@@ -840,8 +845,8 @@ class Board(resources: Resources, private var character1: Character) {
             return null
         }
 
-        val normX = (x - Board.OFFSET_X) / BubbleResources.BUBBLE_WIDTH
-        val normY = (y - Board.OFFSET_Y) / BubbleResources.BUBBLE_HEIGHT
+        val normX = (x - OFFSET_X) / BubbleResources.BUBBLE_WIDTH
+        val normY = (y - OFFSET_Y) / BubbleResources.BUBBLE_HEIGHT
 
         //Log.d(TAG, "getCellInCoordinates: x=" + x + ", y=" + y + ", normX=" + normX + ", normY=" + normY );
 
@@ -852,13 +857,13 @@ class Board(resources: Resources, private var character1: Character) {
      * Get cell at board normalized position.
      */
     fun getCellInPos(posX: Int, posY: Int): Cell? {
-        return if (posX < Board.MAX_WIDTH && posX >= 0 && posY < Board.MAX_HEIGHT && posY >= 0) {
+        return if (posX < MAX_WIDTH && posX >= 0 && posY < MAX_HEIGHT && posY >= 0) {
             cells[posX][posY]
         } else null
     }
 
     private fun explodeBubble(cell: Cell?) {
-        if (cell == null || cell.bubble == null) {
+        if (cell?.bubble == null) {
             return
         }
 
@@ -867,10 +872,12 @@ class Board(resources: Resources, private var character1: Character) {
         explosion.graphicIndex = 0
 
         val bubble = cell.bubble
-        explosion.drawX = bubble!!.drawX - (ExplosionResources.EXPLOSION_WIDTH - BubbleResources.BUBBLE_WIDTH) / 2
-        explosion.drawY = bubble.drawY - (ExplosionResources.EXPLOSION_HEIGHT - BubbleResources.BUBBLE_HEIGHT) / 2
+        if (bubble != null) {
+            explosion.drawX = bubble.drawX - (ExplosionResources.EXPLOSION_WIDTH - BubbleResources.BUBBLE_WIDTH) / 2
+            explosion.drawY = bubble.drawY - (ExplosionResources.EXPLOSION_HEIGHT - BubbleResources.BUBBLE_HEIGHT) / 2
 
-        cell.explosion = explosion
+            cell.explosion = explosion
+        }
 
         val thing = cell.thing
         if (thing != null) {
@@ -981,19 +988,22 @@ class Board(resources: Resources, private var character1: Character) {
         origin.bubble = null
         origin.thing = null
 
-        // Updatemos status de movimiento de la bubble
-        if (deltaX == 0 && deltaY > 0) {
-            //Log.d(TAG,"Moving bubble down: deltaX = " + deltaX + ", deltaY = " + deltaY);
-            destiny.bubble!!.move = BubbleResources.BUBBLE_MOVE_DOWN
-        } else if (deltaX == 0 && deltaY < 0) {
-            //Log.d(TAG,"Moving bubble up: deltaX = " + deltaX + ", deltaY = " + deltaY);
-            destiny.bubble!!.move = BubbleResources.BUBBLE_MOVE_UP
-        } else if (deltaY == 0 && deltaX > 0) {
-            //Log.d(TAG,"Moving bubble right: deltaX = " + deltaX + ", deltaY = " + deltaY);
-            destiny.bubble!!.move = BubbleResources.BUBBLE_MOVE_RIGHT
-        } else if (deltaY == 0 && deltaX < 0) {
-            //Log.d(TAG,"Moving bubble left: deltaX = " + deltaX + ", deltaY = " + deltaY);
-            destiny.bubble!!.move = BubbleResources.BUBBLE_MOVE_LEFT
+        val destinyBubble = destiny.bubble
+        if (destinyBubble != null) {
+            // Updatemos status de movimiento de la bubble
+            if (deltaX == 0 && deltaY > 0) {
+                //Log.d(TAG,"Moving bubble down: deltaX = " + deltaX + ", deltaY = " + deltaY);
+                destinyBubble.move = BubbleResources.BUBBLE_MOVE_DOWN
+            } else if (deltaX == 0 && deltaY < 0) {
+                //Log.d(TAG,"Moving bubble up: deltaX = " + deltaX + ", deltaY = " + deltaY);
+                destinyBubble.move = BubbleResources.BUBBLE_MOVE_UP
+            } else if (deltaY == 0 && deltaX > 0) {
+                //Log.d(TAG,"Moving bubble right: deltaX = " + deltaX + ", deltaY = " + deltaY);
+                destinyBubble.move = BubbleResources.BUBBLE_MOVE_RIGHT
+            } else if (deltaY == 0 && deltaX < 0) {
+                //Log.d(TAG,"Moving bubble left: deltaX = " + deltaX + ", deltaY = " + deltaY);
+                destinyBubble.move = BubbleResources.BUBBLE_MOVE_LEFT
+            }
         }
 
         // Tambien controla la velocidad del turno de la CPU
@@ -1057,7 +1067,7 @@ class Board(resources: Resources, private var character1: Character) {
         }
     }
 
-    fun animateThingsIndependents(canvas: Canvas?) {
+    fun animateThingsIndependents(canvas: Canvas) {
         // Animating los things independents
         val things_animated = this.thingsAnimated
         if (things_animated.size == 0) {
@@ -1080,7 +1090,7 @@ class Board(resources: Resources, private var character1: Character) {
         }
     }
 
-    fun animateThingRemoved(canvas: Canvas?, i: Int, thing: Thing) {
+    fun animateThingRemoved(canvas: Canvas, i: Int, thing: Thing) {
         thing.animationIndex++
         // Hacemos loop
         if (thing.animationIndex >= ThingResources.THING_REMOVED_ANIMATION_SEQUENCE.size) {
@@ -1151,11 +1161,13 @@ class Board(resources: Resources, private var character1: Character) {
                 bitmap = ThingResources.PEINE_GRANDE_GRAPHICS_BITMAP[thing.graphicIndex]
             }
 
-            canvas!!.drawBitmap(bitmap!!, drawX.toFloat(), drawY.toFloat(), null)
+            if (bitmap != null) {
+                canvas.drawBitmap(bitmap, drawX.toFloat(), drawY.toFloat(), null)
+            }
         }
     }
 
-    private fun animateThingEfectoFijo(canvas: Canvas?, i: Int, thing: Thing) {
+    private fun animateThingEfectoFijo(canvas: Canvas, i: Int, thing: Thing) {
         thing.animationIndex++
         // Sin loop, lo quitamos
         if (thing.animationIndex >= EfectoResources.EFECTO_FIJO_ANIMATION_SEQUENCE.size) {
@@ -1187,12 +1199,15 @@ class Board(resources: Resources, private var character1: Character) {
         }
 
         // Si el thing tiene asociado una bubble seguimos su position
-        if (thing.bubble != null) {
-            thing.drawX = thing.bubble!!.drawX
-            thing.drawY = thing.bubble!!.drawY
+        val bubble = thing.bubble
+        if (bubble != null) {
+            thing.drawX = bubble.drawX
+            thing.drawY = bubble.drawY
         }
 
-        canvas!!.drawBitmap(bitmap!!, thing.drawX.toFloat(), thing.drawY.toFloat(), null)
+        if (bitmap != null) {
+            canvas.drawBitmap(bitmap, thing.drawX.toFloat(), thing.drawY.toFloat(), null)
+        }
     }
 
     private fun moveThingBetweenBubbles(thing: Thing?): Boolean {
@@ -1254,10 +1269,17 @@ class Board(resources: Resources, private var character1: Character) {
     }
 
     companion object {
-        private val DEFAULT_SURFACE_WIDTH = 800
-        private val DEFAULT_SURFACE_HEIGHT = 480
+        private const val DEFAULT_SURFACE_WIDTH = 800
+        private const val DEFAULT_SURFACE_HEIGHT = 480
 
-        // Tamaos de boards
+        private const val MAX_THINGS_ANIMATED = 32
+        private const val DEFAULT_TIME_BETWEEN_BUBBLES: Long = 1000
+
+        // Board num cells
+        private const val MAX_WIDTH = 8
+        private const val MAX_HEIGHT = 8
+
+        // Boards sizes
         private var DEFAULT_BOARD_WIDTH = 320
         private var DEFAULT_BOARD_HEIGHT = 320
 
@@ -1282,23 +1304,14 @@ class Board(resources: Resources, private var character1: Character) {
         private var OFFSET_X_DISLIKE = DEFAULT_OFFSET_X_DISLIKE
         private var OFFSET_Y_DISLIKE = DEFAULT_OFFSET_Y_DISLIKE
 
-        private var COUNTER_Y_SPACER = java.lang.Double.valueOf(1.2 * ThingResources.THING_HEIGHT)!!.toInt()
+        private var COUNTER_Y_SPACER = java.lang.Double.valueOf(1.2 * ThingResources.THING_HEIGHT).toInt()
 
         private var OFFSET_X_LIKE_COUNTER = OFFSET_X_LIKE + ThingResources.THING_WIDTH
-        private var OFFSET_Y_LIKE_COUNTER = OFFSET_Y_LIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
+        private var OFFSET_Y_LIKE_COUNTER = OFFSET_Y_LIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble()).toInt()
         private var OFFSET_X_DISLIKE_COUNTER = OFFSET_X_DISLIKE + ThingResources.THING_WIDTH
-        private var OFFSET_Y_DISLIKE_COUNTER = OFFSET_Y_DISLIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
-
-        // Board num cells
-        private var MAX_WIDTH = 8
-        private var MAX_HEIGHT = 8
+        private var OFFSET_Y_DISLIKE_COUNTER = OFFSET_Y_DISLIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble()).toInt()
 
         private var random = Random()
-
-        // Numero maximo de things animated independents
-        private var MAX_THINGS_ANIMATED = 32
-
-        private var DEFAULT_TIME_BETWEEN_BUBBLES: Long = 1000
 
         fun resizeBoard(surfaceWidth: Int, surfaceHeight: Int) {
             //Log.d(TAG, "Surface resize: width = " + surfaceWidth + ", height = " + surfaceHeight);
@@ -1341,11 +1354,11 @@ class Board(resources: Resources, private var character1: Character) {
             var offsetWidth = surfaceWidth.toFloat()
             offsetWidth -= (BubbleResources.BUBBLE_WIDTH * Board.MAX_WIDTH).toFloat()
             offsetWidth /= 2f
-            OFFSET_X = java.lang.Float.valueOf(offsetWidth)!!.toInt()
+            OFFSET_X = java.lang.Float.valueOf(offsetWidth).toInt()
             var offsetHeight = surfaceHeight.toFloat()
             offsetHeight -= (BubbleResources.BUBBLE_HEIGHT * Board.MAX_HEIGHT).toFloat()
             offsetHeight /= 2f
-            OFFSET_Y = java.lang.Float.valueOf(offsetHeight)!!.toInt()
+            OFFSET_Y = java.lang.Float.valueOf(offsetHeight).toInt()
 
             // Recolocamos counters
             calculateCountersOffsets(surfaceWidth, surfaceHeight)
@@ -1369,16 +1382,16 @@ class Board(resources: Resources, private var character1: Character) {
                 refactorIndexHeight = 1f
             }
 
-            OFFSET_X_LIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_X_LIKE * refactorIndexWidth)!!.toInt()
-            OFFSET_Y_LIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_Y_LIKE * refactorIndexHeight)!!.toInt()
-            OFFSET_X_DISLIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_X_DISLIKE * refactorIndexWidth)!!.toInt()
-            OFFSET_Y_DISLIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_Y_DISLIKE * refactorIndexHeight)!!.toInt()
+            OFFSET_X_LIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_X_LIKE * refactorIndexWidth).toInt()
+            OFFSET_Y_LIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_Y_LIKE * refactorIndexHeight).toInt()
+            OFFSET_X_DISLIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_X_DISLIKE * refactorIndexWidth).toInt()
+            OFFSET_Y_DISLIKE = java.lang.Float.valueOf(DEFAULT_OFFSET_Y_DISLIKE * refactorIndexHeight).toInt()
 
-            COUNTER_Y_SPACER = java.lang.Double.valueOf(1.2 * ThingResources.THING_HEIGHT)!!.toInt()
+            COUNTER_Y_SPACER = java.lang.Double.valueOf(1.2 * ThingResources.THING_HEIGHT).toInt()
             OFFSET_X_LIKE_COUNTER = OFFSET_X_LIKE + ThingResources.THING_WIDTH
-            OFFSET_Y_LIKE_COUNTER = OFFSET_Y_LIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
+            OFFSET_Y_LIKE_COUNTER = OFFSET_Y_LIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble()).toInt()
             OFFSET_X_DISLIKE_COUNTER = OFFSET_X_DISLIKE + ThingResources.THING_WIDTH
-            OFFSET_Y_DISLIKE_COUNTER = OFFSET_Y_DISLIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble())!!.toInt()
+            OFFSET_Y_DISLIKE_COUNTER = OFFSET_Y_DISLIKE + java.lang.Double.valueOf((ThingResources.THING_HEIGHT / 2).toDouble()).toInt()
         }
     }
 }

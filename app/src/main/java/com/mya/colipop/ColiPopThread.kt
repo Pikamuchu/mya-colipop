@@ -183,9 +183,13 @@ class ColiPopThread : Thread {
     private fun doDrawRunning(canvas: Canvas) {
         //long initTime = System.currentTimeMillis();
 
-        canvas.drawBitmap(ColiPopResources.backgroundImage!!, 0f, 0f, null)
+        if (ColiPopResources.backgroundImage != null) {
+            canvas.drawBitmap(ColiPopResources.backgroundImage, 0f, 0f, null)
+        }
 
-        canvas.drawBitmap(ColiPopResources.boardImage!!, 0f, 0f, null)
+        if (ColiPopResources.boardImage != null) {
+            canvas.drawBitmap(ColiPopResources.boardImage, 0f, 0f, null)
+        }
 
         this.board.doBoardAnimation(canvas)
 
@@ -197,13 +201,13 @@ class ColiPopThread : Thread {
 
     private fun doDrawReady(canvas: Canvas) {
         if (ColiPopResources.titleBG != null) {
-            canvas.drawBitmap(ColiPopResources.titleBG!!, 0f, 0f, null)
+            canvas.drawBitmap(ColiPopResources.titleBG, 0f, 0f, null)
         }
     }
 
     private fun doDrawPlay(canvas: Canvas) {
         if (ColiPopResources.backgroundImage != null) {
-            canvas.drawBitmap(ColiPopResources.backgroundImage!!, 0f, 0f, null)
+            canvas.drawBitmap(ColiPopResources.backgroundImage, 0f, 0f, null)
         }
     }
 
@@ -307,7 +311,8 @@ class ColiPopThread : Thread {
         } else if (event.motionEvent == MotionEvent.ACTION_MOVE) {
             //Log.d(TAG, "Motion Move en position: x=" + event.x + ", y=" +  event.y );
             board.addEfectoTouch(event.x, event.y, EfectoResources.EFECTO_TOUCH_MOVE_OBJECT_TYPE)
-            val cellOrigin = board.getCellInCoordinates(this.eventActionMoveAnterior!!.x, this.eventActionMoveAnterior!!.y)
+            val eventAnterior = this.eventActionMoveAnterior
+            val cellOrigin = if (eventAnterior != null) board.getCellInCoordinates(eventAnterior.x, eventAnterior.y) else null
             val cellDestiny = board.getCellInCoordinates(event.x, event.y)
             ColiPopActions.updateTouchBoard(cellOrigin, cellDestiny, board, true, false)
             if ((cellOrigin == null && cellDestiny != null)
@@ -319,10 +324,13 @@ class ColiPopThread : Thread {
 
         } else if (event.motionEvent == MotionEvent.ACTION_UP) {
             //Log.d(TAG, "Motion Up en position: x=" + event.x + ", y=" +  event.y );
-            val cellOrigin = board.getCellInCoordinates(this.eventActionDown!!.x, this.eventActionDown!!.y)
+            val eventDown = this.eventActionDown
+            val cellOrigin = if (eventDown != null) board.getCellInCoordinates(eventDown.x, eventDown.y) else null
             val cellDestiny = board.getCellInCoordinates(event.x, event.y)
-            ColiPopActions.updateTouchBoard(cellOrigin, cellDestiny, board, false, true)
-            ColiPopActions.tiltOtherCells(board, cellDestiny)
+            if (cellOrigin != null && cellDestiny != null) {
+                ColiPopActions.updateTouchBoard(cellOrigin, cellDestiny, board, false, true)
+                ColiPopActions.tiltOtherCells(board, cellDestiny)
+            }
         }
 
         //long updateTime = System.currentTimeMillis() - initTime;

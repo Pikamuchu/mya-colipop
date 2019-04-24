@@ -138,7 +138,7 @@ object ColitaResources {
             BOCA_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, height, true)
         }
 
-        // El meter es cuadrado !!
+        // El meter es cuadrado
 
         for ((index, bitmap) in METER_FONDO_GRAPHICS_BITMAP.withIndex()) {
             METER_FONDO_GRAPHICS_BITMAP[index] = Bitmap.createScaledBitmap(bitmap, width, width, true)
